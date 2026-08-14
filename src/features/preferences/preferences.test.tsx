@@ -1,0 +1,36 @@
+import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import '@/app/i18n';
+import { LocaleSwitch } from '@/components/controls/LocaleSwitch';
+import { RoleSwitch } from '@/components/controls/RoleSwitch';
+import { usePreferences } from '@/features/preferences/store';
+
+describe('portfolio preferences', () => {
+  beforeEach(() => {
+    localStorage.clear();
+    usePreferences.setState({ locale: 'en', role: 'ai' });
+  });
+
+  it('switches the portfolio role', async () => {
+    const user = userEvent.setup();
+    render(<RoleSwitch />);
+
+    await user.click(screen.getByRole('button', { name: 'Frontend Developer' }));
+
+    expect(usePreferences.getState().role).toBe('frontend');
+    expect(screen.getByRole('button', { name: 'Frontend Developer' })).toHaveAttribute(
+      'aria-pressed',
+      'true',
+    );
+  });
+
+  it('switches the locale and persists it', async () => {
+    const user = userEvent.setup();
+    render(<LocaleSwitch />);
+
+    await user.click(screen.getByRole('button', { name: 'RU' }));
+
+    expect(usePreferences.getState().locale).toBe('ru');
+    expect(localStorage.getItem('portfolio-preferences')).toContain('"locale":"ru"');
+  });
+});
