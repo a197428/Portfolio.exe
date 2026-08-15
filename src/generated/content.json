@@ -1,0 +1,676 @@
+{
+  "profiles": [
+    {
+      "locale": "en",
+      "name": "Alexander Popov",
+      "location": "Volgograd, Russia",
+      "title": "AI Application Developer · Full-stack + LLM integrations",
+      "summary": "I build AI applications, agent systems, and integration products across interfaces, APIs, edge infrastructure, and production verification.",
+      "experience": [
+        "SatelAB — Frontend Developer, since December 2025",
+        "Freelance — Full-stack Developer, since March 2026"
+      ],
+      "contacts": {
+        "email": "a197428@yandex.ru",
+        "telegram": "https://t.me/AVPopoff",
+        "github": "https://github.com/a197428"
+      },
+      "body": "Core stack: Python, FastAPI, LangGraph, TypeScript, React, Vue 3, and Cloudflare Workers."
+    },
+    {
+      "locale": "ru",
+      "name": "Александр Попов",
+      "location": "Волгоград",
+      "title": "AI Application Developer · Fullstack + LLM-интеграции",
+      "summary": "Разрабатываю AI-приложения, агентные системы и интеграционные продукты — от интерфейса и API до edge-инфраструктуры и production-проверок.",
+      "experience": [
+        "SatelAB — Frontend-разработчик, с декабря 2025",
+        "Фриланс — Fullstack Developer, с марта 2026"
+      ],
+      "contacts": {
+        "email": "a197428@yandex.ru",
+        "telegram": "https://t.me/AVPopoff",
+        "github": "https://github.com/a197428"
+      },
+      "body": "Основной стек: Python, FastAPI, LangGraph, TypeScript, React, Vue 3 и Cloudflare Workers."
+    }
+  ],
+  "projects": [
+    {
+      "slug": "bitrix24-integrations",
+      "locale": "en",
+      "title": "Industrial Bitrix24 integrations",
+      "eyebrow": "SatelAB · three production applications",
+      "status": "production",
+      "roles": ["ai", "frontend"],
+      "featured": true,
+      "summary": "A three-product suite for acquiring, property operations, and smart locks, modernized with Vue 3 and TypeScript.",
+      "task": "Replace legacy interfaces with a modern stack and prepare resilient integration applications running inside Bitrix24.",
+      "contribution": [
+        "Designed component boundaries and centralized API layers",
+        "Implemented production and development context, mocks, loading, and error states",
+        "Built business interfaces for operational workflows"
+      ],
+      "decisions": [
+        "Isolated Bitrix24 context in composables instead of leaking SDK details into UI",
+        "Kept identical client contracts for production APIs and local mocks",
+        "Split complex domains into focused pages and components"
+      ],
+      "stack": ["Vue 3", "TypeScript", "Vite", "Tailwind CSS", "Bitrix24 UI", "Vitest"],
+      "outcome": "Three integration interfaces gained a modern, testable foundation ready to evolve with backend contracts.",
+      "roleFocus": {
+        "ai": "System modernization, integration boundaries, resilience, and production delivery.",
+        "frontend": "Vue 3, composables, complex states, forms, tables, filters, pagination, mocks, and unit tests."
+      },
+      "links": [],
+      "media": {
+        "video": "/media/bitrix24-suite.mp4",
+        "poster": "/media/bitrix24-suite-poster.webp"
+      },
+      "chapters": [
+        {
+          "id": "acquiring",
+          "title": "Acquiring & Robots",
+          "time": 0,
+          "task": "Manage bank handlers, subscription state, and automation robots.",
+          "contribution": [
+            "Bitrix SDK context with URL/env fallback",
+            "centralized API composable",
+            "install/uninstall states"
+          ],
+          "decisions": [
+            "Strict production mode",
+            "development mocks",
+            "parallel loading",
+            "and explicit errors"
+          ]
+        },
+        {
+          "id": "apartsharing",
+          "title": "ApartSharing",
+          "time": 40,
+          "task": "Synchronize CRM data with a property management platform.",
+          "contribution": [
+            "Account CRUD",
+            "field and source mapping",
+            "apartment filters and pagination"
+          ],
+          "decisions": [
+            "Modular tabs",
+            "centralized helpers",
+            "local development through mocks"
+          ]
+        },
+        {
+          "id": "ttlock",
+          "title": "TTLock Connector",
+          "time": 150,
+          "task": "Manage accounts, smart locks, tariffs, and transactions.",
+          "contribution": [
+            "Multi-account flows",
+            "lock filtering",
+            "tariff calculation",
+            "balance checks"
+          ],
+          "decisions": [
+            "Settings/Tariffs separation",
+            "testable components",
+            "minimal API coupling"
+          ]
+        }
+      ],
+      "body": "One industrial case demonstrates delivery across three domains under the shared constraints of embedded Bitrix24 applications."
+    },
+    {
+      "slug": "bitrix24-integrations",
+      "locale": "ru",
+      "title": "Industrial Bitrix24 integrations",
+      "eyebrow": "SatelAB · три production-приложения",
+      "status": "production",
+      "roles": ["ai", "frontend"],
+      "featured": true,
+      "summary": "Единая система из трёх встроенных приложений для эквайринга, недвижимости и умных замков, модернизированная на Vue 3 и TypeScript.",
+      "task": "Перевести legacy-интерфейсы на современный стек и подготовить устойчивые интеграционные приложения для работы внутри Bitrix24.",
+      "contribution": [
+        "Спроектировал компонентную структуру и централизованные API-слои",
+        "Реализовал prod/dev контекст, моки, состояния загрузки и обработку ошибок",
+        "Подготовил сложные бизнес-интерфейсы для ежедневных операций"
+      ],
+      "decisions": [
+        "Изолировал Bitrix24 context в composables вместо распространения SDK-деталей по UI",
+        "Сохранил одинаковые клиентские контракты для production API и локальных моков",
+        "Разделил сложные домены на самостоятельные страницы и компоненты"
+      ],
+      "stack": ["Vue 3", "TypeScript", "Vite", "Tailwind CSS", "Bitrix24 UI", "Vitest"],
+      "outcome": "Три интеграционных интерфейса получили современную тестируемую основу и готовы к развитию вместе с backend-контрактами.",
+      "roleFocus": {
+        "ai": "Системная модернизация, интеграционные границы, устойчивость и доведение решений до production.",
+        "frontend": "Vue 3, composables, сложные состояния, формы, таблицы, фильтры, пагинация, моки и unit-тесты."
+      },
+      "links": [],
+      "media": {
+        "video": "/media/bitrix24-suite.mp4",
+        "poster": "/media/bitrix24-suite-poster.webp"
+      },
+      "chapters": [
+        {
+          "id": "acquiring",
+          "title": "Acquiring & Robots",
+          "time": 0,
+          "task": "Управление банковскими обработчиками, подпиской и роботами автоматизации.",
+          "contribution": [
+            "Bitrix SDK context с URL/env fallback",
+            "централизованный API composable",
+            "install/uninstall состояния"
+          ],
+          "decisions": [
+            "Строгий production-режим",
+            "dev mocks",
+            "параллельная загрузка данных и явные ошибки"
+          ]
+        },
+        {
+          "id": "apartsharing",
+          "title": "ApartSharing",
+          "time": 40,
+          "task": "Синхронизация CRM с платформой управления недвижимостью.",
+          "contribution": [
+            "CRUD аккаунтов",
+            "сопоставление полей и источников",
+            "квартиры с фильтрами и пагинацией"
+          ],
+          "decisions": [
+            "Модульные вкладки",
+            "централизованные helpers",
+            "локальная работа через моки"
+          ]
+        },
+        {
+          "id": "ttlock",
+          "title": "TTLock Connector",
+          "time": 150,
+          "task": "Управление аккаунтами, умными замками, тарифами и транзакциями.",
+          "contribution": [
+            "Мультиаккаунтность",
+            "фильтрация замков",
+            "расчёт тарифов",
+            "проверки баланса"
+          ],
+          "decisions": [
+            "Разделение Settings/Tariffs",
+            "тестируемые компоненты",
+            "минимальная связность с API"
+          ]
+        }
+      ],
+      "body": "Один промышленный кейс показывает работу сразу с тремя предметными областями и общими ограничениями встроенных Bitrix24-приложений."
+    },
+    {
+      "slug": "liveclasses-agent",
+      "locale": "en",
+      "title": "LiveClasses AI Agent",
+      "eyebrow": "Event-driven agent · Cloudflare",
+      "status": "active",
+      "roles": ["ai"],
+      "featured": false,
+      "summary": "An edge service tracks live-stream schedules, filters AI-related topics, and notifies users through Telegram.",
+      "task": "Automate monitoring of educational broadcasts and timely alerts.",
+      "contribution": [
+        "Built the parser",
+        "scheduler",
+        "Telegram webhook",
+        "and D1 state",
+        "Added filtering and administrator notifications"
+      ],
+      "decisions": [
+        "Separated fetch and scheduled handlers",
+        "Event-driven processing",
+        "Edge persistence"
+      ],
+      "stack": [
+        "Cloudflare Workers",
+        "D1",
+        "Cron",
+        "Workers AI",
+        "Telegram Bot API",
+        "Cheerio"
+      ],
+      "outcome": "A compact serverless agent with parsing, subscriptions, and pre-stream notifications.",
+      "roleFocus": {
+        "ai": "AI filtering, event-driven agent behavior, and scheduled automation.",
+        "frontend": "Telegram command and notification experience."
+      },
+      "links": [],
+      "chapters": [],
+      "body": ""
+    },
+    {
+      "slug": "liveclasses-agent",
+      "locale": "ru",
+      "title": "LiveClasses AI Agent",
+      "eyebrow": "Event-driven agent · Cloudflare",
+      "status": "active",
+      "roles": ["ai"],
+      "featured": false,
+      "summary": "Edge-сервис отслеживает расписание трансляций, фильтрует AI-тематику и уведомляет пользователей в Telegram.",
+      "task": "Автоматизировать мониторинг образовательных эфиров и своевременные уведомления.",
+      "contribution": [
+        "Реализовал parser",
+        "scheduler",
+        "Telegram webhook и D1 state",
+        "Добавил фильтрацию и административные уведомления"
+      ],
+      "decisions": [
+        "Разделение fetch и scheduled handlers",
+        "Event-driven обработка",
+        "Edge-хранение состояния"
+      ],
+      "stack": [
+        "Cloudflare Workers",
+        "D1",
+        "Cron",
+        "Workers AI",
+        "Telegram Bot API",
+        "Cheerio"
+      ],
+      "outcome": "Компактный serverless-агент с парсингом, подписками и уведомлениями перед эфиром.",
+      "roleFocus": {
+        "ai": "AI filtering, event-driven agent behavior, and scheduled automation.",
+        "frontend": "Telegram command and notification experience."
+      },
+      "links": [],
+      "chapters": [],
+      "body": ""
+    },
+    {
+      "slug": "local-ai-assistant",
+      "locale": "en",
+      "title": "Local AI Assistant",
+      "eyebrow": "Chrome Extension · contextual agent",
+      "status": "active",
+      "roles": ["ai", "frontend"],
+      "featured": true,
+      "summary": "A browser assistant understands the active page, answers against its context, and augments responses with web search.",
+      "task": "Place an AI tool beside the content being viewed without covering the page.",
+      "contribution": [
+        "Built the React Side Panel and content scripts",
+        "Implemented a FastAPI/LangGraph backend and streaming"
+      ],
+      "decisions": [
+        "WebSocket with REST fallback",
+        "Local backend and sensitive-data filtering",
+        "EXA as a search tool"
+      ],
+      "stack": [
+        "Chrome MV3",
+        "React",
+        "TypeScript",
+        "FastAPI",
+        "LangGraph",
+        "DeepSeek",
+        "EXA API",
+        "WebSockets"
+      ],
+      "outcome": "A client-server agent with tab context, web search, conversation history, and Markdown export.",
+      "roleFocus": {
+        "ai": "LangGraph orchestration, tools, context handling, streaming, and safety boundaries.",
+        "frontend": "Chrome Side Panel, React state, content scripts, streaming UX, and export flows."
+      },
+      "links": [
+        {
+          "label": "GitHub",
+          "href": "https://github.com/a197428/local-ai-assistant-extension"
+        }
+      ],
+      "chapters": [],
+      "body": ""
+    },
+    {
+      "slug": "local-ai-assistant",
+      "locale": "ru",
+      "title": "Local AI Assistant",
+      "eyebrow": "Chrome Extension · контекстный агент",
+      "status": "active",
+      "roles": ["ai", "frontend"],
+      "featured": true,
+      "summary": "Браузерный помощник анализирует текущую страницу, отвечает по её контексту и дополняет ответы web-поиском.",
+      "task": "Дать пользователю AI-инструмент рядом с просматриваемым контентом, не перекрывая страницу.",
+      "contribution": [
+        "Создал React Side Panel и content scripts",
+        "Реализовал FastAPI/LangGraph backend и streaming"
+      ],
+      "decisions": [
+        "WebSocket с REST fallback",
+        "Локальный backend и фильтрация чувствительных данных",
+        "EXA как search tool"
+      ],
+      "stack": [
+        "Chrome MV3",
+        "React",
+        "TypeScript",
+        "FastAPI",
+        "LangGraph",
+        "DeepSeek",
+        "EXA API",
+        "WebSockets"
+      ],
+      "outcome": "Клиент-серверный агент с контекстом вкладки, web-поиском, историей и экспортом в Markdown.",
+      "roleFocus": {
+        "ai": "LangGraph orchestration, tools, context handling, streaming, and safety boundaries.",
+        "frontend": "Chrome Side Panel, React state, content scripts, streaming UX, and export flows."
+      },
+      "links": [
+        {
+          "label": "GitHub",
+          "href": "https://github.com/a197428/local-ai-assistant-extension"
+        }
+      ],
+      "chapters": [],
+      "body": ""
+    },
+    {
+      "slug": "read-close-bot",
+      "locale": "en",
+      "title": "Read-Close-Bot",
+      "eyebrow": "AI agent · daily digest",
+      "status": "active",
+      "roles": ["ai"],
+      "featured": true,
+      "summary": "An agent collects technical articles, scores relevance and depth, and delivers the strongest material through Telegram.",
+      "task": "Reduce noise across professional sources and produce a useful daily digest.",
+      "contribution": [
+        "Built ingestion",
+        "scoring",
+        "deduplication",
+        "and Telegram flows",
+        "Configured Cron and D1 persistence"
+      ],
+      "decisions": [
+        "Agent-first Understanding → Decision → Memory → Response pipeline",
+        "URL and hash deduplication"
+      ],
+      "stack": ["Cloudflare Workers", "D1", "Cron", "DeepSeek", "Telegram Bot API"],
+      "outcome": "An autonomous edge pipeline with digest commands and search over stored material.",
+      "roleFocus": {
+        "ai": "Agent processing, scoring, memory, and scheduled automation.",
+        "frontend": "Telegram interaction and concise result presentation."
+      },
+      "links": [{ "label": "GitHub", "href": "https://github.com/a197428/Read_Cl_Bot" }],
+      "chapters": [],
+      "body": ""
+    },
+    {
+      "slug": "read-close-bot",
+      "locale": "ru",
+      "title": "Read-Close-Bot",
+      "eyebrow": "AI-агент · ежедневный дайджест",
+      "status": "active",
+      "roles": ["ai"],
+      "featured": true,
+      "summary": "Агент собирает технические статьи, оценивает их релевантность и глубину и отправляет лучшие материалы в Telegram.",
+      "task": "Сократить шум в профессиональных источниках и формировать полезный ежедневный дайджест.",
+      "contribution": [
+        "Реализовал ingestion",
+        "scoring",
+        "дедупликацию и Telegram-интерфейс",
+        "Настроил Cron и хранение в D1"
+      ],
+      "decisions": [
+        "Agent-first pipeline Understanding → Decision → Memory → Response",
+        "Дедупликация по URL и hash"
+      ],
+      "stack": ["Cloudflare Workers", "D1", "Cron", "DeepSeek", "Telegram Bot API"],
+      "outcome": "Автономный edge-пайплайн с командами дайджеста и поиском по накопленной базе.",
+      "roleFocus": {
+        "ai": "Агентная обработка, scoring, память и автоматизация по расписанию.",
+        "frontend": "Telegram-интерфейс и ясное представление результатов."
+      },
+      "links": [{ "label": "GitHub", "href": "https://github.com/a197428/Read_Cl_Bot" }],
+      "chapters": [],
+      "body": ""
+    },
+    {
+      "slug": "shortsport-ai-forge",
+      "locale": "en",
+      "title": "ShortSport-AI-Forge",
+      "eyebrow": "Agent pipeline · sports video",
+      "status": "mvp",
+      "roles": ["ai"],
+      "featured": false,
+      "summary": "An AI-agent pipeline for moment detection, micro-predictions, post-event validation, and short sports video rendering.",
+      "task": "Automate vertical video production from events in real matches.",
+      "contribution": [
+        "Designed the modular pipeline and coordinator",
+        "Defined validation",
+        "scoring",
+        "rendering",
+        "and QA stages"
+      ],
+      "decisions": [
+        "Specialized agent per stage",
+        "Retry-aware orchestration",
+        "Stateless workers for scale"
+      ],
+      "stack": [
+        "Python",
+        "LangGraph",
+        "FFmpeg",
+        "Remotion",
+        "Computer Vision",
+        "LLM agents"
+      ],
+      "outcome": "An MVP architecture with frame-accurate synchronization of successful predictions and overlays.",
+      "roleFocus": {
+        "ai": "Multi-agent pipeline, validation, orchestration, and computer vision integration.",
+        "frontend": "Rendered overlays and vertical-video presentation."
+      },
+      "links": [
+        { "label": "GitHub", "href": "https://github.com/a197428/ShortSport-AI-Forge" }
+      ],
+      "chapters": [],
+      "body": ""
+    },
+    {
+      "slug": "shortsport-ai-forge",
+      "locale": "ru",
+      "title": "ShortSport-AI-Forge",
+      "eyebrow": "Agent pipeline · sports video",
+      "status": "mvp",
+      "roles": ["ai"],
+      "featured": false,
+      "summary": "Конвейер AI-агентов для поиска моментов, микро-прогнозов, post-factum валидации и рендера коротких спортивных видео.",
+      "task": "Автоматизировать создание вертикальных роликов на основе событий реальных матчей.",
+      "contribution": [
+        "Спроектировал модульный pipeline и coordinator",
+        "Определил validation",
+        "scoring",
+        "rendering и QA stages"
+      ],
+      "decisions": [
+        "Специализированный агент на этап",
+        "Retry-aware orchestration",
+        "Stateless workers для масштабирования"
+      ],
+      "stack": [
+        "Python",
+        "LangGraph",
+        "FFmpeg",
+        "Remotion",
+        "Computer Vision",
+        "LLM agents"
+      ],
+      "outcome": "Архитектура MVP с frame-accurate синхронизацией успешных прогнозов и оверлеев.",
+      "roleFocus": {
+        "ai": "Multi-agent pipeline, validation, orchestration, and computer vision integration.",
+        "frontend": "Rendered overlays and vertical-video presentation."
+      },
+      "links": [
+        { "label": "GitHub", "href": "https://github.com/a197428/ShortSport-AI-Forge" }
+      ],
+      "chapters": [],
+      "body": ""
+    },
+    {
+      "slug": "todo-app",
+      "locale": "en",
+      "title": "Todo App",
+      "eyebrow": "Frontend system · Nuxt 3",
+      "status": "active",
+      "roles": ["frontend"],
+      "featured": false,
+      "summary": "A task-management application with role-based access, CRUD, search, filtering, sorting, and pagination.",
+      "task": "Build a complete testable frontend for different user roles and task states.",
+      "contribution": [
+        "Built the Nuxt/Vue interface and composables",
+        "Prepared API mocks",
+        "unit",
+        "and e2e checks"
+      ],
+      "decisions": [
+        "Admin/user role model",
+        "MSW for development APIs",
+        "State/UI separation through composables"
+      ],
+      "stack": [
+        "Nuxt 3",
+        "Vue 3",
+        "TypeScript",
+        "Tailwind CSS",
+        "Axios",
+        "MSW",
+        "Vitest",
+        "Playwright"
+      ],
+      "outcome": "A responsive interface with authentication, status handling, and a complete task-management cycle.",
+      "roleFocus": {
+        "ai": "Structured application architecture and verification.",
+        "frontend": "Nuxt/Vue composables, role-aware UX, CRUD, filters, pagination, unit and e2e tests."
+      },
+      "links": [],
+      "chapters": [],
+      "body": ""
+    },
+    {
+      "slug": "todo-app",
+      "locale": "ru",
+      "title": "Todo App",
+      "eyebrow": "Frontend system · Nuxt 3",
+      "status": "active",
+      "roles": ["frontend"],
+      "featured": false,
+      "summary": "Приложение управления задачами с ролевым доступом, CRUD, поиском, фильтрацией, сортировкой и пагинацией.",
+      "task": "Реализовать полноценный тестируемый frontend для разных пользовательских ролей и состояний задач.",
+      "contribution": [
+        "Собрал Nuxt/Vue интерфейс и composables",
+        "Подготовил API mocks",
+        "unit и e2e проверки"
+      ],
+      "decisions": [
+        "Ролевая модель admin/user",
+        "MSW для development API",
+        "Разделение состояния и UI через composables"
+      ],
+      "stack": [
+        "Nuxt 3",
+        "Vue 3",
+        "TypeScript",
+        "Tailwind CSS",
+        "Axios",
+        "MSW",
+        "Vitest",
+        "Playwright"
+      ],
+      "outcome": "Responsive-интерфейс с аутентификацией, статусами и полным циклом управления задачами.",
+      "roleFocus": {
+        "ai": "Structured application architecture and verification.",
+        "frontend": "Nuxt/Vue composables, role-aware UX, CRUD, filters, pagination, unit and e2e tests."
+      },
+      "links": [],
+      "chapters": [],
+      "body": ""
+    },
+    {
+      "slug": "video-sut",
+      "locale": "en",
+      "title": "VideoSut",
+      "eyebrow": "AI SaaS · YouTube summaries",
+      "status": "active",
+      "roles": ["ai", "frontend"],
+      "featured": false,
+      "summary": "A SaaS product creates structured YouTube summaries with credits, authentication, and caching.",
+      "task": "Turn long videos into a quickly readable main idea, key points, and conclusion.",
+      "contribution": [
+        "Built the full-stack application and AI flow",
+        "Implemented auth",
+        "credits",
+        "cache",
+        "and validation"
+      ],
+      "decisions": [
+        "Unified Next.js App Router",
+        "Redis TTL and rate limiting",
+        "Supabase RLS and API fallbacks"
+      ],
+      "stack": [
+        "Next.js",
+        "React",
+        "TypeScript",
+        "Tailwind CSS",
+        "shadcn/ui",
+        "Supabase",
+        "Redis",
+        "Gemini",
+        "Zod"
+      ],
+      "outcome": "An architecture for a monetizable AI service with daily free credits.",
+      "roleFocus": {
+        "ai": "LLM summarization, validation, caching, fallbacks, and usage controls.",
+        "frontend": "Full-stack React UX, authentication, credits, and structured summary views."
+      },
+      "links": [],
+      "chapters": [],
+      "body": ""
+    },
+    {
+      "slug": "video-sut",
+      "locale": "ru",
+      "title": "ВидеоСуть",
+      "eyebrow": "AI SaaS · YouTube summaries",
+      "status": "active",
+      "roles": ["ai", "frontend"],
+      "featured": false,
+      "summary": "SaaS генерирует структурированные текстовые саммари YouTube-видео с кредитами, аутентификацией и кэшированием.",
+      "task": "Превратить длинное видео в быстро читаемую главную мысль, тезисы и вывод.",
+      "contribution": [
+        "Собрал full-stack приложение и AI flow",
+        "Реализовал auth",
+        "credits",
+        "cache и validation"
+      ],
+      "decisions": [
+        "Единый Next.js App Router",
+        "Redis TTL и rate limiting",
+        "Supabase RLS и API fallbacks"
+      ],
+      "stack": [
+        "Next.js",
+        "React",
+        "TypeScript",
+        "Tailwind CSS",
+        "shadcn/ui",
+        "Supabase",
+        "Redis",
+        "Gemini",
+        "Zod"
+      ],
+      "outcome": "Архитектура монетизируемого AI-сервиса с ежедневными бесплатными кредитами.",
+      "roleFocus": {
+        "ai": "LLM summarization, validation, caching, fallbacks, and usage controls.",
+        "frontend": "Full-stack React UX, authentication, credits, and structured summary views."
+      },
+      "links": [],
+      "chapters": [],
+      "body": ""
+    }
+  ]
+}

@@ -15,6 +15,10 @@ npm run dev
 
 Open the URL printed by Vite. The health endpoint is available at `/api/health`.
 
+Portfolio content lives in `content/profile` and `content/projects`. Run
+`npm run content:build` after editing Markdown; normal development and build commands run this
+validation automatically.
+
 ## Quality checks
 
 ```bash

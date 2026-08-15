@@ -7,9 +7,13 @@ test('loads, switches role, and opens a project', async ({ page }) => {
   await page.getByRole('button', { name: 'Frontend Developer' }).click();
   await expect(page.getByText('Engineering the moment a product clicks.')).toBeVisible();
 
-  await page.locator('a[href="/projects/portfolio-exe"]').click();
-  await expect(page).toHaveURL(/\/projects\/portfolio-exe$/);
-  await expect(page.getByRole('heading', { name: 'Portfolio.exe' })).toBeVisible();
+  await page.locator('a[href="/projects/bitrix24-integrations"]').first().click();
+  await expect(page).toHaveURL(/\/projects\/bitrix24-integrations$/);
+  await expect(
+    page.getByRole('heading', { name: 'Industrial Bitrix24 integrations' }),
+  ).toBeVisible();
+  await page.getByRole('tab', { name: /TTLock Connector/ }).click();
+  await expect(page.getByRole('tabpanel')).toContainText('Manage accounts, smart locks');
 });
 
 test('has no horizontal overflow on the home page', async ({ page }) => {

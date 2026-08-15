@@ -8,4 +8,4 @@ test-results/
 !.dev.vars.example
 .DS_Store
 *.local
-
+content/video/*.avi

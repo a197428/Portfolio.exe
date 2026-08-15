@@ -15,22 +15,52 @@ export const en = {
     },
   },
   hero: {
-    eyebrow: 'Interactive portfolio / foundation online',
+    availability: 'Open to ambitious product work',
     chatSoon: 'AI persona — coming next',
-    explore: 'Explore the build',
+    explore: 'Explore projects',
   },
   proof: {
     title: 'System signals',
     status: 'live',
-    architecture: 'One deploy, client and API',
+    role: 'One body of work, two professional lenses',
+    delivery: 'From interfaces and agents to edge infrastructure',
     languages: 'Equal product experience',
-    knowledge: 'Verified Markdown sources',
   },
   projects: {
     kicker: 'Selected systems',
     title: 'Proof, not promises.',
-    portfolio:
-      'The portfolio is the first case: product thinking, edge architecture, and crafted interaction.',
+    watch: 'Watch presentation',
+    posterAlt: 'TTLock Connector interface from the Bitrix24 application suite',
+  },
+  method: {
+    kicker: 'Engineering approach',
+    title: 'System first. Effect second.',
+    items: [
+      {
+        title: 'Understand context',
+        text: 'Capture real constraints, integrations, and the definition of done.',
+      },
+      {
+        title: 'Design boundaries',
+        text: 'Separate UI, data, tools, and external APIs into verifiable contracts.',
+      },
+      {
+        title: 'Make it operational',
+        text: 'Add failure states, mocks, tests, and production verification.',
+      },
+    ],
+  },
+  aiPreview: {
+    kicker: 'Next layer',
+    title: 'Ask the AI version of me.',
+    text: 'The assistant will answer only from verified resume and project material and expose its sources.',
+    label: 'Grounded portfolio assistant',
+    placeholder: 'Which projects match my vacancy?',
+  },
+  contact: {
+    kicker: 'Contact',
+    title: 'Let’s discuss the problem, not a list of technologies.',
+    write: 'Get in touch',
   },
   project: {
     back: 'Back to overview',
@@ -38,5 +68,9 @@ export const en = {
     notFound: 'Project not found',
     foundation:
       'A bilingual React and Cloudflare foundation designed to grow into a grounded AI portfolio without sacrificing clarity or craft.',
+    task: 'Task',
+    outcome: 'Outcome',
+    contribution: 'Contribution',
+    decisions: 'Decisions',
   },
 } as const;

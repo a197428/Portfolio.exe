@@ -4,8 +4,9 @@
   "version": "0.1.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "tsc -b && vite build",
+    "content:build": "node --import tsx scripts/build-content.ts",
+    "dev": "npm run content:build && vite",
+    "build": "npm run content:build && tsc -b && vite build",
     "preview": "vite preview",
     "deploy": "npm run build && wrangler deploy",
     "typecheck": "tsc -b --pretty false",
@@ -15,13 +16,14 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "test:e2e": "playwright test",
-    "verify": "npm run format:check && npm run lint && npm run typecheck && npm run test && npm run build"
+    "verify": "npm run content:build && npm run format:check && npm run lint && npm run typecheck && npm run test && npm run build"
   },
   "dependencies": {
     "@hookform/resolvers": "latest",
     "@tanstack/react-query": "latest",
     "animejs": "latest",
     "clsx": "latest",
+    "gray-matter": "^4.0.3",
     "hono": "latest",
     "i18next": "latest",
     "lucide-react": "latest",
@@ -55,6 +57,7 @@
     "jsdom": "latest",
     "prettier": "latest",
     "tailwindcss": "latest",
+    "tsx": "^4.23.12",
     "typescript": "latest",
     "typescript-eslint": "latest",
     "vite": "latest",

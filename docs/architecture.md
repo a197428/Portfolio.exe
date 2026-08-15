@@ -29,9 +29,13 @@ an internal dependency of selected Kokonut components.
 
 ## Content and future RAG
 
-Verified knowledge is authored as Markdown in `content/resume`, `content/projects`, and
-`content/facts`. A later ingestion command will validate frontmatter, chunk text, attach locale,
+Verified knowledge is authored as Markdown in `content/profile`, `content/projects`, and
+`content/facts`. A later ingestion command will chunk text, attach locale,
 role, source, and project metadata, create embeddings, and upsert them into Vectorize.
+
+The current build already validates localized profile and project frontmatter with Zod through
+`npm run content:build`, then generates the typed client dataset in `src/generated/content.json`.
+Every project must have matching RU and EN documents before it is publishable.
 
 The planned request path is:
 

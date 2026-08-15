@@ -18,6 +18,13 @@ and receive an evidence-backed answer linked to relevant experience and projects
 - React client and Cloudflare Worker deployed as one unit.
 - Versioned Markdown placeholders for verified resume, project, and fact content.
 
+## Published portfolio content
+
+- Alexander Popov profile and verified contact links in RU and EN.
+- Industrial Bitrix24 integrations as one featured case: Acquiring, ApartSharing, and TTLock.
+- Role-aware project catalogue sourced from validated Markdown.
+- Full public Bitrix24 presentation with product chapter navigation.
+
 ## MVP after the foundation
 
 - RAG chat grounded exclusively in verified portfolio content.
