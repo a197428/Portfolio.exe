@@ -24,18 +24,20 @@ and receive an evidence-backed answer linked to relevant experience and projects
 - Industrial Bitrix24 integrations as one featured case: Acquiring, ApartSharing, and TTLock.
 - Role-aware project catalogue sourced from validated Markdown.
 - Full public Bitrix24 presentation with product chapter navigation.
+- Frontend positioning grounded in SatelAB experience since December 2025.
+- Frontend evidence sequence: Bitrix24, ShortSport, Neurosport, NeuralGrid, and EnergoAI.
+- Public live demos for four modern product cases with private provenance kept out of the UI.
 
 ## MVP after the foundation
 
 - RAG chat grounded exclusively in verified portfolio content.
 - Vacancy description analysis with relevant evidence and case selection.
-- Project catalogue and a selected form of live demonstration.
+- Embedded demonstrations where permitted; external live demos for current Frontend cases.
 - Transparent distinction between retrieved facts and model inference.
 
 ## Explicitly deferred
 
 - Executable or generated code experiences.
-- The live-demo format: external links, interactive cases, or embedded previews.
 - Voice, avatars, AR, and other novelty layers.
 - Model selection details, chat retention, product analytics, and an editorial admin UI.
 

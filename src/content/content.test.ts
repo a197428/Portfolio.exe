@@ -43,6 +43,7 @@ describe('portfolio content', () => {
       repository: 'https://github.com/a197428/local-ai-assistant-extension',
       commit: '3e76a56162d9d56c3f22014c4c786de1a2d7a8f5',
       verifiedAt: '2026-08-15',
+      visibility: 'public',
     };
 
     expect(english.source).toEqual(expectedSource);
@@ -132,5 +133,57 @@ describe('portfolio content', () => {
   it('contains no unfinished resume placeholders', () => {
     expect(JSON.stringify(content)).not.toContain('[указать');
     expect(JSON.stringify(content)).not.toContain('github.com/dashboard');
+  });
+
+  it('provides role-specific profile copy in both locales', () => {
+    for (const locale of ['en', 'ru'] as const) {
+      const profile = getProfile(locale);
+      expect(profile.roleProfiles.frontend.title).toBe('Frontend Developer');
+      expect(profile.roleProfiles.frontend.skills).toContain('Vue 3');
+      expect(profile.roleProfiles.ai.summary).not.toBe(
+        profile.roleProfiles.frontend.summary,
+      );
+    }
+  });
+
+  it('uses the verified Frontend evidence order', () => {
+    expect(
+      getProjects('en', 'frontend')
+        .slice(0, 5)
+        .map(({ slug }) => slug),
+    ).toEqual([
+      'bitrix24-integrations',
+      'shortsport-ai-forge',
+      'neurosport',
+      'neuralgrid-international',
+      'energo-ai',
+    ]);
+  });
+
+  it('keeps private provenance hidden behind demo-only links', () => {
+    for (const slug of ['neurosport', 'neuralgrid-international', 'energo-ai']) {
+      const project = getProject(slug, 'en')!;
+      expect(project.source?.visibility).toBe('private');
+      expect(project.links).toHaveLength(1);
+      expect(project.links[0]?.kind).toBe('demo');
+      expect(project.links[0]?.href).not.toContain('github.com');
+    }
+  });
+
+  it('keeps RU and EN priorities, provenance, and evidence coverage equivalent', () => {
+    for (const slug of [
+      'shortsport-ai-forge',
+      'neurosport',
+      'neuralgrid-international',
+      'energo-ai',
+    ]) {
+      const english = getProject(slug, 'en')!;
+      const russian = getProject(slug, 'ru')!;
+      expect(russian.priority).toEqual(english.priority);
+      expect(russian.source).toEqual(english.source);
+      expect(russian.capabilities?.length).toBe(english.capabilities?.length);
+      expect(russian.architecture?.length).toBe(english.architecture?.length);
+      expect(russian.verification?.length).toBe(english.verification?.length);
+    }
   });
 });

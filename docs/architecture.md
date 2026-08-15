@@ -37,7 +37,13 @@ The current build already validates localized profile and project frontmatter wi
 `npm run content:build`, then generates the typed client dataset in `src/generated/content.json`.
 Every project must have matching RU and EN documents before it is publishable.
 
-Project evidence can pin a public repository, commit SHA, and verification date in source metadata.
+Profiles contain role-specific positioning and skill groups. Projects carry independent AI and
+Frontend priorities, so a shared case can move between lenses without duplicating pages or relying
+on the broad `featured` flag.
+
+Project evidence can pin a repository, commit SHA, verification date, and source visibility in
+metadata. Private/local provenance is never rendered; it exists for review and future RAG. Demo
+links remain public independently from source visibility.
 This provenance is retained for future RAG citations but is not automatically rendered as a public
 link. Product status describes the verified implementation boundary: for example, a production UI
 must not imply that its public snapshot contains a connected production API.

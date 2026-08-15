@@ -24,3 +24,17 @@ it('renders the Local AI Assistant video and evidence without exposing provenanc
   );
   expect(screen.queryByText(project.source!.commit)).not.toBeInTheDocument();
 });
+
+it('renders a poster and demo while keeping private source provenance hidden', () => {
+  const project = getProject('neurosport', 'en')!;
+
+  render(<ProjectEvidence project={project} />);
+
+  expect(document.querySelector('img')).toHaveAttribute('src', '/media/neurosport.webp');
+  expect(screen.getByRole('link', { name: 'Live demo' })).toHaveAttribute(
+    'href',
+    'https://dev.neurosport.pages.dev/',
+  );
+  expect(screen.queryByRole('link', { name: 'GitHub' })).not.toBeInTheDocument();
+  expect(screen.queryByText(project.source!.commit)).not.toBeInTheDocument();
+});
