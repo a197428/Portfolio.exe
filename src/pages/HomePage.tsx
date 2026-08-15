@@ -1,4 +1,4 @@
-import { animate, stagger } from 'animejs';
+import { animate, onScroll, splitText, stagger } from 'animejs';
 import {
   ArrowDownRight,
   ArrowUpRight,
@@ -26,6 +26,7 @@ export function HomePage() {
   const locale = usePreferences((state) => state.locale);
   const profile = getProfile(locale);
   const roleProfile = profile.roleProfiles[role];
+  const headlineText = t(`roles.${role}.headline`);
   const projects = getProjects(locale, role);
   const featured = projects.find((project) => project.slug === 'bitrix24-integrations')!;
   const localAi = projects.find((project) => project.slug === 'local-ai-assistant');
@@ -44,7 +45,67 @@ export function HomePage() {
       delay: stagger(75),
       ease: 'out(4)',
     });
-  }, [role, locale]);
+
+    const headline = root.current?.querySelector<HTMLElement>('[data-hero-title]');
+    const split = headline
+      ? splitText(headline, {
+          accessible: true,
+          words: { wrap: 'clip', class: 'hero-split-word' },
+        })
+      : null;
+
+    split?.addEffect(({ words }) =>
+      animate(words, {
+        opacity: [0, 1],
+        y: ['108%', '0%'],
+        filter: ['blur(6px)', 'blur(0px)'],
+        duration: 800,
+        delay: stagger(55),
+        ease: 'out(4)',
+      }),
+    );
+
+    const cards = root.current?.querySelectorAll<HTMLElement>(
+      '.featured-case, .bento-project',
+    );
+
+    cards?.forEach((card) => {
+      const scrollSettings = {
+        target: card,
+        enter: 'bottom top',
+        leave: 'top bottom',
+        sync: 0.24,
+      } as const;
+
+      animate(card, {
+        filter: [
+          'brightness(.92) saturate(.92)',
+          'brightness(1.055) saturate(1.08)',
+          'brightness(.97) saturate(.97)',
+        ],
+        boxShadow: [
+          '0 20px 60px rgb(0 0 0 / 18%)',
+          '0 34px 90px rgb(128 255 176 / 16%)',
+          '0 20px 60px rgb(0 0 0 / 18%)',
+        ],
+        ease: 'linear',
+        autoplay: onScroll(scrollSettings),
+      });
+
+      const poster = card.querySelector<HTMLImageElement>('img');
+      if (!poster) return;
+
+      animate(poster, {
+        objectPosition: card.classList.contains('bento-project')
+          ? ['50% 0%', '50% 18%']
+          : ['50% 42%', '50% 58%'],
+        ease: 'linear',
+        autoplay: onScroll(scrollSettings),
+      });
+    });
+
+    return () => split?.revert();
+  }, [role, locale, headlineText]);
 
   return (
     <Shell>
@@ -60,7 +121,9 @@ export function HomePage() {
             <p className="hero-name" data-reveal>
               {profile.name} / {roleProfile.title}
             </p>
-            <h1 data-reveal>{t(`roles.${role}.headline`)}</h1>
+            <h1 data-hero-title key={headlineText}>
+              {headlineText}
+            </h1>
             <p className="hero-lead" data-reveal>
               {roleProfile.summary}
             </p>

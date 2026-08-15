@@ -4,7 +4,7 @@ import { useReducedMotion } from '@/hooks/useReducedMotion';
 
 export function useAnimeScope<T extends HTMLElement>(
   root: RefObject<T | null>,
-  setup: (scope: Scope) => void,
+  setup: (scope: Scope) => void | (() => void),
   dependencies: ReadonlyArray<unknown> = [],
 ) {
   const scope = useRef<Scope | null>(null);
