@@ -6,6 +6,7 @@ eyebrow: AI SaaS · YouTube summaries
 status: active
 roles: [ai, frontend]
 featured: false
+priority: { ai: 20, frontend: 20 }
 summary: SaaS генерирует структурированные текстовые саммари YouTube-видео с кредитами, аутентификацией и кэшированием.
 task: Превратить длинное видео в быстро читаемую главную мысль, тезисы и вывод.
 contribution:

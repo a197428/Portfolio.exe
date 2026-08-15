@@ -6,6 +6,7 @@ eyebrow: AI SaaS · YouTube summaries
 status: active
 roles: [ai, frontend]
 featured: false
+priority: { ai: 20, frontend: 20 }
 summary: A SaaS product creates structured YouTube summaries with credits, authentication, and caching.
 task: Turn long videos into a quickly readable main idea, key points, and conclusion.
 contribution:

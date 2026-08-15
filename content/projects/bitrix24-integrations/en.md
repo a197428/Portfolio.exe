@@ -6,6 +6,7 @@ eyebrow: SatelAB · three production applications
 status: production
 roles: [ai, frontend]
 featured: true
+priority: { ai: 100, frontend: 100 }
 summary: A three-product suite for acquiring, property operations, and smart locks, modernized with Vue 3 and TypeScript.
 task: Replace legacy interfaces with a modern stack and prepare resilient integration applications running inside Bitrix24.
 contribution:

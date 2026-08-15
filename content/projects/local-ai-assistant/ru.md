@@ -6,6 +6,7 @@ eyebrow: Chrome Extension · контекстный AI-агент
 status: active
 roles: [ai]
 featured: true
+priority: { ai: 90, frontend: 0 }
 summary: Браузерный AI-помощник использует контекст активной страницы, ведёт диалог в Side Panel и подключает web-поиск, когда данных страницы недостаточно.
 task: Создать локально управляемого AI-агента рядом с просматриваемым контентом — без переключения вкладок и перекрытия страницы.
 contribution:
@@ -43,7 +44,15 @@ source:
   repository: https://github.com/a197428/local-ai-assistant-extension
   commit: 3e76a56162d9d56c3f22014c4c786de1a2d7a8f5
   verifiedAt: '2026-08-15'
-links: [{ label: GitHub, href: https://github.com/a197428/local-ai-assistant-extension }]
+  visibility: public
+links:
+  [
+    {
+      label: GitHub,
+      href: https://github.com/a197428/local-ai-assistant-extension,
+      kind: source,
+    },
+  ]
 media:
   poster: /media/local-ai-assistant-poster.webp
   video: /media/local-ai-assistant.mp4

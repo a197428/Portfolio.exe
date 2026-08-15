@@ -6,6 +6,18 @@
       "location": "Volgograd, Russia",
       "title": "AI Application Developer · Full-stack + LLM integrations",
       "summary": "I build AI applications, agent systems, and integration products across interfaces, APIs, edge infrastructure, and production verification.",
+      "roleProfiles": {
+        "ai": {
+          "title": "AI Developer",
+          "summary": "I build AI applications and integration products across interfaces, API contracts, LLM tooling, and edge infrastructure.",
+          "skills": ["Python", "FastAPI", "LangGraph", "TypeScript", "Cloudflare"]
+        },
+        "frontend": {
+          "title": "Frontend Developer",
+          "summary": "I build product interfaces with Vue 3 and TypeScript, combining design systems, complex state, API integrations, testing, and responsive UX.",
+          "skills": ["Vue 3", "TypeScript", "Pinia", "Tailwind CSS", "Testing"]
+        }
+      },
       "experience": [
         "SatelAB — Frontend Developer, since December 2025",
         "Freelance — Full-stack Developer, since March 2026"
@@ -24,6 +36,18 @@
       "location": "Волгоград",
       "title": "AI Application Developer · Fullstack + LLM-интеграции",
       "summary": "Разрабатываю AI-приложения, агентные системы и интеграционные продукты — от интерфейса и API до edge-инфраструктуры и production-проверок.",
+      "roleProfiles": {
+        "ai": {
+          "title": "AI Developer",
+          "summary": "Разрабатываю AI-приложения и интеграционные продукты — от интерфейса и API-контрактов до LLM-инструментов и edge-инфраструктуры.",
+          "skills": ["Python", "FastAPI", "LangGraph", "TypeScript", "Cloudflare"]
+        },
+        "frontend": {
+          "title": "Frontend Developer",
+          "summary": "Создаю продуктовые интерфейсы на Vue 3 и TypeScript, соединяя дизайн-системы, сложные состояния, API-интеграции, тестирование и адаптивный UX.",
+          "skills": ["Vue 3", "TypeScript", "Pinia", "Tailwind CSS", "Testing"]
+        }
+      },
       "experience": [
         "SatelAB — Frontend-разработчик, с декабря 2025",
         "Фриланс — Fullstack Developer, с марта 2026"
@@ -46,6 +70,7 @@
       "status": "production",
       "roles": ["ai", "frontend"],
       "featured": true,
+      "priority": { "ai": 100, "frontend": 100 },
       "summary": "A three-product suite for acquiring, property operations, and smart locks, modernized with Vue 3 and TypeScript.",
       "task": "Replace legacy interfaces with a modern stack and prepare resilient integration applications running inside Bitrix24.",
       "contribution": [
@@ -105,7 +130,8 @@
           "source": {
             "repository": "https://github.com/a197428/acquiring_frontend",
             "commit": "fb1e7824c368c605af504aec994f65c7679fc836",
-            "verifiedAt": "2026-08-15"
+            "verifiedAt": "2026-08-15",
+            "visibility": "private"
           }
         },
         {
@@ -146,7 +172,8 @@
           "source": {
             "repository": "https://github.com/a197428/apartsharing-b24_front",
             "commit": "04c33c1f9d615abb9c341fd788bfb4b2715b6544",
-            "verifiedAt": "2026-08-15"
+            "verifiedAt": "2026-08-15",
+            "visibility": "private"
           }
         },
         {
@@ -187,7 +214,8 @@
           "source": {
             "repository": "https://github.com/a197428/TTLock_Connector_Frontend",
             "commit": "9b8a91ad48c9ebf7540180ea1b941f5843b4714d",
-            "verifiedAt": "2026-08-15"
+            "verifiedAt": "2026-08-15",
+            "visibility": "private"
           }
         }
       ],
@@ -201,6 +229,7 @@
       "status": "production",
       "roles": ["ai", "frontend"],
       "featured": true,
+      "priority": { "ai": 100, "frontend": 100 },
       "summary": "Единая система из трёх встроенных приложений для эквайринга, недвижимости и умных замков, модернизированная на Vue 3 и TypeScript.",
       "task": "Перевести legacy-интерфейсы на современный стек и подготовить устойчивые интеграционные приложения для работы внутри Bitrix24.",
       "contribution": [
@@ -260,7 +289,8 @@
           "source": {
             "repository": "https://github.com/a197428/acquiring_frontend",
             "commit": "fb1e7824c368c605af504aec994f65c7679fc836",
-            "verifiedAt": "2026-08-15"
+            "verifiedAt": "2026-08-15",
+            "visibility": "private"
           }
         },
         {
@@ -301,7 +331,8 @@
           "source": {
             "repository": "https://github.com/a197428/apartsharing-b24_front",
             "commit": "04c33c1f9d615abb9c341fd788bfb4b2715b6544",
-            "verifiedAt": "2026-08-15"
+            "verifiedAt": "2026-08-15",
+            "visibility": "private"
           }
         },
         {
@@ -342,11 +373,122 @@
           "source": {
             "repository": "https://github.com/a197428/TTLock_Connector_Frontend",
             "commit": "9b8a91ad48c9ebf7540180ea1b941f5843b4714d",
-            "verifiedAt": "2026-08-15"
+            "verifiedAt": "2026-08-15",
+            "visibility": "private"
           }
         }
       ],
       "body": "## Evidence dossier\n\n### Acquiring\n\nПроверенный снимок содержит контракты получения срока подписки, обработчиков и роботов, а также установки и удаления обработчиков и роботов. Контекст Bitrix24 читается через SDK, URL-параметры или dev-конфигурацию; production не использует env fallback.\n\n### ApartSharing\n\nПроверенный снимок охватывает аккаунты, квартиры, CRM-поля, источники и настройки синхронизации. Интеграционный слой нормализует неоднородные ответы, дедуплицирует часть GET-запросов и защищает интерфейс от устаревших асинхронных результатов.\n\n### TTLock\n\nПроверенный снимок подтверждает Production UI настроек и тарифов, работу со списками замков и 11 component-тестов. Данные в публичной версии локальные; подключение к реальному TTLock API этим источником не подтверждается."
+    },
+    {
+      "slug": "energo-ai",
+      "locale": "en",
+      "title": "EnergoAI",
+      "eyebrow": "Vue product site · energy intelligence",
+      "status": "active",
+      "roles": ["frontend"],
+      "featured": true,
+      "priority": { "ai": 0, "frontend": 60 },
+      "summary": "A bilingual Vue interface for an energy AI product, built around a Tailwind v4 design system, SVG infrastructure, and an interactive model catalog.",
+      "task": "Present a complex energy platform through clear structure, expressive visualization, and responsive product journeys.",
+      "contribution": [
+        "Built the section architecture and typed RU/EN content layer",
+        "Implemented the SVG neural sphere and infrastructure diagram",
+        "Developed the solution accordion, model carousel, and responsive navigation"
+      ],
+      "decisions": [
+        "Keep localized content separate from visual components",
+        "Build complex illustrations as controllable SVG rather than raster assets",
+        "Respect reduced motion and clean up effects on unmount"
+      ],
+      "capabilities": [
+        "Bilingual routing with equivalent product pages",
+        "Interactive diagrams, accordion, and model carousel",
+        "Responsive UI with scrollspy and keyboard navigation"
+      ],
+      "architecture": [
+        "Vue Router owns locale-aware routes",
+        "Composables encapsulate i18n, scrollspy, and user preferences",
+        "Tailwind v4 tokens provide a unified design system"
+      ],
+      "verification": [
+        "Full verification passes typecheck, lint, formatting, and production build",
+        "16 unit tests and 15 Playwright scenarios pass at the pinned commit",
+        "A public deployment is available as a live demo"
+      ],
+      "stack": ["Vue 3", "TypeScript", "Tailwind CSS v4", "Vue Router", "SVG", "Vitest"],
+      "outcome": "The product site turns a technically complex subject into a coherent bilingual and responsive experience.",
+      "roleFocus": {
+        "ai": "Product copy explains AI capabilities without replacing the verifiable UI implementation with unsupported technical claims.",
+        "frontend": "Built the Vue composition, typed content layer, SVG visualization, interactive sections, and complete test pipeline."
+      },
+      "links": [
+        { "label": "Live demo", "href": "https://energoai.pages.dev/", "kind": "demo" }
+      ],
+      "source": {
+        "repository": "https://github.com/a197428/EnergoAI",
+        "commit": "2fe165e50e1354180c094b8a08ce86a755dc4506",
+        "verifiedAt": "2026-08-15",
+        "visibility": "private"
+      },
+      "media": { "poster": "/media/energo-ai.webp" },
+      "chapters": [],
+      "body": "## Verified context\n\nThe local repository was used to verify architecture and tests. Only the live demo is exposed in the public interface."
+    },
+    {
+      "slug": "energo-ai",
+      "locale": "ru",
+      "title": "EnergoAI",
+      "eyebrow": "Vue product site · energy intelligence",
+      "status": "active",
+      "roles": ["frontend"],
+      "featured": true,
+      "priority": { "ai": 0, "frontend": 60 },
+      "summary": "Двуязычный Vue-интерфейс энергетического AI-продукта с Tailwind v4 дизайн-системой, SVG-инфраструктурой и интерактивным каталогом моделей.",
+      "task": "Представить сложную энергетическую платформу через ясную структуру, выразительную визуализацию и адаптивные продуктовые сценарии.",
+      "contribution": [
+        "Собрал секционную архитектуру и типизированный RU/EN content layer",
+        "Реализовал SVG neural sphere и схему инфраструктуры",
+        "Разработал accordion решений, model carousel и responsive navigation"
+      ],
+      "decisions": [
+        "Хранить локализованный контент отдельно от визуальных компонентов",
+        "Строить сложные иллюстрации как управляемый SVG, а не растровый asset",
+        "Уважать reduced motion и очищать эффекты при размонтировании"
+      ],
+      "capabilities": [
+        "Двуязычная маршрутизация и согласованные продуктовые страницы",
+        "Интерактивные схемы, accordion и карусель моделей",
+        "Адаптивный интерфейс с scrollspy и клавиатурной навигацией"
+      ],
+      "architecture": [
+        "Vue Router управляет locale-маршрутами",
+        "Composables инкапсулируют i18n, scrollspy и пользовательские предпочтения",
+        "Tailwind v4 tokens формируют единую дизайн-систему"
+      ],
+      "verification": [
+        "Полный verify проходит typecheck, lint, format и production build",
+        "16 unit-тестов и 15 Playwright-сценариев проходят на pinned commit",
+        "Публичный deployment доступен как live demo"
+      ],
+      "stack": ["Vue 3", "TypeScript", "Tailwind CSS v4", "Vue Router", "SVG", "Vitest"],
+      "outcome": "Продуктовый сайт превращает технически сложную тему в цельный двуязычный и адаптивный опыт.",
+      "roleFocus": {
+        "ai": "Контент объясняет AI-возможности продукта, не подменяя техническими заявлениями проверяемую UI-реализацию.",
+        "frontend": "Реализовал Vue-композицию, типизированный content layer, SVG-визуализации, интерактивные секции и полный тестовый контур."
+      },
+      "links": [
+        { "label": "Live demo", "href": "https://energoai.pages.dev/", "kind": "demo" }
+      ],
+      "source": {
+        "repository": "https://github.com/a197428/EnergoAI",
+        "commit": "2fe165e50e1354180c094b8a08ce86a755dc4506",
+        "verifiedAt": "2026-08-15",
+        "visibility": "private"
+      },
+      "media": { "poster": "/media/energo-ai.webp" },
+      "chapters": [],
+      "body": "## Доказательный контекст\n\nЛокальный репозиторий использован для проверки архитектуры и тестов. В публичном интерфейсе доступно только живое демо."
     },
     {
       "slug": "liveclasses-agent",
@@ -356,6 +498,7 @@
       "status": "active",
       "roles": ["ai"],
       "featured": false,
+      "priority": { "ai": 0, "frontend": 0 },
       "summary": "An edge service tracks live-stream schedules, filters AI-related topics, and notifies users through Telegram.",
       "task": "Automate monitoring of educational broadcasts and timely alerts.",
       "contribution": [
@@ -395,6 +538,7 @@
       "status": "active",
       "roles": ["ai"],
       "featured": false,
+      "priority": { "ai": 0, "frontend": 0 },
       "summary": "Edge-сервис отслеживает расписание трансляций, фильтрует AI-тематику и уведомляет пользователей в Telegram.",
       "task": "Автоматизировать мониторинг образовательных эфиров и своевременные уведомления.",
       "contribution": [
@@ -433,6 +577,7 @@
       "status": "active",
       "roles": ["ai"],
       "featured": true,
+      "priority": { "ai": 90, "frontend": 0 },
       "summary": "A browser AI assistant uses the active page as context, keeps the conversation in a Side Panel, and invokes web research when the page is not enough.",
       "task": "Build a locally controlled AI agent beside the content being viewed, without tab switching or covering the page.",
       "contribution": [
@@ -483,13 +628,15 @@
       "links": [
         {
           "label": "GitHub",
-          "href": "https://github.com/a197428/local-ai-assistant-extension"
+          "href": "https://github.com/a197428/local-ai-assistant-extension",
+          "kind": "source"
         }
       ],
       "source": {
         "repository": "https://github.com/a197428/local-ai-assistant-extension",
         "commit": "3e76a56162d9d56c3f22014c4c786de1a2d7a8f5",
-        "verifiedAt": "2026-08-15"
+        "verifiedAt": "2026-08-15",
+        "visibility": "public"
       },
       "media": {
         "poster": "/media/local-ai-assistant-poster.webp",
@@ -506,6 +653,7 @@
       "status": "active",
       "roles": ["ai"],
       "featured": true,
+      "priority": { "ai": 90, "frontend": 0 },
       "summary": "Браузерный AI-помощник использует контекст активной страницы, ведёт диалог в Side Panel и подключает web-поиск, когда данных страницы недостаточно.",
       "task": "Создать локально управляемого AI-агента рядом с просматриваемым контентом — без переключения вкладок и перекрытия страницы.",
       "contribution": [
@@ -556,13 +704,15 @@
       "links": [
         {
           "label": "GitHub",
-          "href": "https://github.com/a197428/local-ai-assistant-extension"
+          "href": "https://github.com/a197428/local-ai-assistant-extension",
+          "kind": "source"
         }
       ],
       "source": {
         "repository": "https://github.com/a197428/local-ai-assistant-extension",
         "commit": "3e76a56162d9d56c3f22014c4c786de1a2d7a8f5",
-        "verifiedAt": "2026-08-15"
+        "verifiedAt": "2026-08-15",
+        "visibility": "public"
       },
       "media": {
         "poster": "/media/local-ai-assistant-poster.webp",
@@ -572,6 +722,248 @@
       "body": "## Доказательный контекст\n\nПубличный снимок показывает архитектуру активного прототипа. Он подтверждает реализацию браузерного клиента, локального API, агентного графа и защитных ограничений, но не используется как основание для заявления о production-ready статусе."
     },
     {
+      "slug": "neuralgrid-international",
+      "locale": "en",
+      "title": "NeuralGrid International",
+      "eyebrow": "React design system · interactive canvas",
+      "status": "active",
+      "roles": ["frontend"],
+      "featured": true,
+      "priority": { "ai": 0, "frontend": 70 },
+      "summary": "A bilingual React technology site with a bespoke visual system, interactive Canvas scene, and controlled scroll motion.",
+      "task": "Express a complex technology proposition through a fast, accessible, responsive interface without sacrificing readability.",
+      "contribution": [
+        "Built componentized sections and reusable UI primitives",
+        "Implemented Canvas visualization and lifecycle-aware animation",
+        "Prepared RU/EN content, responsive layouts, and accessibility checks"
+      ],
+      "decisions": [
+        "Isolate Canvas and animation hooks from content components",
+        "Use GSAP for sequences and Lenis for controlled scrolling",
+        "Disable decorative movement under prefers-reduced-motion"
+      ],
+      "capabilities": [
+        "Bilingual routing and complete product sections",
+        "Interactive Canvas scene and scroll reveals",
+        "Responsive navigation and accessible controls"
+      ],
+      "architecture": [
+        "React Router owns locale-aware routes",
+        "Component sections share one design system",
+        "Hooks encapsulate Canvas, GSAP, and animation cleanup"
+      ],
+      "verification": [
+        "The pinned snapshot passes production build and 26 unit tests",
+        "Playwright and accessibility scenarios are present in the repository",
+        "A public deployment is available as a live demo"
+      ],
+      "stack": ["React 19", "TypeScript", "Tailwind CSS", "Canvas", "GSAP", "Lenis"],
+      "outcome": "The visually rich experience remains structured, responsive, bilingual, and keyboard-operable.",
+      "roleFocus": {
+        "ai": "The visual language explains a technology product without unsupported model claims.",
+        "frontend": "Built the React section architecture, design system, Canvas, animation lifecycle, i18n, and accessibility behavior."
+      },
+      "links": [
+        { "label": "Live demo", "href": "https://neuralgrid.pages.dev/", "kind": "demo" }
+      ],
+      "source": {
+        "repository": "https://github.com/a197428/NeuralGrid",
+        "commit": "caa45a33c5af7e9444aa442d50cefa3acb41921f",
+        "verifiedAt": "2026-08-15",
+        "visibility": "private"
+      },
+      "media": { "poster": "/media/neuralgrid-international.webp" },
+      "chapters": [],
+      "body": "## Verified context\n\nThe local commit anchors verified capabilities while the UI exposes only the live demo, not the private source."
+    },
+    {
+      "slug": "neuralgrid-international",
+      "locale": "ru",
+      "title": "NeuralGrid International",
+      "eyebrow": "React design system · interactive canvas",
+      "status": "active",
+      "roles": ["frontend"],
+      "featured": true,
+      "priority": { "ai": 0, "frontend": 70 },
+      "summary": "Двуязычный React-сайт технологической компании с собственной визуальной системой, интерактивным Canvas и управляемой scroll-анимацией.",
+      "task": "Передать сложный технологический образ через быстрый, доступный и адаптивный интерфейс без потери читаемости.",
+      "contribution": [
+        "Собрал компонентные секции и переиспользуемые UI-примитивы",
+        "Реализовал Canvas-визуализацию и lifecycle-aware анимации",
+        "Подготовил RU/EN контент, responsive layout и accessibility-проверки"
+      ],
+      "decisions": [
+        "Изолировать Canvas и animation hooks от контентных компонентов",
+        "Использовать GSAP для последовательностей, Lenis — для контролируемого scroll",
+        "Отключать декоративное движение при prefers-reduced-motion"
+      ],
+      "capabilities": [
+        "Двуязычная маршрутизация и полноценные продуктовые секции",
+        "Интерактивная Canvas-сцена и scroll reveal",
+        "Адаптивная навигация и доступные интерактивные элементы"
+      ],
+      "architecture": [
+        "React Router управляет locale-маршрутами",
+        "Компонентные секции используют общую дизайн-систему",
+        "Хуки инкапсулируют Canvas, GSAP и cleanup анимаций"
+      ],
+      "verification": [
+        "Проверенный снимок проходит production build и 26 unit-тестов",
+        "Репозиторий содержит Playwright и accessibility-сценарии",
+        "Публичная сборка доступна как live demo"
+      ],
+      "stack": ["React 19", "TypeScript", "Tailwind CSS", "Canvas", "GSAP", "Lenis"],
+      "outcome": "Визуально насыщенный интерфейс остаётся структурным, адаптивным, двуязычным и управляемым с клавиатуры.",
+      "roleFocus": {
+        "ai": "Визуальный язык объясняет технологический продукт без неподтверждённых утверждений о моделях.",
+        "frontend": "Реализовал React-архитектуру секций, дизайн-систему, Canvas, анимационный lifecycle, i18n и accessibility."
+      },
+      "links": [
+        { "label": "Live demo", "href": "https://neuralgrid.pages.dev/", "kind": "demo" }
+      ],
+      "source": {
+        "repository": "https://github.com/a197428/NeuralGrid",
+        "commit": "caa45a33c5af7e9444aa442d50cefa3acb41921f",
+        "verifiedAt": "2026-08-15",
+        "visibility": "private"
+      },
+      "media": { "poster": "/media/neuralgrid-international.webp" },
+      "chapters": [],
+      "body": "## Доказательный контекст\n\nЛокальный commit закрепляет проверенные возможности, а интерфейс показывает только доступное live demo — без ссылки на непубличный источник."
+    },
+    {
+      "slug": "neurosport",
+      "locale": "en",
+      "title": "Neurosport",
+      "eyebrow": "Vue platform · realtime sports UX",
+      "status": "mvp",
+      "roles": ["frontend"],
+      "featured": true,
+      "priority": { "ai": 0, "frontend": 80 },
+      "summary": "A multi-route sports platform combining a public prediction game with athlete, recruiter, judge, and admin workspaces.",
+      "task": "Create one coherent interface for distinct roles, live events, predictions, points, and operational workflows.",
+      "contribution": [
+        "Built 30+ routes and role-specific workspaces with Vue Router",
+        "Implemented realtime prediction states, match flows, and result tables",
+        "Connected the i18n client to Worker APIs, D1, and the authentication boundary"
+      ],
+      "decisions": [
+        "Separate the public game from protected operational workspaces",
+        "Centralize API access and player-time synchronization in composables",
+        "Maintain RU/EN parity across routes and interface data"
+      ],
+      "capabilities": [
+        "Public matches, predictions, and scoring",
+        "Athlete, recruiter, judge, and administrator workspaces",
+        "Profiles, transfers, rankings, and responsive navigation"
+      ],
+      "architecture": [
+        "Vue Router and guards separate public and protected journeys",
+        "Composables encapsulate APIs, timing, match state, and authentication",
+        "A Cloudflare Worker and D1 form the typed backend boundary"
+      ],
+      "verification": [
+        "The pinned frontend passes typecheck and production build",
+        "168 frontend unit tests and 221 Worker unit tests pass",
+        "The public MVP is available for interactive review"
+      ],
+      "stack": [
+        "Vue 3",
+        "TypeScript",
+        "Vue Router",
+        "vue-i18n",
+        "Tailwind CSS",
+        "Cloudflare D1"
+      ],
+      "outcome": "The MVP unifies complex role navigation and an event-driven game interface in one responsive product.",
+      "roleFocus": {
+        "ai": "The interface exposes prediction flows and model results without claiming a production-ready AI system.",
+        "frontend": "Designed routes, role workspaces, realtime state, i18n, responsive behavior, and API boundaries."
+      },
+      "links": [
+        {
+          "label": "Live demo",
+          "href": "https://dev.neurosport.pages.dev/",
+          "kind": "demo"
+        }
+      ],
+      "source": {
+        "repository": "https://github.com/a197428/Neurosport",
+        "commit": "bcea64bab9be538ef6d26d3af39a7a32f0db3a7c",
+        "verifiedAt": "2026-08-15",
+        "visibility": "private"
+      },
+      "media": { "poster": "/media/neurosport.webp" },
+      "chapters": [],
+      "body": "## Verified context\n\nThe local snapshot and live demo substantiate the MVP architecture. The commit remains hidden provenance rather than a public repository claim."
+    },
+    {
+      "slug": "neurosport",
+      "locale": "ru",
+      "title": "Neurosport",
+      "eyebrow": "Vue platform · realtime sports UX",
+      "status": "mvp",
+      "roles": ["frontend"],
+      "featured": true,
+      "priority": { "ai": 0, "frontend": 80 },
+      "summary": "Многостраничная спортивная платформа с публичной игрой прогнозов и кабинетами спортсмена, рекрутера, судьи и администратора.",
+      "task": "Собрать связный интерфейс для разных ролей, live-событий, прогнозов, очков и операционных сценариев.",
+      "contribution": [
+        "Реализовал 30+ маршрутов и role-specific кабинеты на Vue Router",
+        "Собрал realtime prediction UI, состояния матчей и таблицы результатов",
+        "Связал i18n-клиент с Worker API, D1 и контуром авторизации"
+      ],
+      "decisions": [
+        "Разделить публичный игровой путь и защищённые рабочие кабинеты",
+        "Централизовать API-доступ и синхронизацию времени игрока",
+        "Сохранять RU/EN parity на уровне маршрутов и данных интерфейса"
+      ],
+      "capabilities": [
+        "Публичные матчи, прогнозы и скоринг",
+        "Кабинеты спортсмена, рекрутера, судьи и администратора",
+        "Профили, трансферы, рейтинги и адаптивная навигация"
+      ],
+      "architecture": [
+        "Vue Router и route guards разделяют публичные и защищённые сценарии",
+        "Composables инкапсулируют API, время, состояния матча и авторизацию",
+        "Cloudflare Worker и D1 предоставляют типизированную backend-границу"
+      ],
+      "verification": [
+        "Пинованный frontend проходит typecheck и production build",
+        "168 frontend unit-тестов и 221 Worker unit-тест проходят",
+        "Публичный MVP доступен для интерактивной проверки"
+      ],
+      "stack": [
+        "Vue 3",
+        "TypeScript",
+        "Vue Router",
+        "vue-i18n",
+        "Tailwind CSS",
+        "Cloudflare D1"
+      ],
+      "outcome": "MVP объединяет сложную ролевую навигацию и событийный игровой интерфейс в одном адаптивном продукте.",
+      "roleFocus": {
+        "ai": "Интерфейс визуализирует prediction workflow и результаты модели без заявления о готовом production AI-контуре.",
+        "frontend": "Спроектировал маршруты, ролевые кабинеты, realtime-состояния, i18n, адаптивность и API-границы."
+      },
+      "links": [
+        {
+          "label": "Live demo",
+          "href": "https://dev.neurosport.pages.dev/",
+          "kind": "demo"
+        }
+      ],
+      "source": {
+        "repository": "https://github.com/a197428/Neurosport",
+        "commit": "bcea64bab9be538ef6d26d3af39a7a32f0db3a7c",
+        "verifiedAt": "2026-08-15",
+        "visibility": "private"
+      },
+      "media": { "poster": "/media/neurosport.webp" },
+      "chapters": [],
+      "body": "## Доказательный контекст\n\nЛокальный снимок и доступное демо подтверждают архитектуру MVP. Commit используется только как provenance и не публикуется в интерфейсе."
+    },
+    {
       "slug": "read-close-bot",
       "locale": "en",
       "title": "Read-Close-Bot",
@@ -579,6 +971,7 @@
       "status": "active",
       "roles": ["ai"],
       "featured": true,
+      "priority": { "ai": 0, "frontend": 0 },
       "summary": "An agent collects technical articles, scores relevance and depth, and delivers the strongest material through Telegram.",
       "task": "Reduce noise across professional sources and produce a useful daily digest.",
       "contribution": [
@@ -598,7 +991,13 @@
         "ai": "Agent processing, scoring, memory, and scheduled automation.",
         "frontend": "Telegram interaction and concise result presentation."
       },
-      "links": [{ "label": "GitHub", "href": "https://github.com/a197428/Read_Cl_Bot" }],
+      "links": [
+        {
+          "label": "GitHub",
+          "href": "https://github.com/a197428/Read_Cl_Bot",
+          "kind": "source"
+        }
+      ],
       "chapters": [],
       "body": ""
     },
@@ -610,6 +1009,7 @@
       "status": "active",
       "roles": ["ai"],
       "featured": true,
+      "priority": { "ai": 0, "frontend": 0 },
       "summary": "Агент собирает технические статьи, оценивает их релевантность и глубину и отправляет лучшие материалы в Telegram.",
       "task": "Сократить шум в профессиональных источниках и формировать полезный ежедневный дайджест.",
       "contribution": [
@@ -628,90 +1028,143 @@
         "ai": "Агентная обработка, scoring, память и автоматизация по расписанию.",
         "frontend": "Telegram-интерфейс и ясное представление результатов."
       },
-      "links": [{ "label": "GitHub", "href": "https://github.com/a197428/Read_Cl_Bot" }],
+      "links": [
+        {
+          "label": "GitHub",
+          "href": "https://github.com/a197428/Read_Cl_Bot",
+          "kind": "source"
+        }
+      ],
       "chapters": [],
       "body": ""
     },
     {
       "slug": "shortsport-ai-forge",
       "locale": "en",
-      "title": "ShortSport-AI-Forge",
-      "eyebrow": "Agent pipeline · sports video",
+      "title": "ShortSport AI Forge",
+      "eyebrow": "Vue SPA · human-in-the-loop video workflow",
       "status": "mvp",
-      "roles": ["ai"],
-      "featured": false,
-      "summary": "An AI-agent pipeline for moment detection, micro-predictions, post-event validation, and short sports video rendering.",
-      "task": "Automate vertical video production from events in real matches.",
+      "roles": ["ai", "frontend"],
+      "featured": true,
+      "priority": { "ai": 45, "frontend": 90 },
+      "summary": "A controlled vertical sports-video interface spanning asset upload, storyboard editing, preview, rendering, and manual approval.",
+      "task": "Bring five-scene preparation, audio, preview, and server rendering into one transparent workflow.",
       "contribution": [
-        "Designed the modular pipeline and coordinator",
-        "Defined validation",
-        "scoring",
-        "rendering",
-        "and QA stages"
+        "Built the Vue SPA and a recoverable Pinia workflow",
+        "Implemented the storyboard editor, browser preview, and approve/reject loop",
+        "Defined Zod data boundaries and connected the UI to Cloudflare APIs"
       ],
       "decisions": [
-        "Specialized agent per stage",
-        "Retry-aware orchestration",
-        "Stateless workers for scale"
+        "Keep final publication decisions with a human reviewer",
+        "Use five fixed scene roles for predictable composition",
+        "Separate fast browser preview from final server rendering"
       ],
-      "stack": [
-        "Python",
-        "LangGraph",
-        "FFmpeg",
-        "Remotion",
-        "Computer Vision",
-        "LLM agents"
+      "capabilities": [
+        "Source image and audio upload for each project",
+        "Copy, timing, and visual editing across five scenes",
+        "Preview, render, approve/reject, and a result library"
       ],
-      "outcome": "An MVP architecture with frame-accurate synchronization of successful predictions and overlays.",
+      "architecture": [
+        "Vue Router separates the sequential workflow stages",
+        "Pinia owns project state and restores persisted sessions defensively",
+        "Zod validates contracts while Workers, R2, and Workflows support delivery"
+      ],
+      "verification": [
+        "The pinned snapshot passes typecheck, lint, and production build",
+        "43 unit tests and 3 Playwright scenarios pass at the verified commit",
+        "A public development deployment is available as an interactive demo"
+      ],
+      "stack": ["Vue 3", "TypeScript", "Pinia", "Zod", "Tailwind CSS", "Cloudflare"],
+      "outcome": "The MVP exposes every production stage while retaining an explicit human approval gate.",
       "roleFocus": {
-        "ai": "Multi-agent pipeline, validation, orchestration, and computer vision integration.",
-        "frontend": "Rendered overlays and vertical-video presentation."
+        "ai": "Designed a verifiable human-in-the-loop flow around AI-assisted content preparation and server rendering.",
+        "frontend": "Built the multi-step Vue UI, Pinia state, storyboard editor, preview/render feedback, and typed API contracts."
       },
       "links": [
-        { "label": "GitHub", "href": "https://github.com/a197428/ShortSport-AI-Forge" }
+        {
+          "label": "Live demo",
+          "href": "https://dev.shortsport-ai-forge.pages.dev/",
+          "kind": "demo"
+        },
+        {
+          "label": "GitHub",
+          "href": "https://github.com/a197428/ShortSport-AI-Forge",
+          "kind": "source"
+        }
       ],
+      "source": {
+        "repository": "https://github.com/a197428/ShortSport-AI-Forge",
+        "commit": "7d5ce1059231bcff89d1917e2fd71c49e4ec8017",
+        "verifiedAt": "2026-08-15",
+        "visibility": "public"
+      },
+      "media": { "poster": "/media/shortsport-ai-forge.webp" },
       "chapters": [],
-      "body": ""
+      "body": "## Verified context\n\nThe public snapshot substantiates the client workflow and Cloudflare delivery path. It is a controlled MVP with manual approval, not a claim of autonomous publishing."
     },
     {
       "slug": "shortsport-ai-forge",
       "locale": "ru",
-      "title": "ShortSport-AI-Forge",
-      "eyebrow": "Agent pipeline · sports video",
+      "title": "ShortSport AI Forge",
+      "eyebrow": "Vue SPA · human-in-the-loop video workflow",
       "status": "mvp",
-      "roles": ["ai"],
-      "featured": false,
-      "summary": "Конвейер AI-агентов для поиска моментов, микро-прогнозов, post-factum валидации и рендера коротких спортивных видео.",
-      "task": "Автоматизировать создание вертикальных роликов на основе событий реальных матчей.",
+      "roles": ["ai", "frontend"],
+      "featured": true,
+      "priority": { "ai": 45, "frontend": 90 },
+      "summary": "Интерфейс управляемого производства вертикальных спортивных роликов — от загрузки материалов и storyboard до preview, рендера и ручного approve/reject.",
+      "task": "Соединить подготовку пяти сцен, аудио, предпросмотр и серверный рендер в одном прозрачном рабочем процессе.",
       "contribution": [
-        "Спроектировал модульный pipeline и coordinator",
-        "Определил validation",
-        "scoring",
-        "rendering и QA stages"
+        "Реализовал Vue SPA и Pinia workflow с восстановлением состояния",
+        "Собрал редактор storyboard, browser preview и цикл approve/reject",
+        "Типизировал границы данных Zod-схемами и связал UI с Cloudflare API"
       ],
       "decisions": [
-        "Специализированный агент на этап",
-        "Retry-aware orchestration",
-        "Stateless workers для масштабирования"
+        "Оставить окончательное решение за человеком вместо автоматической публикации",
+        "Использовать фиксированные роли пяти сцен для предсказуемого монтажа",
+        "Разделить быстрый browser preview и финальный серверный render"
       ],
-      "stack": [
-        "Python",
-        "LangGraph",
-        "FFmpeg",
-        "Remotion",
-        "Computer Vision",
-        "LLM agents"
+      "capabilities": [
+        "Загрузка исходных изображений и аудио для проекта",
+        "Редактирование текста, таймингов и визуальных параметров пяти сцен",
+        "Preview, render, approve/reject и библиотека готовых результатов"
       ],
-      "outcome": "Архитектура MVP с frame-accurate синхронизацией успешных прогнозов и оверлеев.",
+      "architecture": [
+        "Vue Router разделяет последовательные стадии пользовательского workflow",
+        "Pinia хранит проект и безопасно восстанавливает сохранённое состояние",
+        "Zod валидирует контракты, Cloudflare Workers/R2/Workflows обслуживают delivery"
+      ],
+      "verification": [
+        "Зафиксированный снимок проходит typecheck, lint и production build",
+        "43 unit-теста и 3 Playwright-сценария проходят на проверенном commit",
+        "Публичная dev-сборка доступна как интерактивное демо"
+      ],
+      "stack": ["Vue 3", "TypeScript", "Pinia", "Zod", "Tailwind CSS", "Cloudflare"],
+      "outcome": "Цельный MVP делает каждый этап производства видимым и управляемым, сохраняя ручной контроль перед публикацией.",
       "roleFocus": {
-        "ai": "Multi-agent pipeline, validation, orchestration, and computer vision integration.",
-        "frontend": "Rendered overlays and vertical-video presentation."
+        "ai": "Спроектировал проверяемый human-in-the-loop контур вокруг AI-assisted подготовки контента и серверного рендера.",
+        "frontend": "Реализовал многошаговый Vue-интерфейс, Pinia-состояние, storyboard editor, preview/render feedback и типизированные API-контракты."
       },
       "links": [
-        { "label": "GitHub", "href": "https://github.com/a197428/ShortSport-AI-Forge" }
+        {
+          "label": "Live demo",
+          "href": "https://dev.shortsport-ai-forge.pages.dev/",
+          "kind": "demo"
+        },
+        {
+          "label": "GitHub",
+          "href": "https://github.com/a197428/ShortSport-AI-Forge",
+          "kind": "source"
+        }
       ],
+      "source": {
+        "repository": "https://github.com/a197428/ShortSport-AI-Forge",
+        "commit": "7d5ce1059231bcff89d1917e2fd71c49e4ec8017",
+        "verifiedAt": "2026-08-15",
+        "visibility": "public"
+      },
+      "media": { "poster": "/media/shortsport-ai-forge.webp" },
       "chapters": [],
-      "body": ""
+      "body": "## Проверенный контекст\n\nПубличный снимок подтверждает клиентский workflow и Cloudflare-контур. Это управляемый MVP с ручным подтверждением результата, а не заявление об автономной публикации."
     },
     {
       "slug": "todo-app",
@@ -721,6 +1174,7 @@
       "status": "active",
       "roles": ["frontend"],
       "featured": false,
+      "priority": { "ai": 0, "frontend": 30 },
       "summary": "A task-management application with role-based access, CRUD, search, filtering, sorting, and pagination.",
       "task": "Build a complete testable frontend for different user roles and task states.",
       "contribution": [
@@ -761,6 +1215,7 @@
       "status": "active",
       "roles": ["frontend"],
       "featured": false,
+      "priority": { "ai": 0, "frontend": 30 },
       "summary": "Приложение управления задачами с ролевым доступом, CRUD, поиском, фильтрацией, сортировкой и пагинацией.",
       "task": "Реализовать полноценный тестируемый frontend для разных пользовательских ролей и состояний задач.",
       "contribution": [
@@ -800,6 +1255,7 @@
       "status": "active",
       "roles": ["ai", "frontend"],
       "featured": false,
+      "priority": { "ai": 20, "frontend": 20 },
       "summary": "A SaaS product creates structured YouTube summaries with credits, authentication, and caching.",
       "task": "Turn long videos into a quickly readable main idea, key points, and conclusion.",
       "contribution": [
@@ -842,6 +1298,7 @@
       "status": "active",
       "roles": ["ai", "frontend"],
       "featured": false,
+      "priority": { "ai": 20, "frontend": 20 },
       "summary": "SaaS генерирует структурированные текстовые саммари YouTube-видео с кредитами, аутентификацией и кэшированием.",
       "task": "Превратить длинное видео в быстро читаемую главную мысль, тезисы и вывод.",
       "contribution": [

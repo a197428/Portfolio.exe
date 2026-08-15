@@ -6,6 +6,7 @@ eyebrow: Frontend system · Nuxt 3
 status: active
 roles: [frontend]
 featured: false
+priority: { ai: 0, frontend: 30 }
 summary: A task-management application with role-based access, CRUD, search, filtering, sorting, and pagination.
 task: Build a complete testable frontend for different user roles and task states.
 contribution:

@@ -6,6 +6,7 @@ eyebrow: SatelAB · три production-приложения
 status: production
 roles: [ai, frontend]
 featured: true
+priority: { ai: 100, frontend: 100 }
 summary: Единая система из трёх встроенных приложений для эквайринга, недвижимости и умных замков, модернизированная на Vue 3 и TypeScript.
 task: Перевести legacy-интерфейсы на современный стек и подготовить устойчивые интеграционные приложения для работы внутри Bitrix24.
 contribution:

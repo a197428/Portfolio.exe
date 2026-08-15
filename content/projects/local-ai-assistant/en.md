@@ -6,6 +6,7 @@ eyebrow: Chrome Extension · contextual AI agent
 status: active
 roles: [ai]
 featured: true
+priority: { ai: 90, frontend: 0 }
 summary: A browser AI assistant uses the active page as context, keeps the conversation in a Side Panel, and invokes web research when the page is not enough.
 task: Build a locally controlled AI agent beside the content being viewed, without tab switching or covering the page.
 contribution:
@@ -43,7 +44,15 @@ source:
   repository: https://github.com/a197428/local-ai-assistant-extension
   commit: 3e76a56162d9d56c3f22014c4c786de1a2d7a8f5
   verifiedAt: '2026-08-15'
-links: [{ label: GitHub, href: https://github.com/a197428/local-ai-assistant-extension }]
+  visibility: public
+links:
+  [
+    {
+      label: GitHub,
+      href: https://github.com/a197428/local-ai-assistant-extension,
+      kind: source,
+    },
+  ]
 media:
   poster: /media/local-ai-assistant-poster.webp
   video: /media/local-ai-assistant.mp4
