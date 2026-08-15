@@ -72,5 +72,12 @@ export const ru = {
     outcome: 'Результат',
     contribution: 'Личный вклад',
     decisions: 'Решения',
+    capabilities: 'Возможности продукта',
+    architecture: 'Архитектура',
+    verification: 'Проверенные свидетельства',
+    status: {
+      productionIntegration: 'Production-интеграция',
+      productionUi: 'Production UI',
+    },
   },
 } as const;

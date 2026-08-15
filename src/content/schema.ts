@@ -11,11 +11,21 @@ const linkSchema = z.object({
 const chapterSchema = z.object({
   id: z.string().min(1),
   title: z.string().min(1),
+  status: z.enum(['production-integration', 'production-ui']),
   video: z.string().min(1),
   poster: z.string().min(1),
   task: z.string().min(1),
+  capabilities: z.array(z.string().min(1)).min(1),
+  architecture: z.array(z.string().min(1)).min(1),
   contribution: z.array(z.string().min(1)).min(1),
   decisions: z.array(z.string().min(1)).min(1),
+  verification: z.array(z.string().min(1)).min(1),
+  roleFocus: z.object({ ai: z.string().min(1), frontend: z.string().min(1) }),
+  source: z.object({
+    repository: z.string().url(),
+    commit: z.string().regex(/^[a-f0-9]{40}$/),
+    verifiedAt: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
+  }),
 });
 
 export const projectSchema = z.object({

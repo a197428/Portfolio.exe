@@ -37,6 +37,11 @@ The current build already validates localized profile and project frontmatter wi
 `npm run content:build`, then generates the typed client dataset in `src/generated/content.json`.
 Every project must have matching RU and EN documents before it is publishable.
 
+Project evidence can pin a public repository, commit SHA, and verification date in source metadata.
+This provenance is retained for future RAG citations but is not automatically rendered as a public
+link. Product status describes the verified implementation boundary: for example, a production UI
+must not imply that its public snapshot contains a connected production API.
+
 The planned request path is:
 
 1. Validate the question or vacancy description.

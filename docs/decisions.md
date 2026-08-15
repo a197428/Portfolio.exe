@@ -15,6 +15,7 @@
 | Deferred | Chat retention and analytics                          | Requires a privacy and product-value decision before adding storage.                  |
 | Accepted | Kokonut background, liquid card, bento, and AI prompt | Registry source is adapted in place for React/Vite and the portfolio design system.   |
 | Accepted | Bitrix24 suite is one case with three products        | Preserves the shared industrial context while exposing product-specific decisions.    |
-| Accepted | Public presentation is a Static Asset                 | The complete 720p MP4 is 2.9 MiB and stays well below the 25 MiB file limit.          |
+| Accepted | Product-specific presentations are Static Assets      | Three small MP4 files provide deterministic product navigation below asset limits.    |
+| Accepted | Repository evidence is pinned to a commit             | Provenance keeps future RAG answers traceable without forcing source links into UI.   |
 | Out      | Code generation in MVP                                | Chat and vacancy matching are the primary proof of value.                             |
 | Out      | Public "vibe coding" positioning                      | The portfolio communicates verified engineering work and outcomes only.               |

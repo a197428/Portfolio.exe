@@ -72,5 +72,12 @@ export const en = {
     outcome: 'Outcome',
     contribution: 'Contribution',
     decisions: 'Decisions',
+    capabilities: 'Product scope',
+    architecture: 'Architecture',
+    verification: 'Verified evidence',
+    status: {
+      productionIntegration: 'Production integration',
+      productionUi: 'Production UI',
+    },
   },
 } as const;

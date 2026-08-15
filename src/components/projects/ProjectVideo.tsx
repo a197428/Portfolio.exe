@@ -1,9 +1,11 @@
 import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import type { PortfolioProject } from '@/content/schema';
+import { usePreferences } from '@/features/preferences/store';
 
 export function ProjectVideo({ project }: { project: PortfolioProject }) {
   const { t } = useTranslation();
+  const role = usePreferences((state) => state.role);
   const video = useRef<HTMLVideoElement>(null);
   const [active, setActive] = useState(project.chapters[0]?.id);
   const shouldPlay = useRef(false);
@@ -63,22 +65,62 @@ export function ProjectVideo({ project }: { project: PortfolioProject }) {
           active === chapter.id && (
             <article className="chapter-detail" role="tabpanel" key={chapter.id}>
               <div>
-                <span className="card-eyebrow">{chapter.title}</span>
+                <div className="flex flex-wrap items-center gap-3">
+                  <span className="card-eyebrow">{chapter.title}</span>
+                  <span className="rounded-full border border-[var(--glass-border)] bg-[var(--glass-strong)] px-3 py-1 text-xs text-[var(--accent)]">
+                    {t(
+                      chapter.status === 'production-ui'
+                        ? 'project.status.productionUi'
+                        : 'project.status.productionIntegration',
+                    )}
+                  </span>
+                </div>
                 <h2>{chapter.task}</h2>
+                <p className="mt-6 max-w-xl text-lg leading-relaxed text-[var(--muted)]">
+                  {chapter.roleFocus[role]}
+                </p>
               </div>
-              <div>
-                <h3>{t('project.contribution')}</h3>
-                <ul>
-                  {chapter.contribution.map((item) => (
-                    <li key={item}>{item}</li>
-                  ))}
-                </ul>
-                <h3>{t('project.decisions')}</h3>
-                <ul>
-                  {chapter.decisions.map((item) => (
-                    <li key={item}>{item}</li>
-                  ))}
-                </ul>
+              <div className="grid content-start gap-x-8 lg:grid-cols-2">
+                <section>
+                  <h3>{t('project.capabilities')}</h3>
+                  <ul>
+                    {chapter.capabilities.map((item) => (
+                      <li key={item}>{item}</li>
+                    ))}
+                  </ul>
+                </section>
+                <section>
+                  <h3>{t('project.architecture')}</h3>
+                  <ul>
+                    {chapter.architecture.map((item) => (
+                      <li key={item}>{item}</li>
+                    ))}
+                  </ul>
+                </section>
+                <section>
+                  <h3>{t('project.contribution')}</h3>
+                  <ul>
+                    {chapter.contribution.map((item) => (
+                      <li key={item}>{item}</li>
+                    ))}
+                  </ul>
+                </section>
+                <section>
+                  <h3>{t('project.decisions')}</h3>
+                  <ul>
+                    {chapter.decisions.map((item) => (
+                      <li key={item}>{item}</li>
+                    ))}
+                  </ul>
+                </section>
+                <section className="lg:col-span-2">
+                  <h3>{t('project.verification')}</h3>
+                  <ul>
+                    {chapter.verification.map((item) => (
+                      <li key={item}>{item}</li>
+                    ))}
+                  </ul>
+                </section>
               </div>
             </article>
           ),

@@ -1,8 +1,10 @@
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { ProjectVideo } from '@/components/projects/ProjectVideo';
 import { getProject } from '@/content';
+import { usePreferences } from '@/features/preferences/store';
 
 it('switches to the selected product presentation from the beginning', async () => {
+  usePreferences.setState({ role: 'ai' });
   const project = getProject('bitrix24-integrations', 'en')!;
   const pause = vi
     .spyOn(HTMLMediaElement.prototype, 'pause')
@@ -37,6 +39,21 @@ it('switches to the selected product presentation from the beginning', async () 
   expect(load).toHaveBeenCalled();
   expect(play).toHaveBeenCalled();
   expect(screen.getByRole('tabpanel')).toHaveTextContent('Manage accounts, smart locks');
+  expect(screen.getByRole('tabpanel')).toHaveTextContent('Production UI');
+  expect(screen.getByRole('tabpanel')).toHaveTextContent(
+    'All 11 component tests in the public snapshot pass',
+  );
+  expect(screen.getByRole('tabpanel')).toHaveTextContent(
+    'Designed the Production UI as a verifiable future integration boundary',
+  );
+  expect(screen.queryByRole('link', { name: /github|source/i })).not.toBeInTheDocument();
+
+  usePreferences.getState().setRole('frontend');
+  await waitFor(() =>
+    expect(screen.getByRole('tabpanel')).toHaveTextContent(
+      'Built responsive settings and tariffs',
+    ),
+  );
 
   fireEvent.click(screen.getByRole('tab', { name: /Acquiring & Robots/ }));
   await waitFor(() =>
