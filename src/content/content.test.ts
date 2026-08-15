@@ -1,4 +1,4 @@
-import { content, getProject, getProjects } from '@/content';
+import { content, getProfile, getProject, getProjects } from '@/content';
 import { projectSchema } from '@/content/schema';
 
 describe('portfolio content', () => {
@@ -12,6 +12,11 @@ describe('portfolio content', () => {
           .sort(),
       ).toEqual(['en', 'ru']);
     }
+  });
+
+  it('provides the same published avatar for both profile locales', () => {
+    expect(getProfile('en').avatar).toBe('/image/avatar.jpg');
+    expect(getProfile('ru').avatar).toBe('/image/avatar.jpg');
   });
 
   it('keeps Bitrix24 featured for both role lenses', () => {

@@ -12,6 +12,7 @@ import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { RoleSwitch } from '@/components/controls/RoleSwitch';
 import AIPrompt from '@/components/kokonutui/ai-prompt';
+import { Avatar } from '@/components/avatar';
 import BentoGrid from '@/components/kokonutui/bento-grid';
 import { LiquidGlassCard } from '@/components/kokonutui/liquid-glass-card';
 import { Shell } from '@/components/layout/Shell';
@@ -45,6 +46,7 @@ export function HomePage() {
       <div ref={root}>
         <section className="hero">
           <div className="hero-copy">
+            <Avatar avatar={profile.avatar} name={profile.name} alt="" className="mb-4" />
             <div className="eyebrow" data-reveal>
               <span className="status-dot" />
               {profile.location} · {t('hero.availability')}

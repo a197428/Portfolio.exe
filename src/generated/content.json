@@ -15,6 +15,7 @@
         "telegram": "https://t.me/AVPopoff",
         "github": "https://github.com/a197428"
       },
+      "avatar": "/image/avatar.jpg",
       "body": "Core stack: Python, FastAPI, LangGraph, TypeScript, React, Vue 3, and Cloudflare Workers."
     },
     {
@@ -32,6 +33,7 @@
         "telegram": "https://t.me/AVPopoff",
         "github": "https://github.com/a197428"
       },
+      "avatar": "/image/avatar.jpg",
       "body": "Основной стек: Python, FastAPI, LangGraph, TypeScript, React, Vue 3 и Cloudflare Workers."
     }
   ],

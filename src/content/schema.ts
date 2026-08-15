@@ -61,6 +61,7 @@ export const profileSchema = z.object({
     telegram: z.string().url(),
     github: z.string().url(),
   }),
+  avatar: z.string().min(1).optional(),
   body: z.string().default(''),
 });
 

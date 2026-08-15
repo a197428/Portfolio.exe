@@ -3,6 +3,11 @@ import { expect, test } from '@playwright/test';
 test('loads, switches role, and opens a project', async ({ page }) => {
   await page.goto('/');
   await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
+  const avatar = page.locator('img[src="/image/avatar.jpg"]');
+  await expect(avatar).toBeVisible();
+  await expect
+    .poll(() => avatar.evaluate((image) => image.naturalWidth))
+    .toBeGreaterThan(0);
 
   await page.getByRole('button', { name: 'Frontend Developer' }).click();
   await expect(page.getByText('Engineering the moment a product clicks.')).toBeVisible();
