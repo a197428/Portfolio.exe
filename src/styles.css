@@ -139,6 +139,9 @@ a:focus-visible {
   border-color: rgb(184 255 99 / 45%);
   transform: translateY(-5px);
 }
+.featured-case--reverse {
+  grid-template-columns: 0.95fr 1.05fr;
+}
 .featured-case-copy {
   display: flex;
   flex-direction: column;

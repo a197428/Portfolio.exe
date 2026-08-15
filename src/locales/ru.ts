@@ -31,6 +31,7 @@ export const ru = {
     title: 'Доказательства вместо обещаний.',
     watch: 'Смотреть презентацию',
     posterAlt: 'Интерфейс TTLock Connector из набора приложений Bitrix24',
+    localPosterAlt: 'Интерфейс расширения Local AI Assistant',
   },
   method: {
     kicker: 'Инженерный подход',

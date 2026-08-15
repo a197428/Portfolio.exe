@@ -28,7 +28,11 @@ export function HomePage() {
   const roleProfile = profile.roleProfiles[role];
   const projects = getProjects(locale, role);
   const featured = projects.find((project) => project.slug === 'bitrix24-integrations')!;
-  const otherProjects = projects.filter((project) => project.slug !== featured.slug);
+  const localAi = projects.find((project) => project.slug === 'local-ai-assistant');
+  const otherProjects = projects.filter(
+    (project) => project.slug !== featured.slug && project.slug !== localAi?.slug,
+  );
+  const bentoStartIndex = role === 'ai' ? 3 : 2;
   const root = useRef<HTMLDivElement>(null);
 
   useAnimeScope(root, () => {
@@ -120,7 +124,29 @@ export function HomePage() {
               <span>{t('projects.watch')} · 3 demos</span>
             </div>
           </Link>
-          <BentoGrid projects={otherProjects} />
+          {localAi && (
+            <Link
+              className="featured-case featured-case--reverse glass-panel"
+              to={`/projects/${localAi.slug}`}
+            >
+              <div className="featured-visual">
+                <img src={localAi.media?.poster} alt={t('projects.localPosterAlt')} />
+                <span>{t('projects.watch')} · 1 demo</span>
+              </div>
+              <div className="featured-case-copy">
+                <span className="project-index">002 / {localAi.status}</span>
+                <p className="card-eyebrow">{localAi.eyebrow}</p>
+                <h3>{localAi.title}</h3>
+                <p>{localAi.roleFocus.ai}</p>
+                <div className="tag-row">
+                  {localAi.stack.slice(0, 5).map((item) => (
+                    <span key={item}>{item}</span>
+                  ))}
+                </div>
+              </div>
+            </Link>
+          )}
+          <BentoGrid projects={otherProjects} startIndex={bentoStartIndex} />
         </section>
 
         <section className="method-section" aria-labelledby="method-title">

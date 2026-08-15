@@ -4,7 +4,13 @@ import { motion } from 'motion/react';
 import { Link } from 'react-router-dom';
 import type { PortfolioProject } from '@/content/schema';
 
-export default function BentoGrid({ projects }: { projects: PortfolioProject[] }) {
+export default function BentoGrid({
+  projects,
+  startIndex = 2,
+}: {
+  projects: PortfolioProject[];
+  startIndex?: number;
+}) {
   return (
     <div className="portfolio-bento">
       {projects.map((project, index) => (
@@ -25,7 +31,9 @@ export default function BentoGrid({ projects }: { projects: PortfolioProject[] }
               loading="lazy"
             />
           )}
-          <span className="project-index">{String(index + 2).padStart(3, '0')}</span>
+          <span className="project-index">
+            {String(index + startIndex).padStart(3, '0')}
+          </span>
           <div>
             <p className="card-eyebrow">{project.eyebrow}</p>
             <h3>{project.title}</h3>

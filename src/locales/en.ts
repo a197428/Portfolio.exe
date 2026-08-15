@@ -31,6 +31,7 @@ export const en = {
     title: 'Proof, not promises.',
     watch: 'Watch presentation',
     posterAlt: 'TTLock Connector interface from the Bitrix24 application suite',
+    localPosterAlt: 'Local AI Assistant extension interface',
   },
   method: {
     kicker: 'Engineering approach',
