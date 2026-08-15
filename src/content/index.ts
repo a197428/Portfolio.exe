@@ -11,7 +11,11 @@ export function getProfile(locale: Locale) {
 export function getProjects(locale: Locale, role: Role) {
   return content.projects
     .filter((project) => project.locale === locale && project.roles.includes(role))
-    .sort((left, right) => Number(right.featured) - Number(left.featured));
+    .sort(
+      (left, right) =>
+        right.priority[role] - left.priority[role] ||
+        Number(right.featured) - Number(left.featured),
+    );
 }
 
 export function getProject(slug: string, locale: Locale): PortfolioProject | undefined {

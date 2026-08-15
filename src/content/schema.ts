@@ -6,12 +6,14 @@ export const roleSchema = z.enum(['ai', 'frontend']);
 const linkSchema = z.object({
   label: z.string().min(1),
   href: z.string().url(),
+  kind: z.enum(['demo', 'source']).default('source'),
 });
 
 const sourceSchema = z.object({
   repository: z.string().url(),
   commit: z.string().regex(/^[a-f0-9]{40}$/),
   verifiedAt: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
+  visibility: z.enum(['public', 'private']).default('private'),
 });
 
 const chapterSchema = z.object({
@@ -38,6 +40,10 @@ export const projectSchema = z.object({
   status: z.enum(['production', 'mvp', 'active', 'concept']),
   roles: z.array(roleSchema).min(1),
   featured: z.boolean().default(false),
+  priority: z.object({ ai: z.number().int(), frontend: z.number().int() }).default({
+    ai: 0,
+    frontend: 0,
+  }),
   summary: z.string().min(1),
   task: z.string().min(1),
   contribution: z.array(z.string().min(1)).min(1),
@@ -63,6 +69,18 @@ export const profileSchema = z.object({
   location: z.string().min(1),
   title: z.string().min(1),
   summary: z.string().min(1),
+  roleProfiles: z.object({
+    ai: z.object({
+      title: z.string().min(1),
+      summary: z.string().min(1),
+      skills: z.array(z.string().min(1)).min(1),
+    }),
+    frontend: z.object({
+      title: z.string().min(1),
+      summary: z.string().min(1),
+      skills: z.array(z.string().min(1)).min(1),
+    }),
+  }),
   experience: z.array(z.string().min(1)).min(1),
   contacts: z.object({
     email: z.string().email(),

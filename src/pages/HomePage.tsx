@@ -25,6 +25,7 @@ export function HomePage() {
   const role = usePreferences((state) => state.role);
   const locale = usePreferences((state) => state.locale);
   const profile = getProfile(locale);
+  const roleProfile = profile.roleProfiles[role];
   const projects = getProjects(locale, role);
   const featured = projects.find((project) => project.slug === 'bitrix24-integrations')!;
   const otherProjects = projects.filter((project) => project.slug !== featured.slug);
@@ -53,11 +54,11 @@ export function HomePage() {
             </div>
             <RoleSwitch />
             <p className="hero-name" data-reveal>
-              {profile.name} / {t(`roles.${role}.label`)}
+              {profile.name} / {roleProfile.title}
             </p>
             <h1 data-reveal>{t(`roles.${role}.headline`)}</h1>
             <p className="hero-lead" data-reveal>
-              {role === 'ai' ? profile.summary : t('roles.frontend.description')}
+              {roleProfile.summary}
             </p>
             <div className="hero-actions" data-reveal>
               <a className="primary-action enabled" href="#projects">
@@ -82,7 +83,7 @@ export function HomePage() {
                 <span>{t('proof.role')}</span>
               </article>
               <article>
-                <strong>Production + AI</strong>
+                <strong>{roleProfile.skills.slice(0, 2).join(' + ')}</strong>
                 <span>{t('proof.delivery')}</span>
               </article>
               <article>

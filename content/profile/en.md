@@ -5,6 +5,15 @@ location: Volgograd, Russia
 title: AI Application Developer · Full-stack + LLM integrations
 avatar: /image/avatar.jpg
 summary: I build AI applications, agent systems, and integration products across interfaces, APIs, edge infrastructure, and production verification.
+roleProfiles:
+  ai:
+    title: AI Developer
+    summary: I build AI applications and integration products across interfaces, API contracts, LLM tooling, and edge infrastructure.
+    skills: [Python, FastAPI, LangGraph, TypeScript, Cloudflare]
+  frontend:
+    title: Frontend Developer
+    summary: I build product interfaces with Vue 3 and TypeScript, combining design systems, complex state, API integrations, testing, and responsive UX.
+    skills: [Vue 3, TypeScript, Pinia, Tailwind CSS, Testing]
 experience:
   - SatelAB — Frontend Developer, since December 2025
   - Freelance — Full-stack Developer, since March 2026
