@@ -11,20 +11,30 @@ const evidenceGroups = [
 
 export function ProjectEvidence({ project }: { project: PortfolioProject }) {
   const { t } = useTranslation();
+  const visibleLinks = project.links.filter(
+    (link) => link.kind === 'demo' || project.source?.visibility === 'public',
+  );
 
-  if (!project.media?.video || !project.capabilities || !project.architecture)
-    return null;
+  if (!project.media || !project.capabilities || !project.architecture) return null;
 
   return (
     <section className="grid gap-8" aria-label={t('project.caseStudy')}>
       <div className="overflow-hidden rounded-[2rem] border border-[var(--glass-border)] bg-black/40 p-2 shadow-2xl shadow-black/30">
-        <video
-          className="aspect-[8/5] w-full rounded-[1.55rem] bg-black object-contain"
-          controls
-          preload="metadata"
-          poster={project.media.poster}
-          src={project.media.video}
-        />
+        {project.media.video ? (
+          <video
+            className="aspect-[8/5] w-full rounded-[1.55rem] bg-black object-contain"
+            controls
+            preload="metadata"
+            poster={project.media.poster}
+            src={project.media.video}
+          />
+        ) : (
+          <img
+            className="aspect-[8/5] w-full rounded-[1.55rem] object-cover object-top"
+            src={project.media.poster}
+            alt=""
+          />
+        )}
       </div>
 
       <div className="grid gap-5 md:grid-cols-2">
@@ -70,9 +80,9 @@ export function ProjectEvidence({ project }: { project: PortfolioProject }) {
         </article>
       )}
 
-      {project.links.length > 0 && (
+      {visibleLinks.length > 0 && (
         <div className="flex flex-wrap gap-4">
-          {project.links.map((link) => (
+          {visibleLinks.map((link) => (
             <a
               className="primary-action enabled"
               href={link.href}

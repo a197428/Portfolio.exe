@@ -1,4 +1,4 @@
-import { ArrowLeft, ArrowUpRight } from 'lucide-react';
+import { ArrowLeft } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { Link, useParams } from 'react-router-dom';
 import { Shell } from '@/components/layout/Shell';
@@ -46,7 +46,7 @@ export function ProjectPage() {
             </div>
           </div>
         </header>
-        {project.media?.video ? (
+        {project.media && project.capabilities && project.architecture ? (
           <ProjectEvidence project={project} />
         ) : project.media && project.chapters.length > 0 ? (
           <ProjectVideo project={project} />
@@ -64,19 +64,6 @@ export function ProjectPage() {
           <div>
             <span className="card-eyebrow">{t('project.outcome')}</span>
             <p>{project.outcome}</p>
-            {!project.media?.video &&
-              project.links.map((link) => (
-                <a
-                  className="text-action"
-                  href={link.href}
-                  target="_blank"
-                  rel="noreferrer"
-                  key={link.href}
-                >
-                  {link.label}
-                  <ArrowUpRight size={16} />
-                </a>
-              ))}
           </div>
         </section>
       </article>

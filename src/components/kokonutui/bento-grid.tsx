@@ -17,6 +17,14 @@ export default function BentoGrid({ projects }: { projects: PortfolioProject[] }
           transition={{ duration: 0.55, delay: Math.min(index * 0.06, 0.2) }}
           key={project.slug}
         >
+          {project.media?.poster && (
+            <img
+              className="mb-5 aspect-[16/9] w-full rounded-2xl border border-[var(--glass-border)] object-cover object-top"
+              src={project.media.poster}
+              alt=""
+              loading="lazy"
+            />
+          )}
           <span className="project-index">{String(index + 2).padStart(3, '0')}</span>
           <div>
             <p className="card-eyebrow">{project.eyebrow}</p>
@@ -29,6 +37,16 @@ export default function BentoGrid({ projects }: { projects: PortfolioProject[] }
                 <span key={item}>{item}</span>
               ))}
             </div>
+            {project.links.find((link) => link.kind === 'demo') && (
+              <a
+                className="text-action"
+                href={project.links.find((link) => link.kind === 'demo')!.href}
+                target="_blank"
+                rel="noreferrer"
+              >
+                {project.links.find((link) => link.kind === 'demo')!.label}
+              </a>
+            )}
             <Link to={`/projects/${project.slug}`} aria-label={project.title}>
               <ArrowUpRight />
             </Link>
