@@ -8,6 +8,12 @@ const linkSchema = z.object({
   href: z.string().url(),
 });
 
+const sourceSchema = z.object({
+  repository: z.string().url(),
+  commit: z.string().regex(/^[a-f0-9]{40}$/),
+  verifiedAt: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
+});
+
 const chapterSchema = z.object({
   id: z.string().min(1),
   title: z.string().min(1),
@@ -21,11 +27,7 @@ const chapterSchema = z.object({
   decisions: z.array(z.string().min(1)).min(1),
   verification: z.array(z.string().min(1)).min(1),
   roleFocus: z.object({ ai: z.string().min(1), frontend: z.string().min(1) }),
-  source: z.object({
-    repository: z.string().url(),
-    commit: z.string().regex(/^[a-f0-9]{40}$/),
-    verifiedAt: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
-  }),
+  source: sourceSchema,
 });
 
 export const projectSchema = z.object({
@@ -40,11 +42,17 @@ export const projectSchema = z.object({
   task: z.string().min(1),
   contribution: z.array(z.string().min(1)).min(1),
   decisions: z.array(z.string().min(1)).min(1),
+  capabilities: z.array(z.string().min(1)).min(1).optional(),
+  architecture: z.array(z.string().min(1)).min(1).optional(),
+  verification: z.array(z.string().min(1)).min(1).optional(),
   stack: z.array(z.string().min(1)).min(1),
   outcome: z.string().min(1),
   roleFocus: z.object({ ai: z.string().min(1), frontend: z.string().min(1) }),
   links: z.array(linkSchema).default([]),
-  media: z.object({ poster: z.string().min(1) }).optional(),
+  source: sourceSchema.optional(),
+  media: z
+    .object({ poster: z.string().min(1), video: z.string().min(1).optional() })
+    .optional(),
   chapters: z.array(chapterSchema).default([]),
   body: z.string().default(''),
 });

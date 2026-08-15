@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { Link, useParams } from 'react-router-dom';
 import { Shell } from '@/components/layout/Shell';
 import { ProjectVideo } from '@/components/projects/ProjectVideo';
+import { ProjectEvidence } from '@/components/projects/ProjectEvidence';
 import { getProject } from '@/content';
 import { usePreferences } from '@/features/preferences/store';
 
@@ -45,7 +46,9 @@ export function ProjectPage() {
             </div>
           </div>
         </header>
-        {project.media && project.chapters.length > 0 ? (
+        {project.media?.video ? (
+          <ProjectEvidence project={project} />
+        ) : project.media && project.chapters.length > 0 ? (
           <ProjectVideo project={project} />
         ) : (
           <div className="generic-case glass-panel">
@@ -61,18 +64,19 @@ export function ProjectPage() {
           <div>
             <span className="card-eyebrow">{t('project.outcome')}</span>
             <p>{project.outcome}</p>
-            {project.links.map((link) => (
-              <a
-                className="text-action"
-                href={link.href}
-                target="_blank"
-                rel="noreferrer"
-                key={link.href}
-              >
-                {link.label}
-                <ArrowUpRight size={16} />
-              </a>
-            ))}
+            {!project.media?.video &&
+              project.links.map((link) => (
+                <a
+                  className="text-action"
+                  href={link.href}
+                  target="_blank"
+                  rel="noreferrer"
+                  key={link.href}
+                >
+                  {link.label}
+                  <ArrowUpRight size={16} />
+                </a>
+              ))}
           </div>
         </section>
       </article>

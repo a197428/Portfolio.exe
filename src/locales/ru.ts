@@ -75,6 +75,7 @@ export const ru = {
     capabilities: 'Возможности продукта',
     architecture: 'Архитектура',
     verification: 'Проверенные свидетельства',
+    evidenceTitle: 'Что можно проверить в реализации',
     status: {
       productionIntegration: 'Production-интеграция',
       productionUi: 'Production UI',

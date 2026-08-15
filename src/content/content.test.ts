@@ -25,6 +25,51 @@ describe('portfolio content', () => {
     expect(getProject('bitrix24-integrations', 'ru')?.chapters).toHaveLength(3);
   });
 
+  it('publishes Local AI Assistant only in the AI lens', () => {
+    const aiProjects = getProjects('en', 'ai');
+    const frontendProjects = getProjects('en', 'frontend');
+    const project = getProject('local-ai-assistant', 'en')!;
+
+    expect(aiProjects.some(({ slug }) => slug === project.slug)).toBe(true);
+    expect(frontendProjects.some(({ slug }) => slug === project.slug)).toBe(false);
+    expect(project.featured).toBe(true);
+    expect(project.roles).toEqual(['ai']);
+  });
+
+  it('pins matching Local AI Assistant evidence and media for both locales', () => {
+    const english = getProject('local-ai-assistant', 'en')!;
+    const russian = getProject('local-ai-assistant', 'ru')!;
+    const expectedSource = {
+      repository: 'https://github.com/a197428/local-ai-assistant-extension',
+      commit: '3e76a56162d9d56c3f22014c4c786de1a2d7a8f5',
+      verifiedAt: '2026-08-15',
+    };
+
+    expect(english.source).toEqual(expectedSource);
+    expect(russian.source).toEqual(expectedSource);
+    expect(english.media).toEqual({
+      poster: '/media/local-ai-assistant-poster.webp',
+      video: '/media/local-ai-assistant.mp4',
+    });
+    expect(russian.media).toEqual(english.media);
+    expect({
+      capabilities: english.capabilities?.length,
+      architecture: english.architecture?.length,
+      verification: english.verification?.length,
+    }).toEqual({
+      capabilities: russian.capabilities?.length,
+      architecture: russian.architecture?.length,
+      verification: russian.verification?.length,
+    });
+  });
+
+  it('rejects malformed project-level provenance', () => {
+    const project = structuredClone(getProject('local-ai-assistant', 'en')!);
+    project.source = { ...project.source!, commit: '3e76a56' };
+
+    expect(projectSchema.safeParse(project).success).toBe(false);
+  });
+
   it('provides an independent video and poster for every Bitrix24 product', () => {
     for (const locale of ['en', 'ru'] as const) {
       const project = getProject('bitrix24-integrations', locale)!;

@@ -75,6 +75,7 @@ export const en = {
     capabilities: 'Product scope',
     architecture: 'Architecture',
     verification: 'Verified evidence',
+    evidenceTitle: 'What the implementation demonstrates',
     status: {
       productionIntegration: 'Production integration',
       productionUi: 'Production UI',

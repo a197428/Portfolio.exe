@@ -59,3 +59,44 @@ test('has no horizontal overflow on the home page', async ({ page }) => {
   );
   expect(overflows).toBe(false);
 });
+
+test('presents Local AI Assistant as a bilingual AI-only evidence case', async ({
+  page,
+}) => {
+  await page.goto('/');
+  const caseLink = page.locator('a[href="/projects/local-ai-assistant"]');
+  await expect(caseLink).toBeVisible();
+
+  await caseLink.click();
+  await expect(page).toHaveURL(/\/projects\/local-ai-assistant$/);
+  await expect(page.getByRole('heading', { name: 'Local AI Assistant' })).toBeVisible();
+  await expect(
+    page.getByText('Contextual answers grounded in the active browser tab'),
+  ).toBeVisible();
+  await expect(page.getByRole('link', { name: 'GitHub' })).toHaveAttribute(
+    'href',
+    'https://github.com/a197428/local-ai-assistant-extension',
+  );
+
+  const video = page.locator('video');
+  await expect(video).toHaveAttribute('src', '/media/local-ai-assistant.mp4');
+  await expect(video).toHaveAttribute('poster', '/media/local-ai-assistant-poster.webp');
+  await expect
+    .poll(() => video.evaluate((element: HTMLVideoElement) => element.videoWidth))
+    .toBe(1280);
+  await expect
+    .poll(() => video.evaluate((element: HTMLVideoElement) => element.duration))
+    .toBeGreaterThan(137);
+
+  await page.getByRole('button', { name: 'RU' }).click();
+  await expect(page.getByText('Ответы по содержимому активной вкладки')).toBeVisible();
+  expect(
+    await page.evaluate(
+      () => document.documentElement.scrollWidth > document.documentElement.clientWidth,
+    ),
+  ).toBe(false);
+
+  await page.getByRole('link', { name: /Вернуться к обзору/ }).click();
+  await page.getByRole('button', { name: 'Frontend-разработчик' }).click();
+  await expect(page.locator('a[href="/projects/local-ai-assistant"]')).toHaveCount(0);
+});
