@@ -32,6 +32,8 @@ export const en = {
     watch: 'Watch presentation',
     posterAlt: 'TTLock Connector interface from the Bitrix24 application suite',
     localPosterAlt: 'Local AI Assistant extension interface',
+    shortSportPosterAlt: 'ShortSport AI Forge storyboard editor interface',
+    liveDemo: 'Live demo',
   },
   method: {
     kicker: 'Engineering approach',

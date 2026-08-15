@@ -30,10 +30,14 @@ export function HomePage() {
   const projects = getProjects(locale, role);
   const featured = projects.find((project) => project.slug === 'bitrix24-integrations')!;
   const localAi = projects.find((project) => project.slug === 'local-ai-assistant');
+  const shortSport = projects.find((project) => project.slug === 'shortsport-ai-forge');
   const otherProjects = projects.filter(
-    (project) => project.slug !== featured.slug && project.slug !== localAi?.slug,
+    (project) =>
+      project.slug !== featured.slug &&
+      project.slug !== localAi?.slug &&
+      project.slug !== shortSport?.slug,
   );
-  const bentoStartIndex = role === 'ai' ? 3 : 2;
+  const bentoStartIndex = role === 'ai' ? 4 : 3;
   const root = useRef<HTMLDivElement>(null);
 
   useAnimeScope(root, () => {
@@ -206,6 +210,33 @@ export function HomePage() {
                     <span key={item}>{item}</span>
                   ))}
                 </div>
+              </div>
+            </Link>
+          )}
+          {shortSport && (
+            <Link
+              className="featured-case glass-panel"
+              to={`/projects/${shortSport.slug}`}
+            >
+              <div className="featured-case-copy">
+                <span className="project-index">
+                  {role === 'ai' ? '003' : '002'} / {shortSport.status}
+                </span>
+                <p className="card-eyebrow">{shortSport.eyebrow}</p>
+                <h3>{shortSport.title}</h3>
+                <p>{shortSport.roleFocus[role]}</p>
+                <div className="tag-row">
+                  {shortSport.stack.slice(0, 5).map((item) => (
+                    <span key={item}>{item}</span>
+                  ))}
+                </div>
+              </div>
+              <div className="featured-visual">
+                <img
+                  src={shortSport.media?.poster}
+                  alt={t('projects.shortSportPosterAlt')}
+                />
+                <span>{t('projects.liveDemo')}</span>
               </div>
             </Link>
           )}

@@ -32,6 +32,8 @@ export const ru = {
     watch: 'Смотреть презентацию',
     posterAlt: 'Интерфейс TTLock Connector из набора приложений Bitrix24',
     localPosterAlt: 'Интерфейс расширения Local AI Assistant',
+    shortSportPosterAlt: 'Интерфейс редактора сторибордов ShortSport AI Forge',
+    liveDemo: 'Live demo',
   },
   method: {
     kicker: 'Инженерный подход',

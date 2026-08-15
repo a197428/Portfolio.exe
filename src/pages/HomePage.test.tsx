@@ -47,6 +47,7 @@ function isBefore(first: Element, second: Element) {
 
 const bitrixLinkName = /Industrial Bitrix24 integrations/i;
 const localLinkName = /Local AI Assistant/i;
+const shortSportLinkName = /ShortSport AI Forge/i;
 
 describe('HomePage featured cases', () => {
   it('keeps the Bitrix24 card as the untouched copy→visual featured case', async () => {
@@ -74,7 +75,7 @@ describe('HomePage featured cases', () => {
     expect(bento).not.toBeNull();
     expect(
       within(bento.querySelector('.bento-project') as HTMLElement).getByText((content) =>
-        content.startsWith('003'),
+        content.startsWith('004'),
       ),
     ).toBeInTheDocument();
   });
@@ -117,23 +118,92 @@ describe('HomePage featured cases', () => {
     expect(screen.getAllByRole('link', { name: localLinkName })).toHaveLength(1);
   });
 
-  it('hides the Local card and keeps numbering 002 in the Frontend lens', async () => {
+  it('adds ShortSport as the third featured card in AI lens', async () => {
+    const { container } = await renderHome('en', 'ai');
+
+    const shortSport = screen.getByRole('link', { name: shortSportLinkName });
+    expect(shortSport).toHaveAttribute('href', '/projects/shortsport-ai-forge');
+    expect(shortSport).toHaveClass('featured-case', 'glass-panel');
+    expect(shortSport).not.toHaveClass('featured-case--reverse');
+
+    // DOM order: copy → visual (same as Bitrix24).
+    expect(isBefore(cardCopy(shortSport), cardVisual(shortSport))).toBe(true);
+
+    const copy = cardCopy(shortSport);
+    expect(within(copy).getByText('003 / mvp')).toBeInTheDocument();
+    expect(
+      within(copy).getByText('Vue SPA · human-in-the-loop video workflow'),
+    ).toBeInTheDocument();
+    expect(
+      within(copy).getByText((content) => content.startsWith('Designed a verifiable')),
+    ).toBeInTheDocument();
+    expect(
+      Array.from(copy.querySelectorAll('.tag-row span')).map((el) => el.textContent),
+    ).toEqual(['Vue 3', 'TypeScript', 'Pinia', 'Zod', 'Tailwind CSS']);
+
+    const visual = cardVisual(shortSport);
+    expect(visual.querySelector('img')).toHaveAttribute(
+      'src',
+      '/media/shortsport-ai-forge.webp',
+    );
+    expect(visual.querySelector('img')).toHaveAttribute(
+      'alt',
+      'ShortSport AI Forge storyboard editor interface',
+    );
+    expect(within(visual).getByText('Live demo')).toBeInTheDocument();
+
+    // ShortSport is a featured card, never inside the Bento Grid.
+    const bento = container.querySelector('.portfolio-bento') as HTMLElement;
+    expect(within(bento).queryByText('ShortSport AI Forge')).toBeNull();
+  });
+
+  it('keeps Bitrix and ShortSport featured with continuous numbering in the Frontend lens', async () => {
     const { container } = await renderHome('en', 'frontend');
 
     expect(screen.queryByRole('link', { name: localLinkName })).toBeNull();
 
-    // Bitrix24 remains the sole featured card.
     const bitrix = screen.getByRole('link', { name: bitrixLinkName });
     expect(isBefore(cardCopy(bitrix), cardVisual(bitrix))).toBe(true);
 
-    // With one featured card, the Bento Grid resumes at 002.
+    // ShortSport becomes 002.
+    const shortSport = screen.getByRole('link', { name: shortSportLinkName });
+    expect(within(cardCopy(shortSport)).getByText('002 / mvp')).toBeInTheDocument();
+    expect(
+      within(cardCopy(shortSport)).getByText((content) =>
+        content.startsWith('Built the multi-step'),
+      ),
+    ).toBeInTheDocument();
+
+    // Bento Grid resumes at 003.
     const bento = container.querySelector('.portfolio-bento') as HTMLElement;
     expect(
       within(bento.querySelector('.bento-project') as HTMLElement).getByText((content) =>
-        content.startsWith('002'),
+        content.startsWith('003'),
       ),
     ).toBeInTheDocument();
-    expect(within(bento).queryByText('Local AI Assistant')).toBeNull();
+  });
+
+  it('localizes ShortSport in Russian', async () => {
+    await renderHome('ru', 'ai');
+
+    const shortSport = screen.getByRole('link', { name: shortSportLinkName });
+    const visual = cardVisual(shortSport);
+    expect(visual.querySelector('img')).toHaveAttribute(
+      'alt',
+      'Интерфейс редактора сторибордов ShortSport AI Forge',
+    );
+    expect(within(visual).getByText('Live demo')).toBeInTheDocument();
+
+    const copy = cardCopy(shortSport);
+    expect(within(copy).getByText('003 / mvp')).toBeInTheDocument();
+    expect(
+      within(copy).getByText('Vue SPA · human-in-the-loop video workflow'),
+    ).toBeInTheDocument();
+    expect(
+      within(copy).getByText((content) =>
+        content.startsWith('Спроектировал проверяемый'),
+      ),
+    ).toBeInTheDocument();
   });
 
   it('localizes the mirrored Local card in Russian', async () => {
