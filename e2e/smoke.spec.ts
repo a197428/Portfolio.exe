@@ -85,8 +85,11 @@ test('presents Local AI Assistant as a bilingual AI-only evidence case', async (
     .poll(() => video.evaluate((element: HTMLVideoElement) => element.videoWidth))
     .toBe(1280);
   await expect
+    .poll(() => video.evaluate((element: HTMLVideoElement) => element.videoHeight))
+    .toBe(720);
+  await expect
     .poll(() => video.evaluate((element: HTMLVideoElement) => element.duration))
-    .toBeGreaterThan(137);
+    .toBeGreaterThan(156);
 
   await page.getByRole('button', { name: 'RU' }).click();
   await expect(page.getByText('Ответы по содержимому активной вкладки')).toBeVisible();
