@@ -23,12 +23,12 @@ roleFocus:
   frontend: Vue 3, composables, complex states, forms, tables, filters, pagination, mocks, and unit tests.
 links: []
 media:
-  video: /media/bitrix24-suite.mp4
-  poster: /media/bitrix24-suite-poster.webp
+  poster: /media/bitrix24-acquiring-poster.webp
 chapters:
   - id: acquiring
     title: Acquiring & Robots
-    time: 0
+    video: /media/bitrix24-acquiring.mp4
+    poster: /media/bitrix24-acquiring-poster.webp
     task: Manage bank handlers, subscription state, and automation robots.
     contribution:
       [
@@ -40,14 +40,16 @@ chapters:
       [Strict production mode, development mocks, parallel loading, and explicit errors]
   - id: apartsharing
     title: ApartSharing
-    time: 40
+    video: /media/bitrix24-apartsharing.mp4
+    poster: /media/bitrix24-apartsharing-poster.webp
     task: Synchronize CRM data with a property management platform.
     contribution:
       [Account CRUD, field and source mapping, apartment filters and pagination]
     decisions: [Modular tabs, centralized helpers, local development through mocks]
   - id: ttlock
     title: TTLock Connector
-    time: 150
+    video: /media/bitrix24-ttlock.mp4
+    poster: /media/bitrix24-ttlock-poster.webp
     task: Manage accounts, smart locks, tariffs, and transactions.
     contribution:
       [Multi-account flows, lock filtering, tariff calculation, balance checks]

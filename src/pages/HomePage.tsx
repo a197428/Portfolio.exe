@@ -114,7 +114,7 @@ export function HomePage() {
             </div>
             <div className="featured-visual">
               <img src={featured.media?.poster} alt={t('projects.posterAlt')} />
-              <span>{t('projects.watch')} · 04:33</span>
+              <span>{t('projects.watch')} · 3 demos</span>
             </div>
           </Link>
           <BentoGrid projects={otherProjects} />

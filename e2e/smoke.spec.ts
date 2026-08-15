@@ -14,6 +14,14 @@ test('loads, switches role, and opens a project', async ({ page }) => {
   ).toBeVisible();
   await page.getByRole('tab', { name: /TTLock Connector/ }).click();
   await expect(page.getByRole('tabpanel')).toContainText('Manage accounts, smart locks');
+  await expect(page.locator('video')).toHaveAttribute(
+    'src',
+    '/media/bitrix24-ttlock.mp4',
+  );
+  await expect(page.locator('video')).toHaveAttribute(
+    'poster',
+    '/media/bitrix24-ttlock-poster.webp',
+  );
 });
 
 test('has no horizontal overflow on the home page', async ({ page }) => {

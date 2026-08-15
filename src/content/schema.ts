@@ -11,7 +11,8 @@ const linkSchema = z.object({
 const chapterSchema = z.object({
   id: z.string().min(1),
   title: z.string().min(1),
-  time: z.number().nonnegative(),
+  video: z.string().min(1),
+  poster: z.string().min(1),
   task: z.string().min(1),
   contribution: z.array(z.string().min(1)).min(1),
   decisions: z.array(z.string().min(1)).min(1),
@@ -33,7 +34,7 @@ export const projectSchema = z.object({
   outcome: z.string().min(1),
   roleFocus: z.object({ ai: z.string().min(1), frontend: z.string().min(1) }),
   links: z.array(linkSchema).default([]),
-  media: z.object({ video: z.string().min(1), poster: z.string().min(1) }).optional(),
+  media: z.object({ poster: z.string().min(1) }).optional(),
   chapters: z.array(chapterSchema).default([]),
   body: z.string().default(''),
 });

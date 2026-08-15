@@ -23,12 +23,12 @@ roleFocus:
   frontend: Vue 3, composables, сложные состояния, формы, таблицы, фильтры, пагинация, моки и unit-тесты.
 links: []
 media:
-  video: /media/bitrix24-suite.mp4
-  poster: /media/bitrix24-suite-poster.webp
+  poster: /media/bitrix24-acquiring-poster.webp
 chapters:
   - id: acquiring
     title: Acquiring & Robots
-    time: 0
+    video: /media/bitrix24-acquiring.mp4
+    poster: /media/bitrix24-acquiring-poster.webp
     task: Управление банковскими обработчиками, подпиской и роботами автоматизации.
     contribution:
       [
@@ -40,7 +40,8 @@ chapters:
       [Строгий production-режим, dev mocks, параллельная загрузка данных и явные ошибки]
   - id: apartsharing
     title: ApartSharing
-    time: 40
+    video: /media/bitrix24-apartsharing.mp4
+    poster: /media/bitrix24-apartsharing-poster.webp
     task: Синхронизация CRM с платформой управления недвижимостью.
     contribution:
       [
@@ -51,7 +52,8 @@ chapters:
     decisions: [Модульные вкладки, централизованные helpers, локальная работа через моки]
   - id: ttlock
     title: TTLock Connector
-    time: 150
+    video: /media/bitrix24-ttlock.mp4
+    poster: /media/bitrix24-ttlock-poster.webp
     task: Управление аккаунтами, умными замками, тарифами и транзакциями.
     contribution:
       [Мультиаккаунтность, фильтрация замков, расчёт тарифов, проверки баланса]
