@@ -10,4 +10,5 @@ test-results/
 *.local
 content/video/*.avi
 content/video/*.mp4
+content/audio/*.mp3
 .claude/
