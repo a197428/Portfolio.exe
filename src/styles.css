@@ -142,6 +142,9 @@ a:focus-visible {
 .featured-case--reverse {
   grid-template-columns: 0.95fr 1.05fr;
 }
+.featured-case + .featured-case {
+  margin-top: clamp(1.5rem, 4vw, 3rem);
+}
 .featured-case-copy {
   display: flex;
   flex-direction: column;
