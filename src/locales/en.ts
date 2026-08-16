@@ -33,6 +33,7 @@ export const en = {
     posterAlt: 'TTLock Connector interface from the Bitrix24 application suite',
     localPosterAlt: 'Local AI Assistant extension interface',
     shortSportPosterAlt: 'ShortSport AI Forge storyboard editor interface',
+    videoTranscriberPosterAlt: 'Video Transcriber results dashboard interface',
     liveDemo: 'Live demo',
   },
   method: {

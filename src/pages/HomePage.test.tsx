@@ -48,6 +48,7 @@ function isBefore(first: Element, second: Element) {
 const bitrixLinkName = /Industrial Bitrix24 integrations/i;
 const localLinkName = /Local AI Assistant/i;
 const shortSportLinkName = /ShortSport AI Forge/i;
+const videoTranscriberLinkName = /Video Transcriber/i;
 
 describe('HomePage featured cases', () => {
   it('keeps the Bitrix24 card as the untouched copy→visual featured case', async () => {
@@ -75,7 +76,7 @@ describe('HomePage featured cases', () => {
     expect(bento).not.toBeNull();
     expect(
       within(bento.querySelector('.bento-project') as HTMLElement).getByText((content) =>
-        content.startsWith('004'),
+        content.startsWith('005'),
       ),
     ).toBeInTheDocument();
   });
@@ -157,7 +158,36 @@ describe('HomePage featured cases', () => {
     expect(within(bento).queryByText('ShortSport AI Forge')).toBeNull();
   });
 
-  it('keeps Bitrix and ShortSport featured with continuous numbering in the Frontend lens', async () => {
+  it('adds Video Transcriber as the mirrored fourth featured card in AI lens', async () => {
+    const { container } = await renderHome('en', 'ai');
+    const project = screen.getByRole('link', { name: videoTranscriberLinkName });
+
+    expect(project).toHaveAttribute('href', '/projects/video-sut');
+    expect(project).toHaveClass('featured-case', 'featured-case--reverse', 'glass-panel');
+    expect(isBefore(cardVisual(project), cardCopy(project))).toBe(true);
+
+    const visual = cardVisual(project);
+    expect(visual.querySelector('img')).toHaveAttribute(
+      'src',
+      '/media/video-transcriber-poster.webp',
+    );
+    expect(visual.querySelector('img')).toHaveAttribute(
+      'alt',
+      'Video Transcriber results dashboard interface',
+    );
+    expect(within(visual).getByText('Watch presentation · 1 demo')).toBeInTheDocument();
+
+    const copy = cardCopy(project);
+    expect(within(copy).getByText('004 / mvp')).toBeInTheDocument();
+    expect(within(copy).getByText('Video Transcriber')).toBeInTheDocument();
+    expect(
+      within(container.querySelector('.portfolio-bento') as HTMLElement).queryByText(
+        'Video Transcriber',
+      ),
+    ).toBeNull();
+  });
+
+  it('keeps all shared featured cases continuously numbered in the Frontend lens', async () => {
     const { container } = await renderHome('en', 'frontend');
 
     expect(screen.queryByRole('link', { name: localLinkName })).toBeNull();
@@ -174,11 +204,17 @@ describe('HomePage featured cases', () => {
       ),
     ).toBeInTheDocument();
 
-    // Bento Grid resumes at 003.
+    const videoTranscriber = screen.getByRole('link', {
+      name: videoTranscriberLinkName,
+    });
+    expect(within(cardCopy(videoTranscriber)).getByText('003 / mvp')).toBeInTheDocument();
+    expect(isBefore(cardVisual(videoTranscriber), cardCopy(videoTranscriber))).toBe(true);
+
+    // Bento Grid resumes at 004.
     const bento = container.querySelector('.portfolio-bento') as HTMLElement;
     expect(
       within(bento.querySelector('.bento-project') as HTMLElement).getByText((content) =>
-        content.startsWith('003'),
+        content.startsWith('004'),
       ),
     ).toBeInTheDocument();
   });
@@ -233,5 +269,18 @@ describe('HomePage featured cases', () => {
     const bento = container.querySelector('.portfolio-bento') as HTMLElement;
     expect(within(bento).queryByText('Local AI Assistant')).toBeNull();
     expect(screen.getAllByRole('link', { name: localLinkName })).toHaveLength(1);
+  });
+
+  it('localizes the Video Transcriber presentation action in Russian', async () => {
+    await renderHome('ru', 'ai');
+    const project = screen.getByRole('link', { name: videoTranscriberLinkName });
+
+    expect(
+      within(cardVisual(project)).getByText('Смотреть презентацию · 1 demo'),
+    ).toBeInTheDocument();
+    expect(cardVisual(project).querySelector('img')).toHaveAttribute(
+      'alt',
+      'Интерфейс дашборда результатов Video Transcriber',
+    );
   });
 });

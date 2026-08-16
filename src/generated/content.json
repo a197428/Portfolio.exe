@@ -1250,85 +1250,146 @@
     {
       "slug": "video-sut",
       "locale": "en",
-      "title": "VideoSut",
-      "eyebrow": "AI SaaS · YouTube summaries",
-      "status": "active",
+      "title": "Video Transcriber",
+      "eyebrow": "Frontend prototype · YouTube contextualization",
+      "status": "mvp",
       "roles": ["ai", "frontend"],
-      "featured": false,
-      "priority": { "ai": 20, "frontend": 20 },
-      "summary": "A SaaS product creates structured YouTube summaries with credits, authentication, and caching.",
-      "task": "Turn long videos into a quickly readable main idea, key points, and conclusion.",
+      "featured": true,
+      "priority": { "ai": 40, "frontend": 85 },
+      "summary": "An interactive frontend prototype for a YouTube video transcription and summarization service, demonstrating complex processing states and bento-style dashboard.",
+      "task": "Present a professional AI-assisted workflow for extracting structured knowledge from video content.",
       "contribution": [
-        "Built the full-stack application and AI flow",
-        "Implemented auth",
-        "credits",
-        "cache",
-        "and validation"
+        "Designed the user AI scenario from URL input to structured output",
+        "Built the Next.js/React interface and processing states",
+        "Developed the responsive bento-dashboard and interaction flows",
+        "Defined typed application states and the structured result model"
       ],
       "decisions": [
-        "Unified Next.js App Router",
-        "Redis TTL and rate limiting",
-        "Supabase RLS and API fallbacks"
+        "Focus on high-fidelity frontend states rather than backend complexity for the prototype",
+        "Use explicit processing stages to build user trust during async operations",
+        "Separate input, processing, and result views into focused components",
+        "Present summaries, takeaways, timestamps, and actions in a responsive bento layout"
+      ],
+      "capabilities": [
+        "YouTube URL input and validation",
+        "Example prompt presets for quick testing",
+        "Rich processing states (idle / processing / success / error)",
+        "Five-stage visual processing feedback",
+        "Summary, key points, time-codes, and recommendations output",
+        "Individual block and full result copying",
+        "Deep links to specific YouTube timestamps",
+        "Responsive bento-style results dashboard"
+      ],
+      "architecture": [
+        "Next.js App Router owns the application shell and client entry point",
+        "React 19 local state models idle / processing / success / error transitions",
+        "Typed AppState and VideoResult contracts keep the UI flow explicit",
+        "Tailwind CSS v4 and Radix-based components form the responsive interface",
+        "Dedicated components isolate URL input, progress feedback, examples, and results"
+      ],
+      "verification": [
+        "The pinned source snapshot contains the typed four-state UI flow",
+        "The source renders five simulated processing stages before a structured result",
+        "The presentation demonstrates URL input, processing feedback, and the result dashboard"
       ],
       "stack": [
-        "Next.js",
-        "React",
+        "Next.js 16",
+        "React 19",
         "TypeScript",
-        "Tailwind CSS",
+        "Tailwind CSS v4",
         "shadcn/ui",
-        "Supabase",
-        "Redis",
-        "Gemini",
-        "Zod"
+        "Radix UI",
+        "Vercel Analytics"
       ],
-      "outcome": "An architecture for a monetizable AI service with daily free credits.",
+      "outcome": "A high-fidelity interactive prototype that validates the user experience for a video transcription service.",
       "roleFocus": {
-        "ai": "LLM summarization, validation, caching, fallbacks, and usage controls.",
-        "frontend": "Full-stack React UX, authentication, credits, and structured summary views."
+        "ai": "Designed the user AI journey—from context extraction and stage orchestration to structured output presentation.",
+        "frontend": "Built the Next.js dashboard, processing states, responsive bento layout, typed result model, and interactive components."
       },
       "links": [],
+      "source": {
+        "repository": "https://github.com/a197428/Video_Transcriber",
+        "commit": "18d998f2fe6ea441ccd2aa15dad9dd4b8bc9e5e8",
+        "verifiedAt": "2026-08-16",
+        "visibility": "private"
+      },
+      "media": {
+        "poster": "/media/video-transcriber-poster.webp",
+        "video": "/media/video-transcriber.mp4"
+      },
       "chapters": [],
       "body": ""
     },
     {
       "slug": "video-sut",
       "locale": "ru",
-      "title": "ВидеоСуть",
-      "eyebrow": "AI SaaS · YouTube summaries",
-      "status": "active",
+      "title": "Video Transcriber",
+      "eyebrow": "Frontend prototype · YouTube contextualization",
+      "status": "mvp",
       "roles": ["ai", "frontend"],
-      "featured": false,
-      "priority": { "ai": 20, "frontend": 20 },
-      "summary": "SaaS генерирует структурированные текстовые саммари YouTube-видео с кредитами, аутентификацией и кэшированием.",
-      "task": "Превратить длинное видео в быстро читаемую главную мысль, тезисы и вывод.",
+      "featured": true,
+      "priority": { "ai": 40, "frontend": 85 },
+      "summary": "Интерактивный frontend-прототип сервиса транскрибации и суммаризации YouTube-видео, демонстрирующий сложные состояния обработки и bento-дашборд.",
+      "task": "Представить профессиональный AI-assisted рабочий процесс извлечения структурированных знаний из видеоконтента.",
       "contribution": [
-        "Собрал full-stack приложение и AI flow",
-        "Реализовал auth",
-        "credits",
-        "cache и validation"
+        "Проектирование пользовательского AI-сценария от URL до структурированного результата",
+        "Реализация Next.js/React-интерфейса и состояний обработки",
+        "Разработка адаптивного bento-дашборда и логики взаимодействия",
+        "Определение типизированных состояний приложения и модели результата"
       ],
       "decisions": [
-        "Единый Next.js App Router",
-        "Redis TTL и rate limiting",
-        "Supabase RLS и API fallbacks"
+        "Фокус на высокой точности состояний фронтенда вместо сложности бэкенда для прототипа",
+        "Использование явных стадий обработки для формирования доверия пользователя при асинхронных операциях",
+        "Разделение ввода, обработки и результата на сфокусированные компоненты",
+        "Представление саммари, тезисов, тайм-кодов и действий в адаптивной bento-раскладке"
+      ],
+      "capabilities": [
+        "Ввод и валидация YouTube URL",
+        "Предустановленные примеры запросов для быстрого тестирования",
+        "Насыщенные состояния обработки (idle / processing / success / error)",
+        "Пятиступенчатый визуальный фидбек процесса обработки",
+        "Вывод summary, ключевых тезисов, тайм-кодов и рекомендаций",
+        "Копирование отдельных блоков и всего результата целиком",
+        "Переходы к соответствующим тайм-кодам YouTube",
+        "Адаптивный bento-дашборд результатов"
+      ],
+      "architecture": [
+        "Next.js App Router формирует оболочку приложения и клиентскую точку входа",
+        "Локальное состояние React 19 моделирует переходы idle / processing / success / error",
+        "Типы AppState и VideoResult явно фиксируют контракт интерфейсного сценария",
+        "Tailwind CSS v4 и компоненты на основе Radix формируют адаптивный интерфейс",
+        "Отдельные компоненты изолируют ввод URL, прогресс, примеры и результат"
+      ],
+      "verification": [
+        "Закреплённый снимок исходного кода содержит типизированный сценарий из четырёх состояний",
+        "Исходный код показывает пять имитируемых стадий до вывода структурированного результата",
+        "Презентация демонстрирует ввод URL, обратную связь обработки и дашборд результата"
       ],
       "stack": [
-        "Next.js",
-        "React",
+        "Next.js 16",
+        "React 19",
         "TypeScript",
-        "Tailwind CSS",
+        "Tailwind CSS v4",
         "shadcn/ui",
-        "Supabase",
-        "Redis",
-        "Gemini",
-        "Zod"
+        "Radix UI",
+        "Vercel Analytics"
       ],
-      "outcome": "Архитектура монетизируемого AI-сервиса с ежедневными бесплатными кредитами.",
+      "outcome": "Высокоточный интерактивный прототип, подтверждающий пользовательский опыт сервиса транскрибации видео.",
       "roleFocus": {
-        "ai": "LLM summarization, validation, caching, fallbacks, and usage controls.",
-        "frontend": "Full-stack React UX, authentication, credits, and structured summary views."
+        "ai": "Проектирование пользовательского AI-сценария — от извлечения контекста и оркестрации стадий до представления структурированного результата.",
+        "frontend": "Реализация Next.js дашборда, состояний обработки, адаптивной bento-раскладки, типизированной модели результата и интерактивных компонентов."
       },
       "links": [],
+      "source": {
+        "repository": "https://github.com/a197428/Video_Transcriber",
+        "commit": "18d998f2fe6ea441ccd2aa15dad9dd4b8bc9e5e8",
+        "verifiedAt": "2026-08-16",
+        "visibility": "private"
+      },
+      "media": {
+        "poster": "/media/video-transcriber-poster.webp",
+        "video": "/media/video-transcriber.mp4"
+      },
       "chapters": [],
       "body": ""
     }

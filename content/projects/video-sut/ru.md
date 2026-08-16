@@ -1,22 +1,73 @@
 ---
 slug: video-sut
 locale: ru
-title: ВидеоСуть
-eyebrow: AI SaaS · YouTube summaries
-status: active
+title: Video Transcriber
+eyebrow: Frontend prototype · YouTube contextualization
+status: mvp
 roles: [ai, frontend]
-featured: false
-priority: { ai: 20, frontend: 20 }
-summary: SaaS генерирует структурированные текстовые саммари YouTube-видео с кредитами, аутентификацией и кэшированием.
-task: Превратить длинное видео в быстро читаемую главную мысль, тезисы и вывод.
+featured: true
+priority: { ai: 40, frontend: 85 }
+summary: Интерактивный frontend-прототип сервиса транскрибации и суммаризации YouTube-видео, демонстрирующий сложные состояния обработки и bento-дашборд.
+task: Представить профессиональный AI-assisted рабочий процесс извлечения структурированных знаний из видеоконтента.
 contribution:
-  [Собрал full-stack приложение и AI flow, Реализовал auth, credits, cache и validation]
+  [
+    Проектирование пользовательского AI-сценария от URL до структурированного результата,
+    Реализация Next.js/React-интерфейса и состояний обработки,
+    Разработка адаптивного bento-дашборда и логики взаимодействия,
+    Определение типизированных состояний приложения и модели результата,
+  ]
 decisions:
-  [Единый Next.js App Router, Redis TTL и rate limiting, Supabase RLS и API fallbacks]
-stack: [Next.js, React, TypeScript, Tailwind CSS, shadcn/ui, Supabase, Redis, Gemini, Zod]
-outcome: Архитектура монетизируемого AI-сервиса с ежедневными бесплатными кредитами.
+  [
+    Фокус на высокой точности состояний фронтенда вместо сложности бэкенда для прототипа,
+    Использование явных стадий обработки для формирования доверия пользователя при асинхронных операциях,
+    'Разделение ввода, обработки и результата на сфокусированные компоненты',
+    'Представление саммари, тезисов, тайм-кодов и действий в адаптивной bento-раскладке',
+  ]
+capabilities:
+  [
+    Ввод и валидация YouTube URL,
+    Предустановленные примеры запросов для быстрого тестирования,
+    Насыщенные состояния обработки (idle / processing / success / error),
+    Пятиступенчатый визуальный фидбек процесса обработки,
+    'Вывод summary, ключевых тезисов, тайм-кодов и рекомендаций',
+    Копирование отдельных блоков и всего результата целиком,
+    Переходы к соответствующим тайм-кодам YouTube,
+    Адаптивный bento-дашборд результатов,
+  ]
+architecture:
+  [
+    Next.js App Router формирует оболочку приложения и клиентскую точку входа,
+    Локальное состояние React 19 моделирует переходы idle / processing / success / error,
+    Типы AppState и VideoResult явно фиксируют контракт интерфейсного сценария,
+    Tailwind CSS v4 и компоненты на основе Radix формируют адаптивный интерфейс,
+    'Отдельные компоненты изолируют ввод URL, прогресс, примеры и результат',
+  ]
+verification:
+  [
+    Закреплённый снимок исходного кода содержит типизированный сценарий из четырёх состояний,
+    Исходный код показывает пять имитируемых стадий до вывода структурированного результата,
+    'Презентация демонстрирует ввод URL, обратную связь обработки и дашборд результата',
+  ]
+stack:
+  [
+    Next.js 16,
+    React 19,
+    TypeScript,
+    Tailwind CSS v4,
+    shadcn/ui,
+    Radix UI,
+    Vercel Analytics,
+  ]
+outcome: Высокоточный интерактивный прототип, подтверждающий пользовательский опыт сервиса транскрибации видео.
 roleFocus:
-  ai: LLM summarization, validation, caching, fallbacks, and usage controls.
-  frontend: Full-stack React UX, authentication, credits, and structured summary views.
-links: []
+  ai: Проектирование пользовательского AI-сценария — от извлечения контекста и оркестрации стадий до представления структурированного результата.
+  frontend: Реализация Next.js дашборда, состояний обработки, адаптивной bento-раскладки, типизированной модели результата и интерактивных компонентов.
+source:
+  repository: https://github.com/a197428/Video_Transcriber
+  commit: 18d998f2fe6ea441ccd2aa15dad9dd4b8bc9e5e8
+  verifiedAt: '2026-08-16'
+  visibility: private
+media:
+  poster: /media/video-transcriber-poster.webp
+  video: /media/video-transcriber.mp4
 ---

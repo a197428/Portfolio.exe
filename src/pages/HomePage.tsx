@@ -31,13 +31,15 @@ export function HomePage() {
   const featured = projects.find((project) => project.slug === 'bitrix24-integrations')!;
   const localAi = projects.find((project) => project.slug === 'local-ai-assistant');
   const shortSport = projects.find((project) => project.slug === 'shortsport-ai-forge');
+  const videoTranscriber = projects.find((project) => project.slug === 'video-sut');
   const otherProjects = projects.filter(
     (project) =>
       project.slug !== featured.slug &&
       project.slug !== localAi?.slug &&
-      project.slug !== shortSport?.slug,
+      project.slug !== shortSport?.slug &&
+      project.slug !== videoTranscriber?.slug,
   );
-  const bentoStartIndex = role === 'ai' ? 4 : 3;
+  const bentoStartIndex = role === 'ai' ? 5 : 4;
   const root = useRef<HTMLDivElement>(null);
 
   useAnimeScope(root, () => {
@@ -237,6 +239,33 @@ export function HomePage() {
                   alt={t('projects.shortSportPosterAlt')}
                 />
                 <span>{t('projects.liveDemo')}</span>
+              </div>
+            </Link>
+          )}
+          {videoTranscriber && (
+            <Link
+              className="featured-case featured-case--reverse glass-panel"
+              to={`/projects/${videoTranscriber.slug}`}
+            >
+              <div className="featured-visual">
+                <img
+                  src={videoTranscriber.media?.poster}
+                  alt={t('projects.videoTranscriberPosterAlt')}
+                />
+                <span>{t('projects.watch')} · 1 demo</span>
+              </div>
+              <div className="featured-case-copy">
+                <span className="project-index">
+                  {role === 'ai' ? '004' : '003'} / {videoTranscriber.status}
+                </span>
+                <p className="card-eyebrow">{videoTranscriber.eyebrow}</p>
+                <h3>{videoTranscriber.title}</h3>
+                <p>{videoTranscriber.roleFocus[role]}</p>
+                <div className="tag-row">
+                  {videoTranscriber.stack.slice(0, 5).map((item) => (
+                    <span key={item}>{item}</span>
+                  ))}
+                </div>
               </div>
             </Link>
           )}

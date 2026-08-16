@@ -149,11 +149,12 @@ describe('portfolio content', () => {
   it('uses the verified Frontend evidence order', () => {
     expect(
       getProjects('en', 'frontend')
-        .slice(0, 5)
+        .slice(0, 6)
         .map(({ slug }) => slug),
     ).toEqual([
       'bitrix24-integrations',
       'shortsport-ai-forge',
+      'video-sut',
       'neurosport',
       'neuralgrid-international',
       'energo-ai',
@@ -173,6 +174,7 @@ describe('portfolio content', () => {
   it('keeps RU and EN priorities, provenance, and evidence coverage equivalent', () => {
     for (const slug of [
       'shortsport-ai-forge',
+      'video-sut',
       'neurosport',
       'neuralgrid-international',
       'energo-ai',
@@ -185,5 +187,31 @@ describe('portfolio content', () => {
       expect(russian.architecture?.length).toBe(english.architecture?.length);
       expect(russian.verification?.length).toBe(english.verification?.length);
     }
+  });
+
+  it('pins honest bilingual Video Transcriber evidence and media', () => {
+    const english = getProject('video-sut', 'en')!;
+    const russian = getProject('video-sut', 'ru')!;
+
+    expect(english.title).toBe('Video Transcriber');
+    expect(russian.title).toBe('Video Transcriber');
+    expect(english.roles).toEqual(['ai', 'frontend']);
+    expect(english.source).toEqual({
+      repository: 'https://github.com/a197428/Video_Transcriber',
+      commit: '18d998f2fe6ea441ccd2aa15dad9dd4b8bc9e5e8',
+      verifiedAt: '2026-08-16',
+      visibility: 'private',
+    });
+    expect(russian.source).toEqual(english.source);
+    expect(english.media).toEqual({
+      poster: '/media/video-transcriber-poster.webp',
+      video: '/media/video-transcriber.mp4',
+    });
+    expect(russian.media).toEqual(english.media);
+
+    const published = JSON.stringify([english, russian]).toLowerCase();
+    expect(published).not.toContain('18 component tests');
+    expect(published).not.toContain('zod validates');
+    expect(published).not.toContain('проходит все проверки типов');
   });
 });

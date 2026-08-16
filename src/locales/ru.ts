@@ -33,6 +33,7 @@ export const ru = {
     posterAlt: 'Интерфейс TTLock Connector из набора приложений Bitrix24',
     localPosterAlt: 'Интерфейс расширения Local AI Assistant',
     shortSportPosterAlt: 'Интерфейс редактора сторибордов ShortSport AI Forge',
+    videoTranscriberPosterAlt: 'Интерфейс дашборда результатов Video Transcriber',
     liveDemo: 'Live demo',
   },
   method: {

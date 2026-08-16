@@ -114,9 +114,10 @@ test('presents the ordered bilingual Frontend evidence with safe live demos', as
   const projectHrefs = await page
     .locator('#projects a[href^="/projects/"]')
     .evaluateAll((links) => links.map((link) => link.getAttribute('href')));
-  expect([...new Set(projectHrefs)].slice(0, 5)).toEqual([
+  expect([...new Set(projectHrefs)].slice(0, 6)).toEqual([
     '/projects/bitrix24-integrations',
     '/projects/shortsport-ai-forge',
+    '/projects/video-sut',
     '/projects/neurosport',
     '/projects/neuralgrid-international',
     '/projects/energo-ai',
@@ -146,4 +147,41 @@ test('presents the ordered bilingual Frontend evidence with safe live demos', as
     page.getByText('Публичный deployment доступен как live demo'),
   ).toBeVisible();
   await expect(page.locator('a[href*="github.com/a197428/EnergoAI"]')).toHaveCount(0);
+});
+
+test('presents Video Transcriber as a bilingual private-source evidence case', async ({
+  page,
+}) => {
+  await page.goto('/');
+  const card = page.locator('a[href="/projects/video-sut"]');
+  await expect(card).toContainText('004 / mvp');
+  await expect(card).toContainText('Watch presentation · 1 demo');
+  await card.click();
+
+  await expect(page).toHaveURL(/\/projects\/video-sut$/);
+  await expect(page.getByRole('heading', { name: 'Video Transcriber' })).toBeVisible();
+  await expect(
+    page.locator('a[href*="github.com/a197428/Video_Transcriber"]'),
+  ).toHaveCount(0);
+
+  const video = page.locator('video');
+  await expect(video).toHaveAttribute('src', '/media/video-transcriber.mp4');
+  await expect(video).toHaveAttribute('poster', '/media/video-transcriber-poster.webp');
+  await expect
+    .poll(() => video.evaluate((node: HTMLVideoElement) => node.videoWidth))
+    .toBe(1280);
+  await expect
+    .poll(() => video.evaluate((node: HTMLVideoElement) => node.videoHeight))
+    .toBe(720);
+  await expect
+    .poll(() => video.evaluate((node: HTMLVideoElement) => node.duration))
+    .toBeGreaterThan(40);
+
+  await page.getByRole('button', { name: 'RU' }).click();
+  await expect(page.getByText('Возможности продукта')).toBeVisible();
+  expect(
+    await page.evaluate(
+      () => document.documentElement.scrollWidth > document.documentElement.clientWidth,
+    ),
+  ).toBe(false);
 });
