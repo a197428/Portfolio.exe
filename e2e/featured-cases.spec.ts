@@ -32,6 +32,32 @@ async function featuredCards(page: Page) {
   };
 }
 
+const PREVIEWS: Array<[string, string]> = [
+  [BITRIX_HREF, '/image/preview/Industrial Bitrix24 integrations.png'],
+  [LOCAL_HREF, '/image/preview/Local AI Assistant.png'],
+  [SHORTSPORT_HREF, '/image/preview/ShortSport AI Forge.png'],
+  [VIDEO_TRANSCRIBER_HREF, '/image/preview/Video Transcriber.png'],
+  [NEUROSPORT_TMA_HREF, '/image/preview/Neurosport TMA.png'],
+  [READ_CLOSE_BOT_HREF, '/image/preview/Read-Close-Bot.png'],
+];
+
+// Every featured cover must point at its preview, load without errors, be
+// cropped by object-fit: cover, and fill the visual frame (no letterbox).
+async function expectPreviewsCover(page: Page) {
+  for (const [href, path] of PREVIEWS) {
+    const img = page.locator(`#projects a[href="${href}"] .featured-visual img`);
+    await expect(img).toHaveAttribute('src', path);
+    await expect.poll(() => img.evaluate((el) => el.naturalWidth)).toBeGreaterThan(0);
+    await expect(img).toHaveCSS('object-fit', 'cover');
+    const imgBox = await img.boundingBox();
+    const visualBox = await page
+      .locator(`#projects a[href="${href}"] .featured-visual`)
+      .boundingBox();
+    expect(Math.abs(imgBox!.width - visualBox!.width)).toBeLessThanOrEqual(1);
+    expect(Math.abs(imgBox!.height - visualBox!.height)).toBeLessThanOrEqual(1);
+  }
+}
+
 test.describe('mirrored featured card', () => {
   test('desktop: text/media horizontal ordering, equal geometry, hover parity, Bitrix regression', async ({
     page,
@@ -92,6 +118,9 @@ test.describe('mirrored featured card', () => {
     expect(Math.abs(bitrixBox!.width - readCloseBox!.width)).toBeLessThanOrEqual(1);
     expect(Math.abs(bitrixBox!.height - readCloseBox!.height)).toBeLessThanOrEqual(6);
 
+    // All six covers resolve to preview images and crop to the visual frame.
+    await expectPreviewsCover(page);
+
     // Bitrix regression: untouched copy→visual structure, no reverse modifier.
     await expect(bitrix).toHaveClass(/featured-case/);
     await expect(bitrix).not.toHaveClass(/featured-case--reverse/);
@@ -109,7 +138,7 @@ test.describe('mirrored featured card', () => {
     await expect(readCloseBot).toContainText('006 / active');
     await expect(readCloseVisual.locator('img')).toHaveAttribute(
       'src',
-      '/image/Read-Close-Bot.png',
+      '/image/preview/Read-Close-Bot.png',
     );
     await expect(videoVisual).toContainText('Watch presentation · 1 demo');
 
@@ -180,6 +209,9 @@ test.describe('mirrored featured card', () => {
       ),
     ).toBe(false);
 
+    // The same covers load and crop correctly on mobile.
+    await expectPreviewsCover(page);
+
     // Keyboard access: focus outline appears, Enter opens the project.
     await shortSport.focus();
     await expect(shortSport).toBeFocused();
@@ -187,6 +219,20 @@ test.describe('mirrored featured card', () => {
     await expect(shortSport).toHaveCSS('outline-width', '2px');
     await shortSport.press('Enter');
     await expect(page).toHaveURL(new RegExp(`${SHORTSPORT_HREF}$`));
+  });
+
+  test('case pages keep their own poster instead of the home preview', async ({
+    page,
+  }) => {
+    await page.goto('/projects/read-close-bot');
+    const mainImage = page.locator('main img[src="/image/Read-Close-Bot.png"]');
+    await expect(mainImage).toBeVisible();
+    await expect
+      .poll(() => mainImage.evaluate((el) => el.naturalWidth))
+      .toBeGreaterThan(0);
+    await expect(
+      page.locator('img[src="/image/preview/Read-Close-Bot.png"]'),
+    ).toHaveCount(0);
   });
 
   test('frontend: Video precedes ShortSport while both keep their geometry', async ({

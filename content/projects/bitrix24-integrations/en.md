@@ -25,6 +25,7 @@ roleFocus:
 links: []
 media:
   poster: /media/bitrix24-acquiring-poster.webp
+cardPreview: /image/preview/Industrial Bitrix24 integrations.png
 chapters:
   - id: acquiring
     title: Acquiring & Robots

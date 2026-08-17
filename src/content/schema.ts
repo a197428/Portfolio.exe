@@ -59,6 +59,7 @@ export const projectSchema = z.object({
   media: z
     .object({ poster: z.string().min(1), video: z.string().min(1).optional() })
     .optional(),
+  cardPreview: z.string().min(1).optional(),
   chapters: z.array(chapterSchema).default([]),
   body: z.string().default(''),
 });

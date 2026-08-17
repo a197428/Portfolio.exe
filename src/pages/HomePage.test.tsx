@@ -92,6 +92,10 @@ describe('HomePage featured cases', () => {
     expect(
       within(cardVisual(bitrix)).getByText('Watch presentation · 3 demos'),
     ).toBeInTheDocument();
+    expect(cardVisual(bitrix).querySelector('img')).toHaveAttribute(
+      'src',
+      '/image/preview/Industrial Bitrix24 integrations.png',
+    );
 
     // Regression: the Bento Grid container remains available for non-featured cases.
     const bento = container.querySelector('.portfolio-bento') as HTMLElement;
@@ -111,7 +115,7 @@ describe('HomePage featured cases', () => {
 
     const visual = cardVisual(local);
     const img = visual.querySelector('img');
-    expect(img).toHaveAttribute('src', '/media/local-ai-assistant-poster.webp');
+    expect(img).toHaveAttribute('src', '/image/preview/Local AI Assistant.png');
     expect(img).toHaveAttribute('alt', 'Local AI Assistant extension interface');
     expect(within(visual).getByText('Watch presentation · 1 demo')).toBeInTheDocument();
 
@@ -163,7 +167,7 @@ describe('HomePage featured cases', () => {
     const visual = cardVisual(shortSport);
     expect(visual.querySelector('img')).toHaveAttribute(
       'src',
-      '/media/shortsport-ai-forge.webp',
+      '/image/preview/ShortSport AI Forge.png',
     );
     expect(visual.querySelector('img')).toHaveAttribute(
       'alt',
@@ -187,7 +191,7 @@ describe('HomePage featured cases', () => {
     const visual = cardVisual(project);
     expect(visual.querySelector('img')).toHaveAttribute(
       'src',
-      '/media/video-transcriber-poster.webp',
+      '/image/preview/Video Transcriber.png',
     );
     expect(visual.querySelector('img')).toHaveAttribute(
       'alt',
@@ -216,7 +220,7 @@ describe('HomePage featured cases', () => {
     expect(within(cardCopy(project)).getByText('005 / mvp')).toBeInTheDocument();
     expect(cardVisual(project).querySelector('img')).toHaveAttribute(
       'src',
-      '/media/neurosport-tma-poster.webp',
+      '/image/preview/Neurosport TMA.png',
     );
     expect(cardVisual(project).querySelector('img')).toHaveAttribute(
       'alt',
@@ -247,7 +251,7 @@ describe('HomePage featured cases', () => {
     expect(within(cardCopy(project)).getByText('006 / active')).toBeInTheDocument();
     expect(cardVisual(project).querySelector('img')).toHaveAttribute(
       'src',
-      '/image/Read-Close-Bot.png',
+      '/image/preview/Read-Close-Bot.png',
     );
     expect(cardVisual(project).querySelector('img')).toHaveAttribute(
       'alt',

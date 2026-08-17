@@ -70,4 +70,5 @@ source:
 media:
   poster: /media/video-transcriber-poster.webp
   video: /media/video-transcriber.mp4
+cardPreview: /image/preview/Video Transcriber.png
 ---

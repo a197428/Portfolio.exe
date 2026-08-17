@@ -43,6 +43,7 @@ links:
   - { label: Live demo, href: https://dev.shortsport-ai-forge.pages.dev/, kind: demo }
   - { label: GitHub, href: https://github.com/a197428/ShortSport-AI-Forge, kind: source }
 media: { poster: /media/shortsport-ai-forge.webp }
+cardPreview: /image/preview/ShortSport AI Forge.png
 ---
 
 ## Verified context

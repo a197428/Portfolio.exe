@@ -56,6 +56,7 @@ links:
 media:
   poster: /media/local-ai-assistant-poster.webp
   video: /media/local-ai-assistant.mp4
+cardPreview: /image/preview/Local AI Assistant.png
 ---
 
 ## Доказательный контекст

@@ -204,6 +204,23 @@ describe('portfolio content', () => {
     ).toBe(false);
   });
 
+  it('publishes an identical cardPreview for every featured case in both locales', () => {
+    const slugs = [
+      'bitrix24-integrations',
+      'local-ai-assistant',
+      'shortsport-ai-forge',
+      'video-sut',
+      'neurosport-tma',
+      'read-close-bot',
+    ];
+    for (const slug of slugs) {
+      const english = getProject(slug, 'en')!;
+      const russian = getProject(slug, 'ru')!;
+      expect(english.cardPreview).toMatch(/^\/image\/preview\/.+\.png$/);
+      expect(russian.cardPreview).toEqual(english.cardPreview);
+    }
+  });
+
   it('keeps private provenance hidden behind demo-only links', () => {
     for (const slug of ['neurosport', 'neuralgrid-international', 'energo-ai']) {
       const project = getProject(slug, 'en')!;

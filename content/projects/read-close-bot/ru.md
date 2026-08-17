@@ -42,4 +42,5 @@ roleFocus:
 links: [{ label: GitHub, href: https://github.com/a197428/Read_Cl_Bot }]
 media:
   poster: /image/Read-Close-Bot.png
+cardPreview: /image/preview/Read-Close-Bot.png
 ---

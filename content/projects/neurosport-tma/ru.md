@@ -44,6 +44,7 @@ links: [{ label: GitHub, href: https://github.com/a197428/Neurosport-TMA, kind: 
 media:
   poster: /media/neurosport-tma-poster.webp
   video: /media/neurosport-tma.mp4
+cardPreview: /image/preview/Neurosport TMA.png
 ---
 
 ## Проверенный контекст

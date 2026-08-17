@@ -155,7 +155,10 @@ export function HomePage() {
         </div>
       </div>
       <div className="featured-visual">
-        <img src={shortSport.media?.poster} alt={t('projects.shortSportPosterAlt')} />
+        <img
+          src={shortSport.cardPreview ?? shortSport.media?.poster}
+          alt={t('projects.shortSportPosterAlt')}
+        />
         <span>{t('projects.liveDemo')}</span>
       </div>
     </Link>
@@ -169,7 +172,7 @@ export function HomePage() {
     >
       <div className="featured-visual">
         <img
-          src={videoTranscriber.media?.poster}
+          src={videoTranscriber.cardPreview ?? videoTranscriber.media?.poster}
           alt={t('projects.videoTranscriberPosterAlt')}
         />
         <span>{t('projects.watch')} · 1 demo</span>
@@ -277,7 +280,10 @@ export function HomePage() {
               </div>
             </div>
             <div className="featured-visual">
-              <img src={featured.media?.poster} alt={t('projects.posterAlt')} />
+              <img
+                src={featured.cardPreview ?? featured.media?.poster}
+                alt={t('projects.posterAlt')}
+              />
               <span>{t('projects.watch')} · 3 demos</span>
             </div>
           </Link>
@@ -287,7 +293,10 @@ export function HomePage() {
               to={`/projects/${localAi.slug}`}
             >
               <div className="featured-visual">
-                <img src={localAi.media?.poster} alt={t('projects.localPosterAlt')} />
+                <img
+                  src={localAi.cardPreview ?? localAi.media?.poster}
+                  alt={t('projects.localPosterAlt')}
+                />
                 <span>{t('projects.watch')} · 1 demo</span>
               </div>
               <div className="featured-case-copy">
@@ -332,7 +341,7 @@ export function HomePage() {
               </div>
               <div className="featured-visual">
                 <img
-                  src={neurosportTma.media?.poster}
+                  src={neurosportTma.cardPreview ?? neurosportTma.media?.poster}
                   alt={t('projects.neurosportTmaPosterAlt')}
                 />
                 <span>{t('projects.watch')} · 1 demo</span>
@@ -346,7 +355,7 @@ export function HomePage() {
             >
               <div className="featured-visual">
                 <img
-                  src={readCloseBot.media?.poster}
+                  src={readCloseBot.cardPreview ?? readCloseBot.media?.poster}
                   alt={t('projects.readCloseBotPosterAlt')}
                 />
                 <span>{t('projects.architecturePreview')}</span>

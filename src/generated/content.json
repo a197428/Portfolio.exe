@@ -91,6 +91,7 @@
       },
       "links": [],
       "media": { "poster": "/media/bitrix24-acquiring-poster.webp" },
+      "cardPreview": "/image/preview/Industrial Bitrix24 integrations.png",
       "chapters": [
         {
           "id": "acquiring",
@@ -250,6 +251,7 @@
       },
       "links": [],
       "media": { "poster": "/media/bitrix24-acquiring-poster.webp" },
+      "cardPreview": "/image/preview/Industrial Bitrix24 integrations.png",
       "chapters": [
         {
           "id": "acquiring",
@@ -563,6 +565,7 @@
         "poster": "/media/local-ai-assistant-poster.webp",
         "video": "/media/local-ai-assistant.mp4"
       },
+      "cardPreview": "/image/preview/Local AI Assistant.png",
       "chapters": [],
       "body": "## Evidence context\n\nThe public snapshot demonstrates the architecture of an active prototype. It verifies the browser client, local API, agent graph, and safety constraints, but is not used to claim production-ready status."
     },
@@ -639,6 +642,7 @@
         "poster": "/media/local-ai-assistant-poster.webp",
         "video": "/media/local-ai-assistant.mp4"
       },
+      "cardPreview": "/image/preview/Local AI Assistant.png",
       "chapters": [],
       "body": "## Доказательный контекст\n\nПубличный снимок показывает архитектуру активного прототипа. Он подтверждает реализацию браузерного клиента, локального API, агентного графа и защитных ограничений, но не используется как основание для заявления о production-ready статусе."
     },
@@ -944,6 +948,7 @@
         "poster": "/media/neurosport-tma-poster.webp",
         "video": "/media/neurosport-tma.mp4"
       },
+      "cardPreview": "/image/preview/Neurosport TMA.png",
       "chapters": [],
       "body": "## Verified context\n\nThis card describes the standalone Telegram Mini App and does not reuse claims from the Vue-based Neurosport project. Capabilities are tied to the public `dev` branch commit."
     },
@@ -1007,6 +1012,7 @@
         "poster": "/media/neurosport-tma-poster.webp",
         "video": "/media/neurosport-tma.mp4"
       },
+      "cardPreview": "/image/preview/Neurosport TMA.png",
       "chapters": [],
       "body": "## Проверенный контекст\n\nКарточка описывает отдельную Telegram Mini App и не использует факты из Vue-проекта Neurosport. Возможности привязаны к публичному commit ветки `dev`."
     },
@@ -1068,6 +1074,7 @@
         }
       ],
       "media": { "poster": "/image/Read-Close-Bot.png" },
+      "cardPreview": "/image/preview/Read-Close-Bot.png",
       "chapters": [],
       "body": ""
     },
@@ -1128,6 +1135,7 @@
         }
       ],
       "media": { "poster": "/image/Read-Close-Bot.png" },
+      "cardPreview": "/image/preview/Read-Close-Bot.png",
       "chapters": [],
       "body": ""
     },
@@ -1192,6 +1200,7 @@
         "visibility": "public"
       },
       "media": { "poster": "/media/shortsport-ai-forge.webp" },
+      "cardPreview": "/image/preview/ShortSport AI Forge.png",
       "chapters": [],
       "body": "## Verified context\n\nThe public snapshot substantiates the client workflow and Cloudflare delivery path. It is a controlled MVP with manual approval, not a claim of autonomous publishing."
     },
@@ -1256,6 +1265,7 @@
         "visibility": "public"
       },
       "media": { "poster": "/media/shortsport-ai-forge.webp" },
+      "cardPreview": "/image/preview/ShortSport AI Forge.png",
       "chapters": [],
       "body": "## Проверенный контекст\n\nПубличный снимок подтверждает клиентский workflow и Cloudflare-контур. Это управляемый MVP с ручным подтверждением результата, а не заявление об автономной публикации."
     },
@@ -1410,6 +1420,7 @@
         "poster": "/media/video-transcriber-poster.webp",
         "video": "/media/video-transcriber.mp4"
       },
+      "cardPreview": "/image/preview/Video Transcriber.png",
       "chapters": [],
       "body": ""
     },
@@ -1483,6 +1494,7 @@
         "poster": "/media/video-transcriber-poster.webp",
         "video": "/media/video-transcriber.mp4"
       },
+      "cardPreview": "/image/preview/Video Transcriber.png",
       "chapters": [],
       "body": ""
     }
