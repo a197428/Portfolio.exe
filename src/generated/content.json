@@ -2,7 +2,7 @@
   "profiles": [
     {
       "locale": "en",
-      "name": "Alexander Popov",
+      "name": "Alexander Popoff",
       "location": "Volgograd, Russia",
       "title": "AI Application Developer · Full-stack + LLM integrations",
       "summary": "I build AI applications, agent systems, and integration products across interfaces, APIs, edge infrastructure, and production verification.",
@@ -27,12 +27,12 @@
         "telegram": "https://t.me/AVPopoff",
         "github": "https://github.com/a197428"
       },
-      "avatar": "/image/avatar.jpg",
+      "avatar": "/image/Аватар_1.png",
       "body": "Core stack: Python, FastAPI, LangGraph, TypeScript, React, Vue 3, and Cloudflare Workers."
     },
     {
       "locale": "ru",
-      "name": "Александр Попов",
+      "name": "Александр Popoff",
       "location": "Волгоград",
       "title": "AI Application Developer · Fullstack + LLM-интеграции",
       "summary": "Разрабатываю AI-приложения, агентные системы и интеграционные продукты — от интерфейса и API до edge-инфраструктуры и production-проверок.",
@@ -57,7 +57,7 @@
         "telegram": "https://t.me/AVPopoff",
         "github": "https://github.com/a197428"
       },
-      "avatar": "/image/avatar.jpg",
+      "avatar": "/image/Аватар_1.png",
       "body": "Основной стек: Python, FastAPI, LangGraph, TypeScript, React, Vue 3 и Cloudflare Workers."
     }
   ],
@@ -962,6 +962,132 @@
       "media": { "poster": "/media/neurosport.webp" },
       "chapters": [],
       "body": "## Доказательный контекст\n\nЛокальный снимок и доступное демо подтверждают архитектуру MVP. Commit используется только как provenance и не публикуется в интерфейсе."
+    },
+    {
+      "slug": "neurosport-tma",
+      "locale": "en",
+      "title": "Neurosport TMA",
+      "eyebrow": "Telegram Mini App · prediction game platform",
+      "status": "mvp",
+      "roles": ["ai", "frontend"],
+      "featured": true,
+      "priority": { "ai": 35, "frontend": 75 },
+      "summary": "A Telegram Mini App for binary predictions, attempts, NPAI rating, and social competition without monetary betting.",
+      "task": "Build a cohesive game inside Telegram where every prediction and server-side reward remains traceable and verifiable.",
+      "contribution": [
+        "Built the React Telegram Mini App interface and role-aware product flows",
+        "Connected predictions, attempts, NPAI, duels, and rankings to a transactional Worker API",
+        "Built an AI-assisted card preparation pipeline with diagnostics and controlled publication"
+      ],
+      "decisions": [
+        "Keep game points and attempts separate from monetary stakes and withdrawals",
+        "Record balances and rewards through a server-side ledger and idempotent operations",
+        "Separate synchronous API work, realtime coordination, and background jobs at the edge"
+      ],
+      "capabilities": [
+        "Vertical feed of binary Yes or No predictions",
+        "Attempts, NPAI, daily top, leagues, and achievements",
+        "Card creation, duels, teams, referrals, and crowd verification",
+        "AI-assisted card discovery and preparation with human control"
+      ],
+      "architecture": [
+        "The React 19 Telegram Mini App communicates with a Hono API through shared Zod contracts",
+        "Cloudflare Worker and D1 own domain state while R2 serves media",
+        "Durable Objects, WebSockets, Queues, and Cron separate realtime and background processing"
+      ],
+      "verification": [
+        "The public commit pins the frontend, Worker, shared contracts, and forward-only D1 migrations",
+        "The repository includes unit and Worker tests for core prediction and social workflows",
+        "The presentation demonstrates the real mobile workflow inside Telegram"
+      ],
+      "stack": ["React 19", "TypeScript", "Hono", "Cloudflare Workers", "D1", "Zod"],
+      "outcome": "The MVP combines a mobile-first game experience with a verifiable edge architecture and controlled AI-assisted content preparation.",
+      "roleFocus": {
+        "ai": "Designed AI-assisted card preparation, diagnostics, and a human publication boundary inside a verifiable prediction system.",
+        "frontend": "Built the React 19 Telegram Mini App, mobile-first feed, predictions, duels, teams, profile, and typed API boundary."
+      },
+      "links": [
+        {
+          "label": "GitHub",
+          "href": "https://github.com/a197428/Neurosport-TMA",
+          "kind": "source"
+        }
+      ],
+      "source": {
+        "repository": "https://github.com/a197428/Neurosport-TMA",
+        "commit": "55b50a797b8552e5430130b67cb6703fff567d30",
+        "verifiedAt": "2026-08-17",
+        "visibility": "public"
+      },
+      "media": {
+        "poster": "/media/neurosport-tma-poster.webp",
+        "video": "/media/neurosport-tma.mp4"
+      },
+      "chapters": [],
+      "body": "## Verified context\n\nThis card describes the standalone Telegram Mini App and does not reuse claims from the Vue-based Neurosport project. Capabilities are tied to the public `dev` branch commit."
+    },
+    {
+      "slug": "neurosport-tma",
+      "locale": "ru",
+      "title": "Neurosport TMA",
+      "eyebrow": "Telegram Mini App · prediction game platform",
+      "status": "mvp",
+      "roles": ["ai", "frontend"],
+      "featured": true,
+      "priority": { "ai": 35, "frontend": 75 },
+      "summary": "Telegram Mini App с бинарными прогнозами, попытками, NPAI-рейтингом и социальными механиками без денежных ставок.",
+      "task": "Построить цельный игровой продукт внутри Telegram, где каждый прогноз и серверное начисление остаются проверяемыми.",
+      "contribution": [
+        "Реализовал React-интерфейс Telegram Mini App и ролевые продуктовые сценарии",
+        "Связал прогнозы, попытки, NPAI, дуэли и рейтинги с транзакционным Worker API",
+        "Собрал AI-assisted контур подготовки карточек с диагностикой и контролируемой публикацией"
+      ],
+      "decisions": [
+        "Отделить игровые очки и попытки от денежных ставок и вывода средств",
+        "Фиксировать балансы и награды серверным ledger и идемпотентными операциями",
+        "Разделить синхронный API, realtime-координацию и фоновые задачи на edge-уровне"
+      ],
+      "capabilities": [
+        "Вертикальная лента бинарных прогнозов «Да» или «Нет»",
+        "Попытки, NPAI, дневной топ, лиги и достижения",
+        "Создание карточек, дуэли, команды, рефералы и крауд-верификация",
+        "AI-assisted поиск и подготовка карточек с ручным контролем"
+      ],
+      "architecture": [
+        "React 19 Telegram Mini App общается с Hono API через общие Zod-контракты",
+        "Cloudflare Worker и D1 хранят доменное состояние, R2 обслуживает медиа",
+        "Durable Objects, WebSockets, Queues и Cron разделяют realtime и фоновую обработку"
+      ],
+      "verification": [
+        "Публичный commit фиксирует frontend, Worker, shared-контракты и forward-only D1-миграции",
+        "Репозиторий содержит unit- и Worker-тесты для ключевых прогнозных и социальных сценариев",
+        "Видеопрезентация показывает реальный mobile workflow в Telegram"
+      ],
+      "stack": ["React 19", "TypeScript", "Hono", "Cloudflare Workers", "D1", "Zod"],
+      "outcome": "MVP объединяет mobile-first игровой UX и проверяемую edge-архитектуру с контролируемой AI-assisted подготовкой контента.",
+      "roleFocus": {
+        "ai": "Спроектировал AI-assisted подготовку карточек, диагностику и ручную границу публикации внутри проверяемой игровой системы.",
+        "frontend": "Реализовал React 19 Telegram Mini App, mobile-first ленту, прогнозы, дуэли, команды, профиль и типизированную API-границу."
+      },
+      "links": [
+        {
+          "label": "GitHub",
+          "href": "https://github.com/a197428/Neurosport-TMA",
+          "kind": "source"
+        }
+      ],
+      "source": {
+        "repository": "https://github.com/a197428/Neurosport-TMA",
+        "commit": "55b50a797b8552e5430130b67cb6703fff567d30",
+        "verifiedAt": "2026-08-17",
+        "visibility": "public"
+      },
+      "media": {
+        "poster": "/media/neurosport-tma-poster.webp",
+        "video": "/media/neurosport-tma.mp4"
+      },
+      "chapters": [],
+      "body": "## Проверенный контекст\n\nКарточка описывает отдельную Telegram Mini App и не использует факты из Vue-проекта Neurosport. Возможности привязаны к публичному commit ветки `dev`."
     },
     {
       "slug": "read-close-bot",

@@ -3,11 +3,25 @@ import { expect, test } from '@playwright/test';
 test('loads, switches role, and opens a project', async ({ page }) => {
   await page.goto('/');
   await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
-  const avatar = page.locator('img[src="/image/avatar.jpg"]');
+  const avatar = page.locator('img[src="/image/Аватар_1.png"]');
   await expect(avatar).toBeVisible();
   await expect
     .poll(() => avatar.evaluate((image) => image.naturalWidth))
     .toBeGreaterThan(0);
+  await expect(avatar).toHaveAttribute('alt', 'Portrait of Alexander Popoff');
+  const portraitBox = await avatar.boundingBox();
+  expect(portraitBox).not.toBeNull();
+  expect(portraitBox!.width).toBeGreaterThan(280);
+  expect(portraitBox!.height).toBeGreaterThan(400);
+  await expect(page.getByRole('heading', { level: 1 })).toHaveAccessibleName(
+    'Alexander Popoff',
+  );
+  await expect(
+    page.getByRole('heading', {
+      level: 2,
+      name: 'Interfaces that make intelligence tangible.',
+    }),
+  ).toBeVisible();
 
   await page.getByRole('button', { name: 'Frontend Developer' }).click();
   await expect(page.getByText('Engineering the moment a product clicks.')).toBeVisible();
@@ -118,10 +132,17 @@ test('presents the ordered bilingual Frontend evidence with safe live demos', as
     '/projects/bitrix24-integrations',
     '/projects/shortsport-ai-forge',
     '/projects/video-sut',
+    '/projects/neurosport-tma',
     '/projects/neurosport',
     '/projects/neuralgrid-international',
-    '/projects/energo-ai',
   ]);
+
+  await page.goto('/projects/neurosport-tma');
+  await expect(page.locator('video[src="/media/neurosport-tma.mp4"]')).toBeVisible();
+  await expect(page.getByRole('link', { name: 'GitHub' })).toHaveAttribute(
+    'href',
+    'https://github.com/a197428/Neurosport-TMA',
+  );
 
   for (const slug of [
     'shortsport-ai-forge',

@@ -1,20 +1,11 @@
 import { animate, onScroll, splitText, stagger } from 'animejs';
-import {
-  ArrowDownRight,
-  ArrowUpRight,
-  GitFork,
-  Mail,
-  Send,
-  Sparkles,
-} from 'lucide-react';
+import { ArrowDownRight, ArrowUpRight, GitFork, Mail, Send } from 'lucide-react';
 import { useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { RoleSwitch } from '@/components/controls/RoleSwitch';
 import AIPrompt from '@/components/kokonutui/ai-prompt';
-import { Avatar } from '@/components/avatar';
 import BentoGrid from '@/components/kokonutui/bento-grid';
-import { LiquidGlassCard } from '@/components/kokonutui/liquid-glass-card';
 import { Shell } from '@/components/layout/Shell';
 import { getProfile, getProjects } from '@/content';
 import { usePreferences } from '@/features/preferences/store';
@@ -32,12 +23,14 @@ export function HomePage() {
   const localAi = projects.find((project) => project.slug === 'local-ai-assistant');
   const shortSport = projects.find((project) => project.slug === 'shortsport-ai-forge');
   const videoTranscriber = projects.find((project) => project.slug === 'video-sut');
+  const neurosportTma = projects.find((project) => project.slug === 'neurosport-tma');
   const otherProjects = projects.filter(
     (project) =>
       project.slug !== featured.slug &&
       project.slug !== localAi?.slug &&
       project.slug !== shortSport?.slug &&
-      project.slug !== videoTranscriber?.slug,
+      project.slug !== videoTranscriber?.slug &&
+      project.slug !== neurosportTma?.slug,
   );
   const bentoStartIndex = role === 'ai' ? 5 : 4;
   const root = useRef<HTMLDivElement>(null);
@@ -52,24 +45,53 @@ export function HomePage() {
       ease: 'out(4)',
     });
 
-    const headline = root.current?.querySelector<HTMLElement>('[data-hero-title]');
-    const split = headline
-      ? splitText(headline, {
+    const heroName = root.current?.querySelector<HTMLElement>('[data-hero-name]');
+    const split = heroName
+      ? splitText(heroName, {
           accessible: true,
-          words: { wrap: 'clip', class: 'hero-split-word' },
+          words: { wrap: 'clip', class: 'hero-name-word' },
         })
       : null;
 
     split?.addEffect(({ words }) =>
       animate(words, {
         opacity: [0, 1],
-        y: ['108%', '0%'],
-        filter: ['blur(6px)', 'blur(0px)'],
-        duration: 800,
-        delay: stagger(55),
+        y: ['115%', '0%'],
+        filter: ['blur(10px)', 'blur(0px)'],
+        duration: 950,
+        delay: stagger(90),
         ease: 'out(4)',
       }),
     );
+
+    animate('[data-hero-portrait]', {
+      opacity: [0, 1],
+      scale: [0.94, 1],
+      clipPath: ['inset(18% 8% 0% 8% round 45% 45% 2rem 2rem)', 'inset(0%)'],
+      duration: 1200,
+      delay: 180,
+      ease: 'out(4)',
+    });
+
+    animate('[data-hero-dock]', {
+      opacity: [0, 1],
+      y: [-14, 0],
+      duration: 760,
+      delay: 300,
+      ease: 'out(4)',
+    });
+
+    root.current
+      ?.querySelectorAll<HTMLElement>('[data-hero-rail]')
+      .forEach((rail, index) => {
+        animate(rail, {
+          opacity: [0, 1],
+          x: index === 0 ? [-28, 0] : [28, 0],
+          duration: 900,
+          delay: 360 + index * 120,
+          ease: 'out(4)',
+        });
+      });
 
     const cards = root.current?.querySelectorAll<HTMLElement>(
       '.featured-case, .bento-project',
@@ -116,55 +138,66 @@ export function HomePage() {
   return (
     <Shell>
       <div ref={root}>
-        <section className="hero">
-          <div className="hero-copy">
-            <Avatar avatar={profile.avatar} name={profile.name} alt="" className="mb-4" />
-            <div className="eyebrow" data-reveal>
-              <span className="status-dot" />
-              {profile.location} · {t('hero.availability')}
-            </div>
-            <RoleSwitch />
-            <p className="hero-name" data-reveal>
-              {profile.name} / {roleProfile.title}
-            </p>
-            <h1 data-hero-title key={headlineText}>
-              {headlineText}
-            </h1>
-            <p className="hero-lead" data-reveal>
-              {roleProfile.summary}
-            </p>
-            <div className="hero-actions" data-reveal>
-              <a className="primary-action enabled" href="#projects">
-                {t('hero.explore')}
-                <ArrowDownRight size={18} />
-              </a>
-              <a className="text-action" href={`mailto:${profile.contacts.email}`}>
-                {t('contact.write')}
-                <ArrowUpRight size={17} />
-              </a>
-            </div>
+        <section className={`hero hero--${locale}`} aria-labelledby="hero-name">
+          <div className="hero-coordinate hero-coordinate--top" aria-hidden="true">
+            48°42′ N / 44°30′ E
           </div>
-          <LiquidGlassCard className="signal-card" data-reveal>
-            <div className="signal-card-head">
-              <Sparkles size={17} />
-              <span>{t('proof.title')}</span>
-              <span className="live-chip">{t('proof.status')}</span>
-            </div>
-            <div className="signal-grid">
-              <article>
-                <strong>2 roles / 1 system</strong>
-                <span>{t('proof.role')}</span>
-              </article>
-              <article>
-                <strong>{roleProfile.skills.slice(0, 2).join(' + ')}</strong>
-                <span>{t('proof.delivery')}</span>
-              </article>
-              <article>
-                <strong>RU / EN</strong>
-                <span>{t('proof.languages')}</span>
-              </article>
-            </div>
-          </LiquidGlassCard>
+          <h1
+            className="hero-display-name"
+            id="hero-name"
+            data-hero-name
+            key={profile.name}
+          >
+            {profile.name}
+          </h1>
+          <div className="hero-role-dock" data-hero-dock>
+            <RoleSwitch />
+          </div>
+
+          <div className="hero-stage">
+            <aside className="hero-rail hero-rail--left" data-hero-rail>
+              <div className="hero-status">
+                <span className="status-dot" />
+                {profile.location} · {t('hero.availability')}
+              </div>
+              <div className="hero-actions">
+                <a className="primary-action enabled" href="#projects">
+                  {t('hero.explore')}
+                  <ArrowDownRight size={18} />
+                </a>
+                <a className="text-action" href={`mailto:${profile.contacts.email}`}>
+                  {t('contact.write')}
+                  <ArrowUpRight size={17} />
+                </a>
+              </div>
+            </aside>
+
+            <figure className="hero-portrait" data-hero-portrait>
+              <div className="hero-portrait-halo" aria-hidden="true" />
+              <img src={profile.avatar} alt={t('hero.portraitAlt')} />
+              <figcaption aria-hidden="true">
+                <span>PORTFOLIO.EXE</span>
+                <span>2026 / 001</span>
+              </figcaption>
+            </figure>
+
+            <aside className="hero-rail hero-rail--right" data-hero-rail>
+              <p className="hero-role-index">01 / {roleProfile.title}</p>
+              <h2 data-hero-title key={headlineText}>
+                {headlineText}
+              </h2>
+              <p className="hero-description">{roleProfile.summary}</p>
+              <div className="hero-stack" aria-label={t('hero.coreStack')}>
+                {roleProfile.skills.slice(0, 3).map((skill) => (
+                  <span key={skill}>{skill}</span>
+                ))}
+              </div>
+            </aside>
+          </div>
+
+          <div className="hero-coordinate hero-coordinate--bottom" aria-hidden="true">
+            AI APPLICATIONS · INTERFACES · EDGE SYSTEMS
+          </div>
         </section>
 
         <section
@@ -266,6 +299,31 @@ export function HomePage() {
                     <span key={item}>{item}</span>
                   ))}
                 </div>
+              </div>
+            </Link>
+          )}
+          {neurosportTma && (
+            <Link
+              className="featured-case glass-panel"
+              to={`/projects/${neurosportTma.slug}`}
+            >
+              <div className="featured-case-copy">
+                <span className="project-index">005 / {neurosportTma.status}</span>
+                <p className="card-eyebrow">{neurosportTma.eyebrow}</p>
+                <h3>{neurosportTma.title}</h3>
+                <p>{neurosportTma.roleFocus[role]}</p>
+                <div className="tag-row">
+                  {neurosportTma.stack.slice(0, 5).map((item) => (
+                    <span key={item}>{item}</span>
+                  ))}
+                </div>
+              </div>
+              <div className="featured-visual">
+                <img
+                  src={neurosportTma.media?.poster}
+                  alt={t('projects.neurosportTmaPosterAlt')}
+                />
+                <span>{t('projects.watch')} · 1 demo</span>
               </div>
             </Link>
           )}

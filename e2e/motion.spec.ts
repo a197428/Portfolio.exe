@@ -5,26 +5,37 @@ test('reveals the accessible hero and refreshes it across role and locale change
 }) => {
   await page.goto('/');
 
-  const heading = page.getByRole('heading', {
+  const name = page.getByRole('heading', {
     level: 1,
-    name: 'Interfaces that make intelligence tangible.',
+    name: 'Alexander Popoff',
   });
-  await expect(heading).toBeVisible();
-  await expect(heading.locator('.hero-split-word')).not.toHaveCount(0);
+  await expect(name).toBeVisible();
+  await expect(name.locator('.hero-name-word')).not.toHaveCount(0);
   await expect(page.getByRole('heading', { level: 1 })).toHaveCount(1);
+  await expect(
+    page.getByRole('heading', {
+      level: 2,
+      name: 'Interfaces that make intelligence tangible.',
+    }),
+  ).toBeVisible();
 
   await page.getByRole('button', { name: 'Frontend Developer' }).click();
   await expect(
     page.getByRole('heading', {
-      level: 1,
+      level: 2,
       name: 'Engineering the moment a product clicks.',
     }),
   ).toBeVisible();
-  await expect(page.locator('[data-hero-title] .hero-split-word')).not.toHaveCount(0);
+  await expect(page.getByRole('heading', { level: 1 })).toHaveAccessibleName(
+    'Alexander Popoff',
+  );
 
   await page.getByRole('button', { name: 'RU' }).click();
   await expect(page.getByRole('heading', { level: 1 })).toHaveCount(1);
-  await expect(page.locator('[data-hero-title] .hero-split-word')).not.toHaveCount(0);
+  await expect(page.getByRole('heading', { level: 1 })).toHaveAccessibleName(
+    'Александр Popoff',
+  );
+  await expect(page.locator('[data-hero-name] .hero-name-word')).not.toHaveCount(0);
 });
 
 test('applies scroll spotlight without taking ownership of card transforms', async ({
@@ -49,7 +60,8 @@ test('keeps content static when reduced motion is requested', async ({ page }) =
   await page.goto('/');
 
   await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
-  await expect(page.locator('.hero-split-word')).toHaveCount(0);
+  await expect(page.locator('.hero-name-word')).toHaveCount(0);
+  await expect(page.locator('[data-hero-portrait]')).toHaveCSS('opacity', '1');
 
   const card = page.locator('.featured-case').first();
   expect(await card.evaluate((element) => element.style.filter)).toBe('');

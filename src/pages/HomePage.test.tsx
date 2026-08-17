@@ -49,8 +49,29 @@ const bitrixLinkName = /Industrial Bitrix24 integrations/i;
 const localLinkName = /Local AI Assistant/i;
 const shortSportLinkName = /ShortSport AI Forge/i;
 const videoTranscriberLinkName = /Video Transcriber/i;
+const neurosportTmaLinkName = /Neurosport TMA/i;
 
 describe('HomePage featured cases', () => {
+  it('renders the editorial portrait hero with accessible role-specific copy', async () => {
+    const { container } = await renderHome('en', 'ai');
+
+    expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent(
+      'Alexander Popoff',
+    );
+    expect(
+      screen.getByRole('heading', {
+        level: 2,
+        name: 'Interfaces that make intelligence tangible.',
+      }),
+    ).toBeInTheDocument();
+    expect(screen.getByAltText('Portrait of Alexander Popoff')).toHaveAttribute(
+      'src',
+      '/image/Аватар_1.png',
+    );
+    expect(container.querySelector('.signal-card')).toBeNull();
+    expect(container.querySelector('[data-hero-portrait]')).not.toHaveClass('avatar');
+  });
+
   it('keeps the Bitrix24 card as the untouched copy→visual featured case', async () => {
     const { container } = await renderHome('en', 'ai');
 
@@ -185,6 +206,38 @@ describe('HomePage featured cases', () => {
         'Video Transcriber',
       ),
     ).toBeNull();
+  });
+
+  it('adds Neurosport TMA as an independent fifth featured card in both lenses', async () => {
+    const { container, rerender } = await renderHome('en', 'ai');
+    const project = screen.getByRole('link', { name: neurosportTmaLinkName });
+
+    expect(project).toHaveAttribute('href', '/projects/neurosport-tma');
+    expect(project).toHaveClass('featured-case', 'glass-panel');
+    expect(project).not.toHaveClass('featured-case--reverse');
+    expect(isBefore(cardCopy(project), cardVisual(project))).toBe(true);
+    expect(within(cardCopy(project)).getByText('005 / mvp')).toBeInTheDocument();
+    expect(cardVisual(project).querySelector('img')).toHaveAttribute(
+      'src',
+      '/media/neurosport-tma-poster.webp',
+    );
+    expect(cardVisual(project).querySelector('img')).toHaveAttribute(
+      'alt',
+      'Neurosport Telegram Mini App prediction interface',
+    );
+    expect(
+      within(container.querySelector('.portfolio-bento') as HTMLElement).queryByText(
+        'Neurosport TMA',
+      ),
+    ).toBeNull();
+
+    usePreferences.setState({ locale: 'en', role: 'frontend' });
+    rerender(
+      <MemoryRouter initialEntries={['/']}>
+        <HomePage />
+      </MemoryRouter>,
+    );
+    expect(screen.getByRole('link', { name: neurosportTmaLinkName })).toBeInTheDocument();
   });
 
   it('keeps all shared featured cases continuously numbered in the Frontend lens', async () => {

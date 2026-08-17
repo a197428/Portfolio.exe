@@ -16,6 +16,8 @@ export const ru = {
   },
   hero: {
     availability: 'Открыт к сильным продуктовым задачам',
+    portraitAlt: 'Портрет Александра Popoff',
+    coreStack: 'Основной стек',
     chatSoon: 'AI-версия — следующий этап',
     explore: 'Смотреть проекты',
   },
@@ -34,6 +36,7 @@ export const ru = {
     localPosterAlt: 'Интерфейс расширения Local AI Assistant',
     shortSportPosterAlt: 'Интерфейс редактора сторибордов ShortSport AI Forge',
     videoTranscriberPosterAlt: 'Интерфейс дашборда результатов Video Transcriber',
+    neurosportTmaPosterAlt: 'Интерфейс прогнозов Telegram Mini App Neurosport',
     liveDemo: 'Live demo',
   },
   method: {

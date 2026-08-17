@@ -1,9 +1,9 @@
 ---
 locale: en
-name: Alexander Popov
+name: Alexander Popoff
 location: Volgograd, Russia
 title: AI Application Developer · Full-stack + LLM integrations
-avatar: /image/avatar.jpg
+avatar: /image/Аватар_1.png
 summary: I build AI applications, agent systems, and integration products across interfaces, APIs, edge infrastructure, and production verification.
 roleProfiles:
   ai:

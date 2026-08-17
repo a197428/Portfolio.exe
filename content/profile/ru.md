@@ -1,8 +1,8 @@
 ---
 locale: ru
-name: Александр Попов
+name: Александр Popoff
 location: Волгоград
-avatar: /image/avatar.jpg
+avatar: /image/Аватар_1.png
 title: AI Application Developer · Fullstack + LLM-интеграции
 summary: Разрабатываю AI-приложения, агентные системы и интеграционные продукты — от интерфейса и API до edge-инфраструктуры и production-проверок.
 roleProfiles:

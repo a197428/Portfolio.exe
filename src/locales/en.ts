@@ -16,6 +16,8 @@ export const en = {
   },
   hero: {
     availability: 'Open to ambitious product work',
+    portraitAlt: 'Portrait of Alexander Popoff',
+    coreStack: 'Core stack',
     chatSoon: 'AI persona — coming next',
     explore: 'Explore projects',
   },
@@ -34,6 +36,7 @@ export const en = {
     localPosterAlt: 'Local AI Assistant extension interface',
     shortSportPosterAlt: 'ShortSport AI Forge storyboard editor interface',
     videoTranscriberPosterAlt: 'Video Transcriber results dashboard interface',
+    neurosportTmaPosterAlt: 'Neurosport Telegram Mini App prediction interface',
     liveDemo: 'Live demo',
   },
   method: {

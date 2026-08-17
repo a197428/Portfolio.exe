@@ -15,8 +15,8 @@ describe('portfolio content', () => {
   });
 
   it('provides the same published avatar for both profile locales', () => {
-    expect(getProfile('en').avatar).toBe('/image/avatar.jpg');
-    expect(getProfile('ru').avatar).toBe('/image/avatar.jpg');
+    expect(getProfile('en').avatar).toBe('/image/Аватар_1.png');
+    expect(getProfile('ru').avatar).toBe('/image/Аватар_1.png');
   });
 
   it('keeps Bitrix24 featured for both role lenses', () => {
@@ -156,9 +156,28 @@ describe('portfolio content', () => {
       'shortsport-ai-forge',
       'video-sut',
       'neurosport',
+      'neurosport-tma',
       'neuralgrid-international',
-      'energo-ai',
     ]);
+  });
+
+  it('keeps Neurosport TMA separate from the existing Neurosport project', () => {
+    const tma = getProject('neurosport-tma', 'en')!;
+    const site = getProject('neurosport', 'en')!;
+
+    expect(tma.roles).toEqual(['ai', 'frontend']);
+    expect(tma.source).toEqual({
+      repository: 'https://github.com/a197428/Neurosport-TMA',
+      commit: '55b50a797b8552e5430130b67cb6703fff567d30',
+      verifiedAt: '2026-08-17',
+      visibility: 'public',
+    });
+    expect(tma.media).toEqual({
+      poster: '/media/neurosport-tma-poster.webp',
+      video: '/media/neurosport-tma.mp4',
+    });
+    expect(site.source?.repository).toBe('https://github.com/a197428/Neurosport');
+    expect(site.roles).toEqual(['frontend']);
   });
 
   it('keeps private provenance hidden behind demo-only links', () => {
@@ -176,6 +195,7 @@ describe('portfolio content', () => {
       'shortsport-ai-forge',
       'video-sut',
       'neurosport',
+      'neurosport-tma',
       'neuralgrid-international',
       'energo-ai',
     ]) {

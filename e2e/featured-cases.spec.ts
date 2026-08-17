@@ -4,6 +4,7 @@ const BITRIX_HREF = '/projects/bitrix24-integrations';
 const LOCAL_HREF = '/projects/local-ai-assistant';
 const SHORTSPORT_HREF = '/projects/shortsport-ai-forge';
 const VIDEO_TRANSCRIBER_HREF = '/projects/video-sut';
+const NEUROSPORT_TMA_HREF = '/projects/neurosport-tma';
 
 async function featuredCards(page: Page) {
   const projects = page.locator('#projects');
@@ -11,11 +12,13 @@ async function featuredCards(page: Page) {
   const local = projects.locator(`a[href="${LOCAL_HREF}"]`);
   const shortSport = projects.locator(`a[href="${SHORTSPORT_HREF}"]`);
   const videoTranscriber = projects.locator(`a[href="${VIDEO_TRANSCRIBER_HREF}"]`);
+  const neurosportTma = projects.locator(`a[href="${NEUROSPORT_TMA_HREF}"]`);
   await expect(bitrix).toBeVisible();
   await expect(local).toBeVisible();
   await expect(shortSport).toBeVisible();
   await expect(videoTranscriber).toBeVisible();
-  return { projects, bitrix, local, shortSport, videoTranscriber };
+  await expect(neurosportTma).toBeVisible();
+  return { projects, bitrix, local, shortSport, videoTranscriber, neurosportTma };
 }
 
 test.describe('mirrored featured card', () => {
@@ -25,7 +28,8 @@ test.describe('mirrored featured card', () => {
     test.skip(testInfo.project.name === 'mobile-chromium', 'desktop-only');
     await page.goto('/');
 
-    const { bitrix, local, shortSport, videoTranscriber } = await featuredCards(page);
+    const { bitrix, local, shortSport, videoTranscriber, neurosportTma } =
+      await featuredCards(page);
 
     // Horizontal ordering: Bitrix text→media, Local media→text.
     const bitrixCopy = bitrix.locator('.featured-case-copy');
@@ -36,6 +40,8 @@ test.describe('mirrored featured card', () => {
     const shortSportVisual = shortSport.locator('.featured-visual');
     const videoCopy = videoTranscriber.locator('.featured-case-copy');
     const videoVisual = videoTranscriber.locator('.featured-visual');
+    const tmaCopy = neurosportTma.locator('.featured-case-copy');
+    const tmaVisual = neurosportTma.locator('.featured-visual');
     const bCopy = await bitrixCopy.boundingBox();
     const bVisual = await bitrixVisual.boundingBox();
     const lCopy = await localCopy.boundingBox();
@@ -44,22 +50,28 @@ test.describe('mirrored featured card', () => {
     const sVisual = await shortSportVisual.boundingBox();
     const vCopy = await videoCopy.boundingBox();
     const vVisual = await videoVisual.boundingBox();
+    const tCopy = await tmaCopy.boundingBox();
+    const tVisual = await tmaVisual.boundingBox();
     expect(bCopy!.x).toBeLessThan(bVisual!.x);
     expect(lVisual!.x).toBeLessThan(lCopy!.x);
     expect(sCopy!.x).toBeLessThan(sVisual!.x);
     expect(vVisual!.x).toBeLessThan(vCopy!.x);
+    expect(tCopy!.x).toBeLessThan(tVisual!.x);
 
     // Equal card geometry (same width, height within tolerance).
     const bitrixBox = await bitrix.boundingBox();
     const localBox = await local.boundingBox();
     const shortSportBox = await shortSport.boundingBox();
     const videoBox = await videoTranscriber.boundingBox();
+    const tmaBox = await neurosportTma.boundingBox();
     expect(Math.abs(bitrixBox!.width - localBox!.width)).toBeLessThanOrEqual(1);
     expect(Math.abs(bitrixBox!.height - localBox!.height)).toBeLessThanOrEqual(6);
     expect(Math.abs(bitrixBox!.width - shortSportBox!.width)).toBeLessThanOrEqual(1);
     expect(Math.abs(bitrixBox!.height - shortSportBox!.height)).toBeLessThanOrEqual(6);
     expect(Math.abs(bitrixBox!.width - videoBox!.width)).toBeLessThanOrEqual(1);
     expect(Math.abs(bitrixBox!.height - videoBox!.height)).toBeLessThanOrEqual(6);
+    expect(Math.abs(bitrixBox!.width - tmaBox!.width)).toBeLessThanOrEqual(1);
+    expect(Math.abs(bitrixBox!.height - tmaBox!.height)).toBeLessThanOrEqual(6);
 
     // Bitrix regression: untouched copy→visual structure, no reverse modifier.
     await expect(bitrix).toHaveClass(/featured-case/);
@@ -72,6 +84,8 @@ test.describe('mirrored featured card', () => {
     await expect(shortSport).toHaveAttribute('href', SHORTSPORT_HREF);
     await expect(videoTranscriber).toHaveClass(/featured-case--reverse/);
     await expect(videoTranscriber).toHaveAttribute('href', VIDEO_TRANSCRIBER_HREF);
+    await expect(neurosportTma).toHaveAttribute('href', NEUROSPORT_TMA_HREF);
+    await expect(neurosportTma).toContainText('005 / mvp');
     await expect(videoVisual).toContainText('Watch presentation · 1 demo');
 
     // Hover parity: both cards raise and glow identically.
@@ -102,10 +116,11 @@ test.describe('mirrored featured card', () => {
     test.skip(testInfo.project.name !== 'mobile-chromium', 'mobile-only');
     await page.goto('/');
 
-    const { bitrix, local, shortSport, videoTranscriber } = await featuredCards(page);
+    const { bitrix, local, shortSport, videoTranscriber, neurosportTma } =
+      await featuredCards(page);
 
     // Single column: copy and visual share the same track on both cards.
-    for (const card of [bitrix, local, shortSport, videoTranscriber]) {
+    for (const card of [bitrix, local, shortSport, videoTranscriber, neurosportTma]) {
       const copy = await card.locator('.featured-case-copy').boundingBox();
       const visual = await card.locator('.featured-visual').boundingBox();
       expect(Math.abs(copy!.x - visual!.x)).toBeLessThanOrEqual(1);
@@ -149,6 +164,7 @@ test.describe('mirrored featured card', () => {
     const projects = page.locator('#projects');
     const shortSport = projects.locator(`a[href="${SHORTSPORT_HREF}"]`);
     const videoTranscriber = projects.locator(`a[href="${VIDEO_TRANSCRIBER_HREF}"]`);
+    const neurosportTma = projects.locator(`a[href="${NEUROSPORT_TMA_HREF}"]`);
     await expect(projects.locator(`a[href="${LOCAL_HREF}"]`)).toHaveCount(0);
     await expect(shortSport).toContainText('002 / mvp');
 
@@ -156,6 +172,7 @@ test.describe('mirrored featured card', () => {
     const visual = await shortSport.locator('.featured-visual').boundingBox();
     expect(copy!.x).toBeLessThan(visual!.x);
     await expect(videoTranscriber).toContainText('003 / mvp');
+    await expect(neurosportTma).toContainText('005 / mvp');
     const videoCopy = await videoTranscriber.locator('.featured-case-copy').boundingBox();
     const videoVisual = await videoTranscriber.locator('.featured-visual').boundingBox();
     expect(videoVisual!.x).toBeLessThan(videoCopy!.x);
