@@ -1018,9 +1018,9 @@
       "status": "active",
       "roles": ["ai"],
       "featured": true,
-      "priority": { "ai": 0, "frontend": 0 },
+      "priority": { "ai": 30, "frontend": 0 },
       "summary": "An agent collects technical articles, scores relevance and depth, and delivers the strongest material through Telegram.",
-      "task": "Reduce noise across professional sources and produce a useful daily digest.",
+      "task": "Select strong material from The New Stack, InfoWorld, and Towards Data Science every day while reducing information noise.",
       "contribution": [
         "Built ingestion",
         "scoring",
@@ -1032,8 +1032,30 @@
         "Agent-first Understanding → Decision → Memory → Response pipeline",
         "URL and hash deduplication"
       ],
-      "stack": ["Cloudflare Workers", "D1", "Cron", "DeepSeek", "Telegram Bot API"],
-      "outcome": "An autonomous edge pipeline with digest commands and search over stored material.",
+      "capabilities": [
+        "Daily 10:00 MSK digest and an on-demand /digest command",
+        "Natural-language search across the accumulated article database",
+        "URL and hash deduplication before AI analysis",
+        "Source, relevance, and depth scoring with a five-point delivery threshold"
+      ],
+      "architecture": [
+        "A Cron Trigger starts the Cloudflare Worker every day at 07:00 UTC",
+        "D1 stores seen URLs, AI analysis, and user query history",
+        "RouterAI routes analysis exclusively to deepseek/deepseek-v3.2"
+      ],
+      "verification": [
+        "Base scores are 3 for The New Stack and InfoWorld and 2 for Towards Data Science",
+        "Scoring adds 2 points for relevance and 1 point for depth",
+        "The Telegram layer supports /digest, /help, and free-form search"
+      ],
+      "stack": [
+        "Cloudflare Workers",
+        "D1",
+        "Cron Triggers",
+        "DeepSeek v3.2",
+        "Telegram Bot API"
+      ],
+      "outcome": "A scheduled autonomous edge agent delivers a filtered digest and answers Telegram searches against accumulated articles.",
       "roleFocus": {
         "ai": "Agent processing, scoring, memory, and scheduled automation.",
         "frontend": "Telegram interaction and concise result presentation."
@@ -1045,6 +1067,7 @@
           "kind": "source"
         }
       ],
+      "media": { "poster": "/image/Read-Close-Bot.png" },
       "chapters": [],
       "body": ""
     },
@@ -1056,9 +1079,9 @@
       "status": "active",
       "roles": ["ai"],
       "featured": true,
-      "priority": { "ai": 0, "frontend": 0 },
+      "priority": { "ai": 30, "frontend": 0 },
       "summary": "Агент собирает технические статьи, оценивает их релевантность и глубину и отправляет лучшие материалы в Telegram.",
-      "task": "Сократить шум в профессиональных источниках и формировать полезный ежедневный дайджест.",
+      "task": "Ежедневно отбирать сильные материалы The New Stack, InfoWorld и Towards Data Science, сокращая информационный шум.",
       "contribution": [
         "Реализовал ingestion",
         "scoring",
@@ -1069,8 +1092,30 @@
         "Agent-first pipeline Understanding → Decision → Memory → Response",
         "Дедупликация по URL и hash"
       ],
-      "stack": ["Cloudflare Workers", "D1", "Cron", "DeepSeek", "Telegram Bot API"],
-      "outcome": "Автономный edge-пайплайн с командами дайджеста и поиском по накопленной базе.",
+      "capabilities": [
+        "Ежедневный дайджест в 10:00 МСК и команда /digest",
+        "Свободные поисковые запросы к накопленной базе статей",
+        "Дедупликация по URL и hash перед AI-анализом",
+        "Scoring по источнику, релевантности и глубине с порогом 5 баллов"
+      ],
+      "architecture": [
+        "Cron Trigger запускает Cloudflare Worker ежедневно в 07:00 UTC",
+        "D1 хранит просмотренные URL, AI-анализ и историю запросов",
+        "RouterAI направляет анализ только в deepseek/deepseek-v3.2"
+      ],
+      "verification": [
+        "Базовый score равен 3 для The New Stack и InfoWorld и 2 для Towards Data Science",
+        "К score добавляется 2 балла за релевантность и 1 за глубину",
+        "Telegram-слой поддерживает /digest, /help и свободный поиск"
+      ],
+      "stack": [
+        "Cloudflare Workers",
+        "D1",
+        "Cron Triggers",
+        "DeepSeek v3.2",
+        "Telegram Bot API"
+      ],
+      "outcome": "Автономный edge-агент по расписанию готовит отфильтрованный дайджест и отвечает на поисковые запросы из Telegram.",
       "roleFocus": {
         "ai": "Агентная обработка, scoring, память и автоматизация по расписанию.",
         "frontend": "Telegram-интерфейс и ясное представление результатов."
@@ -1082,6 +1127,7 @@
           "kind": "source"
         }
       ],
+      "media": { "poster": "/image/Read-Close-Bot.png" },
       "chapters": [],
       "body": ""
     },

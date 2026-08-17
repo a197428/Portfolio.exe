@@ -6,8 +6,9 @@ eyebrow: AI-агент · ежедневный дайджест
 status: active
 roles: [ai]
 featured: true
+priority: { ai: 30, frontend: 0 }
 summary: Агент собирает технические статьи, оценивает их релевантность и глубину и отправляет лучшие материалы в Telegram.
-task: Сократить шум в профессиональных источниках и формировать полезный ежедневный дайджест.
+task: Ежедневно отбирать сильные материалы The New Stack, InfoWorld и Towards Data Science, сокращая информационный шум.
 contribution:
   [
     Реализовал ingestion,
@@ -20,10 +21,25 @@ decisions:
     Agent-first pipeline Understanding → Decision → Memory → Response,
     Дедупликация по URL и hash,
   ]
-stack: [Cloudflare Workers, D1, Cron, DeepSeek, Telegram Bot API]
-outcome: Автономный edge-пайплайн с командами дайджеста и поиском по накопленной базе.
+capabilities:
+  - Ежедневный дайджест в 10:00 МСК и команда /digest
+  - Свободные поисковые запросы к накопленной базе статей
+  - Дедупликация по URL и hash перед AI-анализом
+  - Scoring по источнику, релевантности и глубине с порогом 5 баллов
+architecture:
+  - Cron Trigger запускает Cloudflare Worker ежедневно в 07:00 UTC
+  - D1 хранит просмотренные URL, AI-анализ и историю запросов
+  - RouterAI направляет анализ только в deepseek/deepseek-v3.2
+verification:
+  - Базовый score равен 3 для The New Stack и InfoWorld и 2 для Towards Data Science
+  - К score добавляется 2 балла за релевантность и 1 за глубину
+  - Telegram-слой поддерживает /digest, /help и свободный поиск
+stack: [Cloudflare Workers, D1, Cron Triggers, DeepSeek v3.2, Telegram Bot API]
+outcome: Автономный edge-агент по расписанию готовит отфильтрованный дайджест и отвечает на поисковые запросы из Telegram.
 roleFocus:
   ai: Агентная обработка, scoring, память и автоматизация по расписанию.
   frontend: Telegram-интерфейс и ясное представление результатов.
 links: [{ label: GitHub, href: https://github.com/a197428/Read_Cl_Bot }]
+media:
+  poster: /image/Read-Close-Bot.png
 ---

@@ -184,6 +184,26 @@ describe('portfolio content', () => {
     expect(site.roles).toEqual(['frontend']);
   });
 
+  it('publishes Read-Close-Bot as an AI-only image-backed case', () => {
+    for (const locale of ['en', 'ru'] as const) {
+      const project = getProject('read-close-bot', locale)!;
+      expect(project.roles).toEqual(['ai']);
+      expect(project.featured).toBe(true);
+      expect(project.priority).toEqual({ ai: 30, frontend: 0 });
+      expect(project.media).toEqual({ poster: '/image/Read-Close-Bot.png' });
+      expect(project.capabilities).toHaveLength(4);
+      expect(project.architecture).toHaveLength(3);
+      expect(project.verification).toHaveLength(3);
+    }
+
+    expect(getProjects('en', 'ai').some(({ slug }) => slug === 'read-close-bot')).toBe(
+      true,
+    );
+    expect(
+      getProjects('en', 'frontend').some(({ slug }) => slug === 'read-close-bot'),
+    ).toBe(false);
+  });
+
   it('keeps private provenance hidden behind demo-only links', () => {
     for (const slug of ['neurosport', 'neuralgrid-international', 'energo-ai']) {
       const project = getProject(slug, 'en')!;
@@ -200,6 +220,7 @@ describe('portfolio content', () => {
       'video-sut',
       'neurosport',
       'neurosport-tma',
+      'read-close-bot',
       'neuralgrid-international',
       'energo-ai',
     ]) {

@@ -50,6 +50,7 @@ const localLinkName = /Local AI Assistant/i;
 const shortSportLinkName = /ShortSport AI Forge/i;
 const videoTranscriberLinkName = /Video Transcriber/i;
 const neurosportTmaLinkName = /Neurosport TMA/i;
+const readCloseBotLinkName = /Read-Close-Bot/i;
 
 describe('HomePage featured cases', () => {
   it('renders the editorial portrait hero with accessible role-specific copy', async () => {
@@ -92,14 +93,10 @@ describe('HomePage featured cases', () => {
       within(cardVisual(bitrix)).getByText('Watch presentation · 3 demos'),
     ).toBeInTheDocument();
 
-    // Regression: Bento Grid still present with its own numbering.
+    // Regression: the Bento Grid container remains available for non-featured cases.
     const bento = container.querySelector('.portfolio-bento') as HTMLElement;
     expect(bento).not.toBeNull();
-    expect(
-      within(bento.querySelector('.bento-project') as HTMLElement).getByText((content) =>
-        content.startsWith('005'),
-      ),
-    ).toBeInTheDocument();
+    expect(within(bento).queryByText('Read-Close-Bot')).toBeNull();
   });
 
   it('mirrors Local AI Assistant as visual→copy with reverse modifier', async () => {
@@ -238,6 +235,36 @@ describe('HomePage featured cases', () => {
       </MemoryRouter>,
     );
     expect(screen.getByRole('link', { name: neurosportTmaLinkName })).toBeInTheDocument();
+  });
+
+  it('adds Read-Close-Bot as the mirrored sixth card only in the AI lens', async () => {
+    const { container, unmount } = await renderHome('en', 'ai');
+    const project = screen.getByRole('link', { name: readCloseBotLinkName });
+
+    expect(project).toHaveAttribute('href', '/projects/read-close-bot');
+    expect(project).toHaveClass('featured-case', 'featured-case--reverse', 'glass-panel');
+    expect(isBefore(cardVisual(project), cardCopy(project))).toBe(true);
+    expect(within(cardCopy(project)).getByText('006 / active')).toBeInTheDocument();
+    expect(cardVisual(project).querySelector('img')).toHaveAttribute(
+      'src',
+      '/image/Read-Close-Bot.png',
+    );
+    expect(cardVisual(project).querySelector('img')).toHaveAttribute(
+      'alt',
+      'Read-Close-Bot AI agent architecture',
+    );
+    expect(
+      within(cardVisual(project)).getByText('Agent architecture'),
+    ).toBeInTheDocument();
+    expect(
+      within(container.querySelector('.portfolio-bento') as HTMLElement).queryByText(
+        'Read-Close-Bot',
+      ),
+    ).toBeNull();
+
+    unmount();
+    await renderHome('en', 'frontend');
+    expect(screen.queryByRole('link', { name: readCloseBotLinkName })).toBeNull();
   });
 
   it('keeps all shared featured cases continuously numbered in the Frontend lens', async () => {

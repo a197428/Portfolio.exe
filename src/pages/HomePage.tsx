@@ -24,15 +24,17 @@ export function HomePage() {
   const shortSport = projects.find((project) => project.slug === 'shortsport-ai-forge');
   const videoTranscriber = projects.find((project) => project.slug === 'video-sut');
   const neurosportTma = projects.find((project) => project.slug === 'neurosport-tma');
+  const readCloseBot = projects.find((project) => project.slug === 'read-close-bot');
   const otherProjects = projects.filter(
     (project) =>
       project.slug !== featured.slug &&
       project.slug !== localAi?.slug &&
       project.slug !== shortSport?.slug &&
       project.slug !== videoTranscriber?.slug &&
-      project.slug !== neurosportTma?.slug,
+      project.slug !== neurosportTma?.slug &&
+      project.slug !== readCloseBot?.slug,
   );
-  const bentoStartIndex = role === 'ai' ? 5 : 4;
+  const bentoStartIndex = role === 'ai' ? 6 : 4;
   const root = useRef<HTMLDivElement>(null);
 
   useAnimeScope(root, () => {
@@ -334,6 +336,31 @@ export function HomePage() {
                   alt={t('projects.neurosportTmaPosterAlt')}
                 />
                 <span>{t('projects.watch')} · 1 demo</span>
+              </div>
+            </Link>
+          )}
+          {readCloseBot && (
+            <Link
+              className="featured-case featured-case--reverse glass-panel"
+              to={`/projects/${readCloseBot.slug}`}
+            >
+              <div className="featured-visual">
+                <img
+                  src={readCloseBot.media?.poster}
+                  alt={t('projects.readCloseBotPosterAlt')}
+                />
+                <span>{t('projects.architecturePreview')}</span>
+              </div>
+              <div className="featured-case-copy">
+                <span className="project-index">006 / {readCloseBot.status}</span>
+                <p className="card-eyebrow">{readCloseBot.eyebrow}</p>
+                <h3>{readCloseBot.title}</h3>
+                <p>{readCloseBot.roleFocus.ai}</p>
+                <div className="tag-row">
+                  {readCloseBot.stack.slice(0, 5).map((item) => (
+                    <span key={item}>{item}</span>
+                  ))}
+                </div>
               </div>
             </Link>
           )}

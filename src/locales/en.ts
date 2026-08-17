@@ -37,6 +37,8 @@ export const en = {
     shortSportPosterAlt: 'ShortSport AI Forge storyboard editor interface',
     videoTranscriberPosterAlt: 'Video Transcriber results dashboard interface',
     neurosportTmaPosterAlt: 'Neurosport Telegram Mini App prediction interface',
+    readCloseBotPosterAlt: 'Read-Close-Bot AI agent architecture',
+    architecturePreview: 'Agent architecture',
     liveDemo: 'Live demo',
   },
   method: {
