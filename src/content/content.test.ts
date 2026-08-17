@@ -135,6 +135,10 @@ describe('portfolio content', () => {
     expect(JSON.stringify(content)).not.toContain('github.com/dashboard');
   });
 
+  it('does not publish the removed LiveClasses project', () => {
+    expect(content.projects.some(({ slug }) => slug === 'liveclasses-agent')).toBe(false);
+  });
+
   it('provides role-specific profile copy in both locales', () => {
     for (const locale of ['en', 'ru'] as const) {
       const profile = getProfile(locale);

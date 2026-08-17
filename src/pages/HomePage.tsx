@@ -135,6 +135,59 @@ export function HomePage() {
     return () => split?.revert();
   }, [role, locale, headlineText]);
 
+  const shortSportCard = shortSport && (
+    <Link
+      className="featured-case glass-panel"
+      to={`/projects/${shortSport.slug}`}
+      key={shortSport.slug}
+    >
+      <div className="featured-case-copy">
+        <span className="project-index">003 / {shortSport.status}</span>
+        <p className="card-eyebrow">{shortSport.eyebrow}</p>
+        <h3>{shortSport.title}</h3>
+        <p>{shortSport.roleFocus[role]}</p>
+        <div className="tag-row">
+          {shortSport.stack.slice(0, 5).map((item) => (
+            <span key={item}>{item}</span>
+          ))}
+        </div>
+      </div>
+      <div className="featured-visual">
+        <img src={shortSport.media?.poster} alt={t('projects.shortSportPosterAlt')} />
+        <span>{t('projects.liveDemo')}</span>
+      </div>
+    </Link>
+  );
+
+  const videoTranscriberCard = videoTranscriber && (
+    <Link
+      className="featured-case featured-case--reverse glass-panel"
+      to={`/projects/${videoTranscriber.slug}`}
+      key={videoTranscriber.slug}
+    >
+      <div className="featured-visual">
+        <img
+          src={videoTranscriber.media?.poster}
+          alt={t('projects.videoTranscriberPosterAlt')}
+        />
+        <span>{t('projects.watch')} · 1 demo</span>
+      </div>
+      <div className="featured-case-copy">
+        <span className="project-index">
+          {role === 'ai' ? '004' : '002'} / {videoTranscriber.status}
+        </span>
+        <p className="card-eyebrow">{videoTranscriber.eyebrow}</p>
+        <h3>{videoTranscriber.title}</h3>
+        <p>{videoTranscriber.roleFocus[role]}</p>
+        <div className="tag-row">
+          {videoTranscriber.stack.slice(0, 5).map((item) => (
+            <span key={item}>{item}</span>
+          ))}
+        </div>
+      </div>
+    </Link>
+  );
+
   return (
     <Shell>
       <div ref={root}>
@@ -248,59 +301,16 @@ export function HomePage() {
               </div>
             </Link>
           )}
-          {shortSport && (
-            <Link
-              className="featured-case glass-panel"
-              to={`/projects/${shortSport.slug}`}
-            >
-              <div className="featured-case-copy">
-                <span className="project-index">
-                  {role === 'ai' ? '003' : '002'} / {shortSport.status}
-                </span>
-                <p className="card-eyebrow">{shortSport.eyebrow}</p>
-                <h3>{shortSport.title}</h3>
-                <p>{shortSport.roleFocus[role]}</p>
-                <div className="tag-row">
-                  {shortSport.stack.slice(0, 5).map((item) => (
-                    <span key={item}>{item}</span>
-                  ))}
-                </div>
-              </div>
-              <div className="featured-visual">
-                <img
-                  src={shortSport.media?.poster}
-                  alt={t('projects.shortSportPosterAlt')}
-                />
-                <span>{t('projects.liveDemo')}</span>
-              </div>
-            </Link>
-          )}
-          {videoTranscriber && (
-            <Link
-              className="featured-case featured-case--reverse glass-panel"
-              to={`/projects/${videoTranscriber.slug}`}
-            >
-              <div className="featured-visual">
-                <img
-                  src={videoTranscriber.media?.poster}
-                  alt={t('projects.videoTranscriberPosterAlt')}
-                />
-                <span>{t('projects.watch')} · 1 demo</span>
-              </div>
-              <div className="featured-case-copy">
-                <span className="project-index">
-                  {role === 'ai' ? '004' : '003'} / {videoTranscriber.status}
-                </span>
-                <p className="card-eyebrow">{videoTranscriber.eyebrow}</p>
-                <h3>{videoTranscriber.title}</h3>
-                <p>{videoTranscriber.roleFocus[role]}</p>
-                <div className="tag-row">
-                  {videoTranscriber.stack.slice(0, 5).map((item) => (
-                    <span key={item}>{item}</span>
-                  ))}
-                </div>
-              </div>
-            </Link>
+          {role === 'frontend' ? (
+            <>
+              {videoTranscriberCard}
+              {shortSportCard}
+            </>
+          ) : (
+            <>
+              {shortSportCard}
+              {videoTranscriberCard}
+            </>
           )}
           {neurosportTma && (
             <Link

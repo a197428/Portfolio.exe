@@ -248,9 +248,8 @@ describe('HomePage featured cases', () => {
     const bitrix = screen.getByRole('link', { name: bitrixLinkName });
     expect(isBefore(cardCopy(bitrix), cardVisual(bitrix))).toBe(true);
 
-    // ShortSport becomes 002.
     const shortSport = screen.getByRole('link', { name: shortSportLinkName });
-    expect(within(cardCopy(shortSport)).getByText('002 / mvp')).toBeInTheDocument();
+    expect(within(cardCopy(shortSport)).getByText('003 / mvp')).toBeInTheDocument();
     expect(
       within(cardCopy(shortSport)).getByText((content) =>
         content.startsWith('Built the multi-step'),
@@ -260,8 +259,9 @@ describe('HomePage featured cases', () => {
     const videoTranscriber = screen.getByRole('link', {
       name: videoTranscriberLinkName,
     });
-    expect(within(cardCopy(videoTranscriber)).getByText('003 / mvp')).toBeInTheDocument();
+    expect(within(cardCopy(videoTranscriber)).getByText('002 / mvp')).toBeInTheDocument();
     expect(isBefore(cardVisual(videoTranscriber), cardCopy(videoTranscriber))).toBe(true);
+    expect(isBefore(videoTranscriber, shortSport)).toBe(true);
 
     // Bento Grid resumes at 004.
     const bento = container.querySelector('.portfolio-bento') as HTMLElement;

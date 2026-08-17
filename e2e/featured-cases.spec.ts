@@ -154,7 +154,7 @@ test.describe('mirrored featured card', () => {
     await expect(page).toHaveURL(new RegExp(`${SHORTSPORT_HREF}$`));
   });
 
-  test('frontend: ShortSport stays copy→visual and numbering remains continuous', async ({
+  test('frontend: Video precedes ShortSport while both keep their geometry', async ({
     page,
   }, testInfo) => {
     test.skip(testInfo.project.name === 'mobile-chromium', 'desktop-only');
@@ -166,16 +166,19 @@ test.describe('mirrored featured card', () => {
     const videoTranscriber = projects.locator(`a[href="${VIDEO_TRANSCRIBER_HREF}"]`);
     const neurosportTma = projects.locator(`a[href="${NEUROSPORT_TMA_HREF}"]`);
     await expect(projects.locator(`a[href="${LOCAL_HREF}"]`)).toHaveCount(0);
-    await expect(shortSport).toContainText('002 / mvp');
+    await expect(shortSport).toContainText('003 / mvp');
 
     const copy = await shortSport.locator('.featured-case-copy').boundingBox();
     const visual = await shortSport.locator('.featured-visual').boundingBox();
     expect(copy!.x).toBeLessThan(visual!.x);
-    await expect(videoTranscriber).toContainText('003 / mvp');
+    await expect(videoTranscriber).toContainText('002 / mvp');
     await expect(neurosportTma).toContainText('005 / mvp');
     const videoCopy = await videoTranscriber.locator('.featured-case-copy').boundingBox();
     const videoVisual = await videoTranscriber.locator('.featured-visual').boundingBox();
     expect(videoVisual!.x).toBeLessThan(videoCopy!.x);
+    const shortSportBox = await shortSport.boundingBox();
+    const videoBox = await videoTranscriber.boundingBox();
+    expect(videoBox!.y).toBeLessThan(shortSportBox!.y);
     await expect(projects.locator('.bento-project').first()).toContainText('004');
   });
 });

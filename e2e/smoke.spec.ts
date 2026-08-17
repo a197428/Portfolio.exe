@@ -130,8 +130,8 @@ test('presents the ordered bilingual Frontend evidence with safe live demos', as
     .evaluateAll((links) => links.map((link) => link.getAttribute('href')));
   expect([...new Set(projectHrefs)].slice(0, 6)).toEqual([
     '/projects/bitrix24-integrations',
-    '/projects/shortsport-ai-forge',
     '/projects/video-sut',
+    '/projects/shortsport-ai-forge',
     '/projects/neurosport-tma',
     '/projects/neurosport',
     '/projects/neuralgrid-international',
