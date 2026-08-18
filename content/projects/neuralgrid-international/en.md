@@ -48,6 +48,7 @@ links:
     { label: GitHub, href: https://github.com/a197428/NeuralGrid, kind: source },
   ]
 media: { poster: /media/neuralgrid-international.webp }
+cardPreview: /image/preview/NeuralGrid International.png
 ---
 
 ## Verified context

@@ -439,6 +439,7 @@
         "visibility": "public"
       },
       "media": { "poster": "/media/energo-ai.webp" },
+      "cardPreview": "/image/preview/EnergoAI.png",
       "chapters": [],
       "body": "## Verified context\n\nThe pinned public commit substantiates the typed content layer, SVG visualization, interactive sections, and the 16 unit tests plus 15 Playwright scenarios."
     },
@@ -499,6 +500,7 @@
         "visibility": "public"
       },
       "media": { "poster": "/media/energo-ai.webp" },
+      "cardPreview": "/image/preview/EnergoAI.png",
       "chapters": [],
       "body": "## Доказательный контекст\n\nПинованный публичный commit подтверждает типизированный content layer, SVG-визуализации, интерактивные секции и 16 unit-тестов с 15 Playwright-сценариями."
     },
@@ -716,6 +718,7 @@
         "visibility": "public"
       },
       "media": { "poster": "/media/neuralgrid-international.webp" },
+      "cardPreview": "/image/preview/NeuralGrid International.png",
       "chapters": [],
       "body": "## Verified context\n\nThe pinned public commit shows a componentized React 19 landing: a fixed Canvas scene, GSAP ScrollTrigger reveals with Lenis smoothing, RU/EN routes, and localized SEO data. The production build passes; the absence of a test suite and the known routing debt are documented honestly rather than overstated."
     },
@@ -779,6 +782,7 @@
         "visibility": "public"
       },
       "media": { "poster": "/media/neuralgrid-international.webp" },
+      "cardPreview": "/image/preview/NeuralGrid International.png",
       "chapters": [],
       "body": "## Доказательный контекст\n\nПинованный публичный commit показывает компонентный React 19 лендинг: фиксированную Canvas-сцену, GSAP ScrollTrigger-раскрытия со сглаживанием Lenis, RU/EN маршруты и локализованные SEO-данные. Production build проходит; отсутствие тестового suite и известный routing-долг задокументированы честно, без преувеличений."
     },
@@ -853,6 +857,7 @@
         "visibility": "public"
       },
       "media": { "poster": "/media/neurosport.webp" },
+      "cardPreview": "/image/preview/Neurosport.png",
       "chapters": [],
       "body": "## Verified context\n\nThe pinned public commit substantiates the demo pivot: a bilingual prototype with typed content, a Three.js scene, and an explicit boundary between concept material and implemented claims."
     },
@@ -927,6 +932,7 @@
         "visibility": "public"
       },
       "media": { "poster": "/media/neurosport.webp" },
+      "cardPreview": "/image/preview/Neurosport.png",
       "chapters": [],
       "body": "## Доказательный контекст\n\nПинованный публичный commit подтверждает demo pivot: двуязычный прототип с типизированным контентом, Three.js-сценой и явной границей между концептом и реализованными заявлениями."
     },

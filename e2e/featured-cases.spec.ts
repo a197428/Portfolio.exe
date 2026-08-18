@@ -362,11 +362,11 @@ test.describe('mirrored featured card', () => {
     expect(neurosportBox!.y).toBeLessThan(neuralGridBox!.y);
     expect(neuralGridBox!.y).toBeLessThan(energoBox!.y);
 
-    // The three site projects cover with their 1280×800 poster media and Live demo label.
+    // The three site projects cover with their preview images and Live demo label.
     for (const [href, path] of [
-      [NEUROSPORT_HREF, '/media/neurosport.webp'],
-      [NEURALGRID_HREF, '/media/neuralgrid-international.webp'],
-      [ENERGO_HREF, '/media/energo-ai.webp'],
+      [NEUROSPORT_HREF, '/image/preview/Neurosport.png'],
+      [NEURALGRID_HREF, '/image/preview/NeuralGrid International.png'],
+      [ENERGO_HREF, '/image/preview/EnergoAI.png'],
     ] as const) {
       const img = projects.locator(`a[href="${href}"] .featured-visual img`);
       await expect(img).toHaveAttribute('src', path);
@@ -425,13 +425,17 @@ test.describe('mirrored featured card', () => {
   test('case pages open public Live demo and GitHub links in new tabs', async ({
     page,
   }) => {
-    const publicSources: Array<[string, string]> = [
-      ['neurosport', 'https://github.com/a197428/Neurosport'],
-      ['neuralgrid-international', 'https://github.com/a197428/NeuralGrid'],
-      ['energo-ai', 'https://github.com/a197428/EnergoAI'],
+    const publicSources: Array<[string, string, string]> = [
+      ['neurosport', 'https://github.com/a197428/Neurosport', '/media/neurosport.webp'],
+      [
+        'neuralgrid-international',
+        'https://github.com/a197428/NeuralGrid',
+        '/media/neuralgrid-international.webp',
+      ],
+      ['energo-ai', 'https://github.com/a197428/EnergoAI', '/media/energo-ai.webp'],
     ];
 
-    for (const [slug, repo] of publicSources) {
+    for (const [slug, repo, poster] of publicSources) {
       await page.goto(`/projects/${slug}`);
       const live = page.getByRole('link', { name: 'Live demo' });
       await expect(live).toHaveAttribute('target', '_blank');
@@ -439,6 +443,12 @@ test.describe('mirrored featured card', () => {
       await expect(github).toHaveAttribute('href', repo);
       await expect(github).toHaveAttribute('target', '_blank');
       await expect(github).toHaveAttribute('rel', 'noreferrer');
+
+      // Detail pages keep the first-screen media and never reuse the preview covers.
+      const media = page.locator(`main img[src="${poster}"]`);
+      await expect(media).toBeVisible();
+      await expect.poll(() => media.evaluate((el) => el.naturalWidth)).toBeGreaterThan(0);
+      await expect(page.locator('img[src^="/image/preview/"]')).toHaveCount(0);
     }
   });
 });

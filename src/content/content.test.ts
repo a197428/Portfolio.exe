@@ -236,6 +236,9 @@ describe('portfolio content', () => {
       'neurosport-tma',
       'read-close-bot',
       'todo-app',
+      'neurosport',
+      'neuralgrid-international',
+      'energo-ai',
     ];
     for (const slug of slugs) {
       const english = getProject(slug, 'en')!;

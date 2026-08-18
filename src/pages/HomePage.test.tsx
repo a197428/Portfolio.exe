@@ -310,9 +310,9 @@ describe('HomePage featured cases', () => {
     expect(isBefore(neurosport, neuralGrid)).toBe(true);
     expect(isBefore(neuralGrid, energoAi)).toBe(true);
 
-    // The three site projects use their poster covers and the Live demo label.
+    // The three site projects use their preview covers and the Live demo label.
     const neurosportImg = cardVisual(neurosport).querySelector('img');
-    expect(neurosportImg).toHaveAttribute('src', '/media/neurosport.webp');
+    expect(neurosportImg).toHaveAttribute('src', '/image/preview/Neurosport.png');
     expect(neurosportImg).toHaveAttribute(
       'alt',
       'Neurosport new sport prediction platform',
@@ -320,7 +320,10 @@ describe('HomePage featured cases', () => {
     expect(within(cardVisual(neurosport)).getByText('Live demo')).toBeInTheDocument();
 
     const neuralGridImg = cardVisual(neuralGrid).querySelector('img');
-    expect(neuralGridImg).toHaveAttribute('src', '/media/neuralgrid-international.webp');
+    expect(neuralGridImg).toHaveAttribute(
+      'src',
+      '/image/preview/NeuralGrid International.png',
+    );
     expect(neuralGridImg).toHaveAttribute(
       'alt',
       'NeuralGrid International technology landing',
@@ -328,7 +331,7 @@ describe('HomePage featured cases', () => {
     expect(within(cardVisual(neuralGrid)).getByText('Live demo')).toBeInTheDocument();
 
     const energoAiImg = cardVisual(energoAi).querySelector('img');
-    expect(energoAiImg).toHaveAttribute('src', '/media/energo-ai.webp');
+    expect(energoAiImg).toHaveAttribute('src', '/image/preview/EnergoAI.png');
     expect(energoAiImg).toHaveAttribute(
       'alt',
       'EnergoAI energy intelligence product site',

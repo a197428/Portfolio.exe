@@ -48,6 +48,7 @@ links:
     { label: GitHub, href: https://github.com/a197428/Neurosport, kind: source },
   ]
 media: { poster: /media/neurosport.webp }
+cardPreview: /image/preview/Neurosport.png
 ---
 
 ## Verified context

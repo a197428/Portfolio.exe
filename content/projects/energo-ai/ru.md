@@ -45,6 +45,7 @@ links:
     { label: GitHub, href: https://github.com/a197428/EnergoAI, kind: source },
   ]
 media: { poster: /media/energo-ai.webp }
+cardPreview: /image/preview/EnergoAI.png
 ---
 
 ## Доказательный контекст
