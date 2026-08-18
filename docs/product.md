@@ -6,7 +6,7 @@ Portfolio.exe targets hiring managers and technical interviewers evaluating one 
 AI Developer and Frontend Developer roles. Both roles have equal weight. Visitors choose a lens;
 the choice changes emphasis and project ordering without splitting the site into separate products.
 
-The defining future interaction is: ask the candidate's AI persona a question, or paste a vacancy,
+The defining interaction is: ask Bob a question, or paste a vacancy,
 and receive an evidence-backed answer linked to relevant experience and projects.
 
 ## Initial milestone
@@ -20,7 +20,7 @@ and receive an evidence-backed answer linked to relevant experience and projects
 
 ## Published portfolio content
 
-- Alexander Popov profile and verified contact links in RU and EN.
+- Alexander Popoff profile and verified contact links in RU and EN.
 - Industrial Bitrix24 integrations as one featured case: Acquiring, ApartSharing, and TTLock.
 - Role-aware project catalogue sourced from validated Markdown.
 - Full public Bitrix24 presentation with product chapter navigation.
@@ -28,18 +28,18 @@ and receive an evidence-backed answer linked to relevant experience and projects
 - Frontend evidence sequence: Bitrix24, ShortSport, Neurosport, NeuralGrid, and EnergoAI.
 - Public live demos for four modern product cases with private provenance kept out of the UI.
 
-## MVP after the foundation
+## Bob MVP
 
-- RAG chat grounded exclusively in verified portfolio content.
+- RU/EN RAG chat grounded exclusively in verified portfolio content, with visible citations.
 - Vacancy description analysis with relevant evidence and case selection.
-- Embedded demonstrations where permitted; external live demos for current Frontend cases.
 - Transparent distinction between retrieved facts and model inference.
+- GigaChat-3-Ultra generation, GigaChat Embeddings, and Cloudflare Vectorize retrieval.
+- Public abuse protection with rate limiting and Turnstile escalation; no conversation retention.
 
 ## Explicitly deferred
 
 - Executable or generated code experiences.
-- Voice, avatars, AR, and other novelty layers.
-- Model selection details, chat retention, product analytics, and an editorial admin UI.
+- Voice, long-term memory, conversation analytics, OpenRouter fallback, and an editorial admin UI.
 
 ## Success principles
 

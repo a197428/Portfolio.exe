@@ -27,11 +27,13 @@ Anime.js owns custom timelines and scroll observers. Every animation is scoped t
 cleaned up on unmount, and bypassed when `prefers-reduced-motion` is active. Motion remains only as
 an internal dependency of selected Kokonut components.
 
-## Content and future RAG
+## Content and grounded retrieval
 
 Verified knowledge is authored as Markdown in `content/profile`, `content/projects`, and
-`content/facts`. A later ingestion command will chunk text, attach locale,
-role, source, and project metadata, create embeddings, and upsert them into Vectorize.
+`content/resume`, and `content/facts`. `npm run content:build` validates localized content and
+creates stable knowledge chunks. `npm run knowledge:index` requests 1024-dimensional GigaChat
+`Embeddings`, idempotently upserts them into the `portfolio-knowledge` Vectorize V2 index, and
+removes obsolete IDs only after a successful upsert.
 
 The current build already validates localized profile and project frontmatter with Zod through
 `npm run content:build`, then generates the typed client dataset in `src/generated/content.json`.
@@ -48,19 +50,28 @@ This provenance is retained for future RAG citations but is not automatically re
 link. Product status describes the verified implementation boundary: for example, a production UI
 must not imply that its public snapshot contains a connected production API.
 
-The planned request path is:
+The `/api/chat` request path is:
 
 1. Validate the question or vacancy description.
 2. Retrieve relevant verified chunks from Vectorize.
 3. Build a provider-neutral prompt with explicit citations and uncertainty rules.
-4. Call GigaChat through an `LLMProvider`; retry an eligible provider failure through OpenRouter.
+4. Call `GigaChat-3-Ultra` through the provider boundary and stream its grounded answer.
 5. Stream the answer and evidence to the client.
 
-Provider credentials remain Worker secrets. D1 is introduced only if structured metadata, consented
-history, or analytics create a concrete relational requirement.
+Provider credentials and the Turnstile secret remain Worker secrets. OAuth tokens are shared only
+inside a Worker isolate and refreshed before expiry. Vectorize metadata contains the small source
+chunk and citation fields, so D1 is not part of this MVP. Messages remain in React state for the
+current tab and are neither persisted nor included in observability logs.
 
-## Future AI boundary
+Production setup is explicit: create the V2 index with `npm run knowledge:create`, store
+`GIGACHAT_AUTH_KEY` and `TURNSTILE_SECRET_KEY` using `wrangler secret put`, configure the public
+`TURNSTILE_SITE_KEY`/expected hostname as Worker variables, and run `npm run knowledge:index` only
+after the publication-approved RU/EN resume and facts are complete. Never place provider secrets in
+Vite variables or generated content.
 
-`LLMProvider` will expose provider-neutral generation and streaming contracts. UI components will
-consume portfolio-specific API responses, never provider SDK objects. Failure categories must
-distinguish invalid input, rate limiting, provider unavailability, and exhausted fallback.
+## AI boundary
+
+The GigaChat adapter is isolated from the Hono route and UI components consume portfolio-specific
+SSE events, never provider objects. The contract distinguishes validation, missing evidence, rate
+limits, Turnstile challenge, provider authentication, provider availability, and interrupted
+streams. OpenRouter fallback remains outside the MVP.

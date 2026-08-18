@@ -9,10 +9,12 @@
 | Accepted | Tailwind v4 + shadcn + Kokonut UI source components   | Enables fast composition while retaining ownership of component code.                 |
 | Accepted | Anime.js owns custom motion                           | Provides scoped React animation and scroll orchestration.                             |
 | Accepted | Markdown in Git is the verified knowledge source      | Makes claims reviewable, versioned, and easy to index.                                |
-| Accepted | Provider-neutral AI boundary                          | GigaChat is expected first; OpenRouter is the planned fallback.                       |
-| Deferred | Exact GigaChat and OpenRouter models                  | Decide during the AI vertical slice using quality, latency, and cost tests.           |
+| Accepted | GigaChat generation and embeddings                    | Bob uses GigaChat-3-Ultra and 1024-dimensional Embeddings behind a provider boundary. |
+| Out      | OpenRouter fallback in Bob MVP                        | One observable provider keeps the first grounded vertical slice testable.             |
 | Accepted | External live demos for available projects            | Makes interfaces testable without exposing private repositories.                      |
-| Deferred | Chat retention and analytics                          | Requires a privacy and product-value decision before adding storage.                  |
+| Accepted | No chat retention or conversation analytics in MVP    | Messages remain in the current tab; logs contain operational aggregates only.         |
+| Accepted | Vectorize metadata without D1 for Bob MVP             | Small grounded chunks and citations need no relational hop or stored conversations.   |
+| Accepted | Turnstile after anonymous rate-limit escalation       | Keeps normal access frictionless while protecting costly public generation.           |
 | Accepted | Kokonut background, liquid card, bento, and AI prompt | Registry source is adapted in place for React/Vite and the portfolio design system.   |
 | Accepted | Bitrix24 suite is one case with three products        | Preserves the shared industrial context while exposing product-specific decisions.    |
 | Accepted | Product-specific presentations are Static Assets      | Three small MP4 files provide deterministic product navigation below asset limits.    |

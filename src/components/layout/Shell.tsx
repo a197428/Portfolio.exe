@@ -2,6 +2,7 @@ import { type ReactNode } from 'react';
 import { Link } from 'react-router-dom';
 import { LocaleSwitch } from '@/components/controls/LocaleSwitch';
 import BackgroundPaths from '@/components/kokonutui/background-paths';
+import { BobLauncher } from '@/features/bob/BobLauncher';
 
 export function Shell({ children }: { children: ReactNode }) {
   return (
@@ -16,6 +17,7 @@ export function Shell({ children }: { children: ReactNode }) {
         <LocaleSwitch />
       </header>
       <main>{children}</main>
+      <BobLauncher />
     </div>
   );
 }

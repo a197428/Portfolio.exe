@@ -4,7 +4,7 @@ import { useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { RoleSwitch } from '@/components/controls/RoleSwitch';
-import AIPrompt from '@/components/kokonutui/ai-prompt';
+import { BobIntro } from '@/features/bob/BobIntro';
 import BentoGrid from '@/components/kokonutui/bento-grid';
 import { Shell } from '@/components/layout/Shell';
 import { getProfile, getProjects } from '@/content';
@@ -528,10 +528,7 @@ export function HomePage() {
             <h2 id="ai-preview-title">{t('aiPreview.title')}</h2>
             <p>{t('aiPreview.text')}</p>
           </div>
-          <AIPrompt
-            title={t('aiPreview.label')}
-            placeholder={t('aiPreview.placeholder')}
-          />
+          <BobIntro />
         </section>
 
         <section className="contact-section glass-panel" id="contact">

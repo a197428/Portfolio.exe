@@ -4,7 +4,9 @@
   "version": "0.1.0",
   "type": "module",
   "scripts": {
-    "content:build": "node --import tsx scripts/build-content.ts",
+    "content:build": "node --import tsx scripts/build-content.ts && node --import tsx scripts/build-knowledge.ts",
+    "knowledge:index": "npm run content:build && node --import tsx scripts/index-knowledge.ts",
+    "knowledge:create": "wrangler vectorize create portfolio-knowledge --dimensions 1024 --metric cosine",
     "dev": "npm run content:build && vite",
     "build": "npm run content:build && tsc -b && vite build",
     "preview": "vite preview",

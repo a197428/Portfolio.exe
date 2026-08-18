@@ -1,4 +1,5 @@
 # Fact knowledge
 
-Store small, reusable verified facts that do not naturally belong to one resume position or project.
-Do not add personality claims or inferred skills as facts.
+Use this directory for publication-approved facts not represented by profiles, projects, or the
+resume. Add matching RU and EN Markdown documents with the same frontmatter `key`. Do not include secrets, private contact data,
+unsupported personality claims, salary expectations, or model-generated interpretation.

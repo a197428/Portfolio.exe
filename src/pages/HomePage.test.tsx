@@ -1,8 +1,10 @@
 import { render, screen, within } from '@testing-library/react';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { MemoryRouter } from 'react-router-dom';
 import { beforeEach, describe, expect, it } from 'vitest';
 import i18n from '@/app/i18n';
 import { usePreferences, type Locale, type Role } from '@/features/preferences/store';
+import { BobProvider } from '@/features/bob/BobProvider';
 import { HomePage } from '@/pages/HomePage';
 
 // Force reduced motion so animejs/framer-motion do not run in jsdom.
@@ -26,9 +28,15 @@ async function renderHome(locale: Locale, role: Role) {
   usePreferences.setState({ locale, role });
   await i18n.changeLanguage(locale);
   const view = render(
-    <MemoryRouter initialEntries={['/']}>
-      <HomePage />
-    </MemoryRouter>,
+    <QueryClientProvider
+      client={new QueryClient({ defaultOptions: { queries: { retry: false } } })}
+    >
+      <MemoryRouter initialEntries={['/']}>
+        <BobProvider>
+          <HomePage />
+        </BobProvider>
+      </MemoryRouter>
+    </QueryClientProvider>,
   );
   return view;
 }
@@ -205,7 +213,7 @@ describe('HomePage featured cases', () => {
   });
 
   it('adds Neurosport TMA as an independent fifth featured card in both lenses', async () => {
-    const { container, rerender } = await renderHome('en', 'ai');
+    const { container, unmount } = await renderHome('en', 'ai');
     const project = screen.getByRole('link', { name: neurosportTmaLinkName });
 
     expect(project).toHaveAttribute('href', '/projects/neurosport-tma');
@@ -223,12 +231,8 @@ describe('HomePage featured cases', () => {
     );
     expect(container.querySelector('.portfolio-bento')).toBeNull();
 
-    usePreferences.setState({ locale: 'en', role: 'frontend' });
-    rerender(
-      <MemoryRouter initialEntries={['/']}>
-        <HomePage />
-      </MemoryRouter>,
-    );
+    unmount();
+    await renderHome('en', 'frontend');
     expect(screen.getByRole('link', { name: neurosportTmaLinkName })).toBeInTheDocument();
   });
 

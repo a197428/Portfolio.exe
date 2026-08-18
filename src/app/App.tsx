@@ -2,6 +2,8 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { useState } from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import { AppRoutes } from '@/app/router';
+import { BobDialog } from '@/features/bob/BobDialog';
+import { BobProvider } from '@/features/bob/BobProvider';
 
 export function App() {
   const [queryClient] = useState(
@@ -16,7 +18,10 @@ export function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
-        <AppRoutes />
+        <BobProvider>
+          <AppRoutes />
+          <BobDialog />
+        </BobProvider>
       </BrowserRouter>
     </QueryClientProvider>
   );

@@ -1,0 +1,84 @@
+import { afterEach, describe, expect, it, vi } from 'vitest';
+import { app } from './index';
+
+const requestBody = {
+  mode: 'qa',
+  message: 'What does the agent use?',
+  history: [],
+  locale: 'en',
+  role: 'ai',
+};
+
+afterEach(() => vi.restoreAllMocks());
+
+describe('Bob Worker API', () => {
+  it('rejects malformed input before contacting providers', async () => {
+    const response = await app.request('/api/chat', { method: 'POST', body: '{}' });
+    expect(response.status).toBe(400);
+    await expect(response.json()).resolves.toMatchObject({
+      error: { code: 'validation' },
+    });
+  });
+
+  it('streams only retrieved evidence and safe citations', async () => {
+    const encoder = new TextEncoder();
+    const upstream = new ReadableStream({
+      start(controller) {
+        controller.enqueue(
+          encoder.encode(
+            'data: {"choices":[{"delta":{"content":"Grounded answer [1]"}}]}\n\n',
+          ),
+        );
+        controller.enqueue(encoder.encode('data: [DONE]\n\n'));
+        controller.close();
+      },
+    });
+    vi.stubGlobal(
+      'fetch',
+      vi.fn(async (input: string | URL | Request) => {
+        const url = String(input);
+        if (url.includes('/oauth'))
+          return Response.json({
+            access_token: 'access',
+            expires_at: Date.now() + 600_000,
+          });
+        if (url.includes('/embeddings'))
+          return Response.json({ data: [{ embedding: Array(1024).fill(0.01) }] });
+        if (url.includes('/chat/completions')) return new Response(upstream);
+        throw new Error(`Unexpected URL: ${url}`);
+      }),
+    );
+    const knowledge = {
+      query: vi.fn(async () => ({
+        matches: [
+          {
+            id: 'read-close',
+            score: 0.9,
+            metadata: {
+              type: 'project',
+              title: 'Read-Close-Bot',
+              href: '/projects/read-close-bot',
+              roles: ['ai'],
+              content: 'Runs on Cloudflare Workers.',
+            },
+          },
+        ],
+      })),
+    } as unknown as VectorizeIndex;
+    const response = await app.request(
+      '/api/chat',
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(requestBody),
+      },
+      { GIGACHAT_AUTH_KEY: 'authorization-secret', KNOWLEDGE: knowledge },
+    );
+    expect(response.status).toBe(200);
+    expect(response.headers.get('Cache-Control')).toBe('no-store');
+    const body = await response.text();
+    expect(body).toContain('Read-Close-Bot');
+    expect(body).toContain('Grounded answer [1]');
+    expect(body).not.toContain('authorization-secret');
+  });
+});
