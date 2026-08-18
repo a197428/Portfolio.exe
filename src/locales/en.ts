@@ -106,7 +106,7 @@ export const en = {
       rate_limit: 'Too many requests. Give Bob a minute to catch his breath.',
       challenge_required: 'Please verify that you are human, then retry.',
       provider_auth: 'The answer service is temporarily not authorized.',
-      provider_unavailable: 'GigaChat is unavailable right now. You can retry.',
+      provider_unavailable: 'The AI service is unavailable right now. You can retry.',
       stream_interrupted: 'The connection ended before the answer was complete.',
     },
   },

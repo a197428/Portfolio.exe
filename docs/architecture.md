@@ -55,23 +55,26 @@ The `/api/chat` request path is:
 1. Validate the question or vacancy description.
 2. Retrieve relevant verified chunks from Vectorize.
 3. Build a provider-neutral prompt with explicit citations and uncertainty rules.
-4. Call `GigaChat-3-Ultra` through the provider boundary and stream its grounded answer.
+4. Call OpenRouter's Nemotron free endpoint through the provider boundary and stream its grounded answer.
 5. Stream the answer and evidence to the client.
 
-Provider credentials and the Turnstile secret remain Worker secrets. OAuth tokens are shared only
-inside a Worker isolate and refreshed before expiry. Vectorize metadata contains the small source
+Provider credentials and the Turnstile secret remain Worker secrets. GigaChat OAuth tokens used by
+the transitional embedding path are shared inside a Worker isolate and refreshed before expiry. Vectorize metadata contains the small source
 chunk and citation fields, so D1 is not part of this MVP. Messages remain in React state for the
 current tab and are neither persisted nor included in observability logs.
+The GigaChat query-embedding path is opt-in through `GIGACHAT_EMBEDDINGS_ENABLED=true`;
+without it, Bob uses deterministic lexical retrieval and never contacts GigaChat at runtime.
 
 Production setup is explicit: create the V2 index with `npm run knowledge:create`, store
-`GIGACHAT_AUTH_KEY` and `TURNSTILE_SECRET_KEY` using `wrangler secret put`, configure the public
+`OPENROUTER_API_KEY`, optional `GIGACHAT_AUTH_KEY`, and `TURNSTILE_SECRET_KEY` using `wrangler secret put`, configure the public
 `TURNSTILE_SITE_KEY`/expected hostname as Worker variables, and run `npm run knowledge:index` only
 after the publication-approved RU/EN resume and facts are complete. Never place provider secrets in
-Vite variables or generated content.
+Vite variables or generated content. The build removes Cloudflare's local `.dev.vars` copy from
+`dist`; production deployments receive secrets only from Worker secret bindings.
 
 ## AI boundary
 
-The GigaChat adapter is isolated from the Hono route and UI components consume portfolio-specific
+The OpenRouter generation adapter and GigaChat embedding adapter are isolated from the Hono route. UI components consume portfolio-specific
 SSE events, never provider objects. The contract distinguishes validation, missing evidence, rate
 limits, Turnstile challenge, provider authentication, provider availability, and interrupted
-streams. OpenRouter fallback remains outside the MVP.
+streams. Generation-provider failover remains deferred.

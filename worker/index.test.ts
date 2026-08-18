@@ -72,7 +72,12 @@ describe('Bob Worker API', () => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(requestBody),
       },
-      { GIGACHAT_AUTH_KEY: 'authorization-secret', KNOWLEDGE: knowledge },
+      {
+        OPENROUTER_API_KEY: 'openrouter-secret',
+        GIGACHAT_AUTH_KEY: 'authorization-secret',
+        GIGACHAT_EMBEDDINGS_ENABLED: 'true',
+        KNOWLEDGE: knowledge,
+      },
     );
     expect(response.status).toBe(200);
     expect(response.headers.get('Cache-Control')).toBe('no-store');
@@ -80,5 +85,6 @@ describe('Bob Worker API', () => {
     expect(body).toContain('Read-Close-Bot');
     expect(body).toContain('Grounded answer [1]');
     expect(body).not.toContain('authorization-secret');
+    expect(body).not.toContain('openrouter-secret');
   });
 });

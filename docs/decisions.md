@@ -9,8 +9,9 @@
 | Accepted | Tailwind v4 + shadcn + Kokonut UI source components   | Enables fast composition while retaining ownership of component code.                 |
 | Accepted | Anime.js owns custom motion                           | Provides scoped React animation and scroll orchestration.                             |
 | Accepted | Markdown in Git is the verified knowledge source      | Makes claims reviewable, versioned, and easy to index.                                |
-| Accepted | GigaChat generation and embeddings                    | Bob uses GigaChat-3-Ultra and 1024-dimensional Embeddings behind a provider boundary. |
-| Out      | OpenRouter fallback in Bob MVP                        | One observable provider keeps the first grounded vertical slice testable.             |
+| Accepted | OpenRouter as Bob's primary generator                 | The free Nemotron endpoint enables local and preview operation without GigaChat TLS.  |
+| Accepted | GigaChat embeddings during Vectorize transition       | Existing 1024-dimensional vectors remain compatible while retrieval gains fallback.   |
+| Deferred | Generation-provider failover                          | GigaChat or another model will be added after the primary path is validated.          |
 | Accepted | External live demos for available projects            | Makes interfaces testable without exposing private repositories.                      |
 | Accepted | No chat retention or conversation analytics in MVP    | Messages remain in the current tab; logs contain operational aggregates only.         |
 | Accepted | Vectorize metadata without D1 for Bob MVP             | Small grounded chunks and citations need no relational hop or stored conversations.   |

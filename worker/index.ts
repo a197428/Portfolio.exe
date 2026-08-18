@@ -1,11 +1,16 @@
 import { Hono } from 'hono';
 import { chatRequestSchema, type ChatStreamEvent } from '../src/features/bob/contracts';
 import { GigaChatError, GigaChatProvider } from './ai/gigachat';
+import { OpenRouterError, OpenRouterProvider } from './ai/openrouter';
 import { citationsFromEvidence, retrieveEvidence } from './knowledge';
 
 interface Env {
   GIGACHAT_AUTH_KEY?: string;
   GIGACHAT_SCOPE?: string;
+  GIGACHAT_EMBEDDINGS_ENABLED?: string;
+  OPENROUTER_API_KEY?: string;
+  OPENROUTER_MODEL?: string;
+  OPENROUTER_SITE_URL?: string;
   TURNSTILE_SECRET_KEY?: string;
   TURNSTILE_SITE_KEY?: string;
   TURNSTILE_HOSTNAME?: string;
@@ -104,7 +109,9 @@ function bobStream(
                 message?: { content?: string };
               }>;
               usage?: { prompt_tokens?: number; completion_tokens?: number };
+              error?: { message?: string };
             };
+            if (payload.error) throw new Error('Provider interrupted the stream');
             if (payload.usage) {
               usage = {
                 prompt: payload.usage.prompt_tokens ?? 0,
@@ -175,20 +182,32 @@ app.post('/api/chat', async (context) => {
     );
   }
 
-  if (!context.env.GIGACHAT_AUTH_KEY) {
+  if (!context.env.OPENROUTER_API_KEY) {
     return context.json(
       safeError('provider_unavailable', 'Bob is not configured in this environment yet.'),
       503,
     );
   }
 
-  const provider = new GigaChatProvider({
-    authorizationKey: context.env.GIGACHAT_AUTH_KEY,
-    scope: context.env.GIGACHAT_SCOPE,
+  const provider = new OpenRouterProvider({
+    apiKey: context.env.OPENROUTER_API_KEY,
+    model: context.env.OPENROUTER_MODEL,
+    siteUrl: context.env.OPENROUTER_SITE_URL,
   });
+  const embeddingProvider =
+    context.env.GIGACHAT_EMBEDDINGS_ENABLED === 'true' && context.env.GIGACHAT_AUTH_KEY
+      ? new GigaChatProvider({
+          authorizationKey: context.env.GIGACHAT_AUTH_KEY,
+          scope: context.env.GIGACHAT_SCOPE,
+        })
+      : undefined;
 
   try {
-    const evidence = await retrieveEvidence(parsed.data, provider, context.env.KNOWLEDGE);
+    const evidence = await retrieveEvidence(
+      parsed.data,
+      embeddingProvider,
+      context.env.KNOWLEDGE,
+    );
     if (evidence.length === 0) {
       return context.json(
         safeError(
@@ -236,15 +255,24 @@ app.post('/api/chat', async (context) => {
       },
     );
   } catch (error) {
-    const auth = error instanceof GigaChatError && error.kind === 'auth';
+    const auth =
+      (error instanceof OpenRouterError || error instanceof GigaChatError) &&
+      error.kind === 'auth';
     console.error(
       JSON.stringify({
         event: 'bob_chat',
         requestId,
+        provider: provider.id,
         mode: parsed.data.mode,
         locale: parsed.data.locale,
         latencyMs: Date.now() - startedAt,
         status: auth ? 'provider_auth' : 'provider_unavailable',
+        failure:
+          error instanceof OpenRouterError || error instanceof GigaChatError
+            ? error.message
+            : error instanceof Error
+              ? `${error.name}: ${error.message}`
+              : 'UnknownError',
       }),
     );
     return context.json(

@@ -33,7 +33,7 @@ and receive an evidence-backed answer linked to relevant experience and projects
 - RU/EN RAG chat grounded exclusively in verified portfolio content, with visible citations.
 - Vacancy description analysis with relevant evidence and case selection.
 - Transparent distinction between retrieved facts and model inference.
-- GigaChat-3-Ultra generation, GigaChat Embeddings, and Cloudflare Vectorize retrieval.
+- OpenRouter Nemotron generation, with GigaChat Embeddings and Cloudflare Vectorize retrieval where available.
 - Public abuse protection with rate limiting and Turnstile escalation; no conversation retention.
 
 ## Explicitly deferred

@@ -1,6 +1,6 @@
 import generatedKnowledge from './knowledge.generated.json';
 import type { ChatRequest, Citation } from '../src/features/bob/contracts';
-import type { GigaChatProvider } from './ai/gigachat';
+import type { EmbeddingProvider } from './ai/provider';
 
 export interface KnowledgeChunk {
   id: string;
@@ -30,7 +30,7 @@ function terms(value: string) {
   );
 }
 
-function lexicalRetrieve(request: ChatRequest): RetrievedEvidence[] {
+export function lexicalRetrieve(request: ChatRequest): RetrievedEvidence[] {
   const queryTerms = terms(request.message);
   return fallbackKnowledge
     .filter((chunk) => chunk.locale === request.locale)
@@ -47,17 +47,22 @@ function lexicalRetrieve(request: ChatRequest): RetrievedEvidence[] {
 
 export async function retrieveEvidence(
   request: ChatRequest,
-  provider: GigaChatProvider,
+  provider?: EmbeddingProvider,
   vectorize?: VectorizeIndex,
 ): Promise<RetrievedEvidence[]> {
-  if (!vectorize) return lexicalRetrieve(request);
+  if (!vectorize || !provider) return lexicalRetrieve(request);
 
-  const embedding = await provider.embed(request.message);
-  const results = await vectorize.query(embedding, {
-    topK: 8,
-    namespace: request.locale,
-    returnMetadata: 'all',
-  });
+  let results: VectorizeMatches;
+  try {
+    const embedding = await provider.embed(request.message);
+    results = await vectorize.query(embedding, {
+      topK: 8,
+      namespace: request.locale,
+      returnMetadata: 'all',
+    });
+  } catch {
+    return lexicalRetrieve(request);
+  }
 
   return results.matches
     .filter((match) => match.score >= 0.42)

@@ -1,7 +1,7 @@
 import type { ChatRequest } from '../../src/features/bob/contracts';
 import type { RetrievedEvidence } from '../knowledge';
 import { buildBobPrompt } from '../prompt';
-import type { LLMProvider } from './provider';
+import type { EmbeddingProvider, GenerationProvider } from './provider';
 
 const OAUTH_URL = 'https://ngw.devices.sberbank.ru:9443/api/v2/oauth';
 const API_URL = 'https://api.giga.chat/v1';
@@ -34,7 +34,7 @@ export class GigaChatError extends Error {
   }
 }
 
-export class GigaChatProvider implements LLMProvider {
+export class GigaChatProvider implements GenerationProvider, EmbeddingProvider {
   readonly id = 'gigachat';
   private readonly tokenState: TokenState;
   private readonly fetcher: typeof fetch;
@@ -42,7 +42,7 @@ export class GigaChatProvider implements LLMProvider {
   private readonly scope: string;
 
   constructor(private readonly options: GigaChatProviderOptions) {
-    this.fetcher = options.fetcher ?? fetch;
+    this.fetcher = options.fetcher ?? ((input, init) => fetch(input, init));
     this.now = options.now ?? Date.now;
     this.scope = options.scope ?? 'GIGACHAT_API_PERS';
     const cacheKey = `${options.authorizationKey}\0${this.scope}`;
@@ -74,6 +74,7 @@ export class GigaChatProvider implements LLMProvider {
       });
       if (!response.ok) throw new GigaChatError('auth', 'GigaChat authorization failed');
       const token = (await response.json()) as TokenResponse;
+      if (token.expires_at < 1_000_000_000_000) token.expires_at *= 1_000;
       this.tokenState.token = token;
       return token;
     })();
