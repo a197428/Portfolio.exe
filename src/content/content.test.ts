@@ -245,14 +245,63 @@ describe('portfolio content', () => {
     }
   });
 
-  it('keeps private provenance hidden behind demo-only links', () => {
-    for (const slug of ['neurosport', 'neuralgrid-international', 'energo-ai']) {
-      const project = getProject(slug, 'en')!;
-      expect(project.source?.visibility).toBe('private');
-      expect(project.links).toHaveLength(1);
-      expect(project.links[0]?.kind).toBe('demo');
-      expect(project.links[0]?.href).not.toContain('github.com');
+  it('publishes the three site projects as public sources with demo and GitHub links', () => {
+    const expected: Array<{ slug: string; repository: string; commit: string }> = [
+      {
+        slug: 'neurosport',
+        repository: 'https://github.com/a197428/Neurosport',
+        commit: '7d4fdef4191d2be96e564902af768b26001a136b',
+      },
+      {
+        slug: 'neuralgrid-international',
+        repository: 'https://github.com/a197428/NeuralGrid',
+        commit: '86258e72e362d648c6129aeb6a4c0e0b35b0f7b1',
+      },
+      {
+        slug: 'energo-ai',
+        repository: 'https://github.com/a197428/EnergoAI',
+        commit: '2fe165e50e1354180c094b8a08ce86a755dc4506',
+      },
+    ];
+
+    for (const { slug, repository, commit } of expected) {
+      for (const locale of ['en', 'ru'] as const) {
+        const project = getProject(slug, locale)!;
+        expect(project.source).toEqual({
+          repository,
+          commit,
+          verifiedAt: '2026-08-18',
+          visibility: 'public',
+        });
+        expect(project.links).toHaveLength(2);
+        expect(project.links.map(({ kind }) => kind).sort()).toEqual(['demo', 'source']);
+        expect(project.links.some(({ href }) => href === repository)).toBe(true);
+        expect(project.links.some(({ href }) => href.includes('pages.dev'))).toBe(true);
+      }
     }
+  });
+
+  it('drops the outdated Neurosport and NeuralGrid claims', () => {
+    const published = JSON.stringify([
+      getProject('neurosport', 'en')!,
+      getProject('neuralgrid-international', 'en')!,
+    ]).toLowerCase();
+
+    expect(published).not.toContain('168 frontend');
+    expect(published).not.toContain('221 worker');
+    expect(published).not.toContain('26 unit');
+    expect(published).not.toContain('accessibility checks');
+  });
+
+  it('keeps NeuralGrid honest about its absent test suite', () => {
+    const neuralGrid = JSON.stringify(
+      getProject('neuralgrid-international', 'en')!,
+    ).toLowerCase();
+
+    expect(neuralGrid).not.toContain('26 unit');
+    expect(neuralGrid).not.toContain('playwright');
+    expect(neuralGrid).not.toContain('accessibility');
+    expect(neuralGrid).toContain('no test suite is present');
   });
 
   it('keeps RU and EN priorities, provenance, and evidence coverage equivalent', () => {

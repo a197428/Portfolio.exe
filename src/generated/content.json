@@ -425,17 +425,22 @@
         "frontend": "Built the Vue composition, typed content layer, SVG visualization, interactive sections, and complete test pipeline."
       },
       "links": [
-        { "label": "Live demo", "href": "https://energoai.pages.dev/", "kind": "demo" }
+        { "label": "Live demo", "href": "https://energoai.pages.dev/", "kind": "demo" },
+        {
+          "label": "GitHub",
+          "href": "https://github.com/a197428/EnergoAI",
+          "kind": "source"
+        }
       ],
       "source": {
         "repository": "https://github.com/a197428/EnergoAI",
         "commit": "2fe165e50e1354180c094b8a08ce86a755dc4506",
-        "verifiedAt": "2026-08-15",
-        "visibility": "private"
+        "verifiedAt": "2026-08-18",
+        "visibility": "public"
       },
       "media": { "poster": "/media/energo-ai.webp" },
       "chapters": [],
-      "body": "## Verified context\n\nThe local repository was used to verify architecture and tests. Only the live demo is exposed in the public interface."
+      "body": "## Verified context\n\nThe pinned public commit substantiates the typed content layer, SVG visualization, interactive sections, and the 16 unit tests plus 15 Playwright scenarios."
     },
     {
       "slug": "energo-ai",
@@ -480,17 +485,22 @@
         "frontend": "Реализовал Vue-композицию, типизированный content layer, SVG-визуализации, интерактивные секции и полный тестовый контур."
       },
       "links": [
-        { "label": "Live demo", "href": "https://energoai.pages.dev/", "kind": "demo" }
+        { "label": "Live demo", "href": "https://energoai.pages.dev/", "kind": "demo" },
+        {
+          "label": "GitHub",
+          "href": "https://github.com/a197428/EnergoAI",
+          "kind": "source"
+        }
       ],
       "source": {
         "repository": "https://github.com/a197428/EnergoAI",
         "commit": "2fe165e50e1354180c094b8a08ce86a755dc4506",
-        "verifiedAt": "2026-08-15",
-        "visibility": "private"
+        "verifiedAt": "2026-08-18",
+        "visibility": "public"
       },
       "media": { "poster": "/media/energo-ai.webp" },
       "chapters": [],
-      "body": "## Доказательный контекст\n\nЛокальный репозиторий использован для проверки архитектуры и тестов. В публичном интерфейсе доступно только живое демо."
+      "body": "## Доказательный контекст\n\nПинованный публичный commit подтверждает типизированный content layer, SVG-визуализации, интерактивные секции и 16 unit-тестов с 15 Playwright-сценариями."
     },
     {
       "slug": "local-ai-assistant",
@@ -650,243 +660,275 @@
       "slug": "neuralgrid-international",
       "locale": "en",
       "title": "NeuralGrid International",
-      "eyebrow": "React design system · interactive canvas",
+      "eyebrow": "React landing · bilingual canvas site",
       "status": "active",
       "roles": ["frontend"],
       "featured": true,
       "priority": { "ai": 0, "frontend": 70 },
-      "summary": "A bilingual React technology site with a bespoke visual system, interactive Canvas scene, and controlled scroll motion.",
-      "task": "Express a complex technology proposition through a fast, accessible, responsive interface without sacrificing readability.",
+      "summary": "A bilingual React 19 technology landing with a fixed Canvas scene, GSAP scroll motion, and localized SEO data.",
+      "task": "Present a complex technology proposition as a fast, bilingual, single-page experience with controlled scroll motion.",
       "contribution": [
-        "Built componentized sections and reusable UI primitives",
-        "Implemented Canvas visualization and lifecycle-aware animation",
-        "Prepared RU/EN content, responsive layouts, and accessibility checks"
+        "Built componentized sections over a shared React design system",
+        "Implemented the fixed Canvas scene and GSAP/Lenis scroll choreography",
+        "Added RU/EN routes with localized SEO metadata"
       ],
       "decisions": [
-        "Isolate Canvas and animation hooks from content components",
-        "Use GSAP for sequences and Lenis for controlled scrolling",
-        "Disable decorative movement under prefers-reduced-motion"
+        "Keep the Canvas scene fixed while GSAP animates the scroll reveals",
+        "Use Lenis for smooth scrolling and React Router for locale-aware routes",
+        "Localize SEO data alongside the interface copy"
       ],
       "capabilities": [
-        "Bilingual routing and complete product sections",
-        "Interactive Canvas scene and scroll reveals",
-        "Responsive navigation and accessible controls"
+        "Bilingual landing with / and /ru routes",
+        "Fixed animated Canvas scene and GSAP ScrollTrigger reveals",
+        "Lenis smooth scrolling and responsive navigation",
+        "Localized SEO metadata per locale"
       ],
       "architecture": [
-        "React Router owns locale-aware routes",
-        "Component sections share one design system",
-        "Hooks encapsulate Canvas, GSAP, and animation cleanup"
+        "React 19 with component sections over one design system",
+        "A dedicated Canvas component owns the fixed background scene",
+        "Hooks encapsulate GSAP ScrollTrigger, Lenis, and cleanup",
+        "An i18n provider owns dictionaries and the SEO hook"
       ],
       "verification": [
-        "The pinned snapshot passes production build and 26 unit tests",
-        "Playwright and accessibility scenarios are present in the repository",
-        "A public deployment is available as a live demo"
+        "The pinned commit passes the production build",
+        "No test suite is present, so claims are limited to verified build facts",
+        "The locale route also matches unknown one-segment paths, which is documented debt",
+        "The navigation wordmark behavior is documented as unverified"
       ],
-      "stack": ["React 19", "TypeScript", "Tailwind CSS", "Canvas", "GSAP", "Lenis"],
-      "outcome": "The visually rich experience remains structured, responsive, bilingual, and keyboard-operable.",
+      "stack": ["React 19", "TypeScript", "Tailwind CSS", "GSAP", "Lenis", "Canvas"],
+      "outcome": "A visually rich bilingual landing that stays responsive while the production build and known debt are honestly documented.",
       "roleFocus": {
-        "ai": "The visual language explains a technology product without unsupported model claims.",
-        "frontend": "Built the React section architecture, design system, Canvas, animation lifecycle, i18n, and accessibility behavior."
+        "ai": "The visual language explains the technology proposition without model claims.",
+        "frontend": "Built the React section architecture, Canvas scene, GSAP/Lenis motion, i18n, and localized SEO."
       },
       "links": [
-        { "label": "Live demo", "href": "https://neuralgrid.pages.dev/", "kind": "demo" }
+        { "label": "Live demo", "href": "https://neuralgrid.pages.dev/", "kind": "demo" },
+        {
+          "label": "GitHub",
+          "href": "https://github.com/a197428/NeuralGrid",
+          "kind": "source"
+        }
       ],
       "source": {
         "repository": "https://github.com/a197428/NeuralGrid",
-        "commit": "caa45a33c5af7e9444aa442d50cefa3acb41921f",
-        "verifiedAt": "2026-08-15",
-        "visibility": "private"
+        "commit": "86258e72e362d648c6129aeb6a4c0e0b35b0f7b1",
+        "verifiedAt": "2026-08-18",
+        "visibility": "public"
       },
       "media": { "poster": "/media/neuralgrid-international.webp" },
       "chapters": [],
-      "body": "## Verified context\n\nThe local commit anchors verified capabilities while the UI exposes only the live demo, not the private source."
+      "body": "## Verified context\n\nThe pinned public commit shows a componentized React 19 landing: a fixed Canvas scene, GSAP ScrollTrigger reveals with Lenis smoothing, RU/EN routes, and localized SEO data. The production build passes; the absence of a test suite and the known routing debt are documented honestly rather than overstated."
     },
     {
       "slug": "neuralgrid-international",
       "locale": "ru",
       "title": "NeuralGrid International",
-      "eyebrow": "React design system · interactive canvas",
+      "eyebrow": "React landing · двуязычный canvas-сайт",
       "status": "active",
       "roles": ["frontend"],
       "featured": true,
       "priority": { "ai": 0, "frontend": 70 },
-      "summary": "Двуязычный React-сайт технологической компании с собственной визуальной системой, интерактивным Canvas и управляемой scroll-анимацией.",
-      "task": "Передать сложный технологический образ через быстрый, доступный и адаптивный интерфейс без потери читаемости.",
+      "summary": "Двуязычный React 19 технологический лендинг с фиксированной Canvas-сценой, GSAP-скроллом и локализованными SEO-данными.",
+      "task": "Представить сложное технологическое предложение как быстрый двуязычный одностраничный опыт с управляемой скролл-анимацией.",
       "contribution": [
-        "Собрал компонентные секции и переиспользуемые UI-примитивы",
-        "Реализовал Canvas-визуализацию и lifecycle-aware анимации",
-        "Подготовил RU/EN контент, responsive layout и accessibility-проверки"
+        "Собрал компонентные секции поверх общей дизайн-системы React",
+        "Реализовал фиксированную Canvas-сцену и хореографию скролла GSAP/Lenis",
+        "Добавил RU/EN маршруты с локализованными SEO-метаданными"
       ],
       "decisions": [
-        "Изолировать Canvas и animation hooks от контентных компонентов",
-        "Использовать GSAP для последовательностей, Lenis — для контролируемого scroll",
-        "Отключать декоративное движение при prefers-reduced-motion"
+        "Держать Canvas-сцену фиксированной, пока GSAP анимирует скролл-раскрытия",
+        "Использовать Lenis для плавного скролла и React Router для locale-маршрутов",
+        "Локализовать SEO-данные вместе с текстами интерфейса"
       ],
       "capabilities": [
-        "Двуязычная маршрутизация и полноценные продуктовые секции",
-        "Интерактивная Canvas-сцена и scroll reveal",
-        "Адаптивная навигация и доступные интерактивные элементы"
+        "Двуязычный лендинг с маршрутами / и /ru",
+        "Фиксированная анимированная Canvas-сцена и GSAP ScrollTrigger-раскрытия",
+        "Плавный скролл Lenis и адаптивная навигация",
+        "Локализованные SEO-метаданные для каждого locale"
       ],
       "architecture": [
-        "React Router управляет locale-маршрутами",
-        "Компонентные секции используют общую дизайн-систему",
-        "Хуки инкапсулируют Canvas, GSAP и cleanup анимаций"
+        "React 19 с компонентными секциями поверх одной дизайн-системы",
+        "Отдельный Canvas-компонент владеет фиксированной фоновой сценой",
+        "Хуки инкапсулируют GSAP ScrollTrigger, Lenis и очистку",
+        "i18n-провайдер владеет словарями и SEO-хуком"
       ],
       "verification": [
-        "Проверенный снимок проходит production build и 26 unit-тестов",
-        "Репозиторий содержит Playwright и accessibility-сценарии",
-        "Публичная сборка доступна как live demo"
+        "Пинованный commit проходит production build",
+        "Тестовый suite отсутствует, поэтому заявления ограничены подтверждёнными build-фактами",
+        "Locale-маршрут также матчит неизвестные односегментные пути — задокументированный долг",
+        "Поведение wordmark в навигации задокументировано как непроверенное"
       ],
-      "stack": ["React 19", "TypeScript", "Tailwind CSS", "Canvas", "GSAP", "Lenis"],
-      "outcome": "Визуально насыщенный интерфейс остаётся структурным, адаптивным, двуязычным и управляемым с клавиатуры.",
+      "stack": ["React 19", "TypeScript", "Tailwind CSS", "GSAP", "Lenis", "Canvas"],
+      "outcome": "Визуально насыщенный двуязычный лендинг, который остаётся адаптивным при честной фиксации production build и известного долга.",
       "roleFocus": {
-        "ai": "Визуальный язык объясняет технологический продукт без неподтверждённых утверждений о моделях.",
-        "frontend": "Реализовал React-архитектуру секций, дизайн-систему, Canvas, анимационный lifecycle, i18n и accessibility."
+        "ai": "Визуальный язык объясняет технологическое предложение без модельных заявлений.",
+        "frontend": "Построил React-архитектуру секций, Canvas-сцену, GSAP/Lenis-анимацию, i18n и локализованный SEO."
       },
       "links": [
-        { "label": "Live demo", "href": "https://neuralgrid.pages.dev/", "kind": "demo" }
+        { "label": "Live demo", "href": "https://neuralgrid.pages.dev/", "kind": "demo" },
+        {
+          "label": "GitHub",
+          "href": "https://github.com/a197428/NeuralGrid",
+          "kind": "source"
+        }
       ],
       "source": {
         "repository": "https://github.com/a197428/NeuralGrid",
-        "commit": "caa45a33c5af7e9444aa442d50cefa3acb41921f",
-        "verifiedAt": "2026-08-15",
-        "visibility": "private"
+        "commit": "86258e72e362d648c6129aeb6a4c0e0b35b0f7b1",
+        "verifiedAt": "2026-08-18",
+        "visibility": "public"
       },
       "media": { "poster": "/media/neuralgrid-international.webp" },
       "chapters": [],
-      "body": "## Доказательный контекст\n\nЛокальный commit закрепляет проверенные возможности, а интерфейс показывает только доступное live demo — без ссылки на непубличный источник."
+      "body": "## Доказательный контекст\n\nПинованный публичный commit показывает компонентный React 19 лендинг: фиксированную Canvas-сцену, GSAP ScrollTrigger-раскрытия со сглаживанием Lenis, RU/EN маршруты и локализованные SEO-данные. Production build проходит; отсутствие тестового suite и известный routing-долг задокументированы честно, без преувеличений."
     },
     {
       "slug": "neurosport",
       "locale": "en",
       "title": "Neurosport",
-      "eyebrow": "Vue platform · realtime sports UX",
+      "eyebrow": "Vue platform · new sport predictions",
       "status": "mvp",
       "roles": ["frontend"],
       "featured": true,
       "priority": { "ai": 0, "frontend": 80 },
-      "summary": "A multi-route sports platform combining a public prediction game with athlete, recruiter, judge, and admin workspaces.",
-      "task": "Create one coherent interface for distinct roles, live events, predictions, points, and operational workflows.",
+      "summary": "A bilingual public site for a new sport where participants score on predictions of match outcomes and micro-events, from online selection to national, continental, and world finals.",
+      "task": "Explain the sport format and future institutional structure through a credible public prototype without operational backends.",
       "contribution": [
-        "Built 30+ routes and role-specific workspaces with Vue Router",
-        "Implemented realtime prediction states, match flows, and result tables",
-        "Connected the i18n client to Worker APIs, D1, and the authentication boundary"
+        "Built bilingual routes for rules, competitions, federations, academy, data room, and news",
+        "Composed the online-selection-to-finals narrative with event and athlete cards",
+        "Implemented the Three.js hero scene and a typed localized content layer"
       ],
       "decisions": [
-        "Separate the public game from protected operational workspaces",
-        "Centralize API access and player-time synchronization in composables",
-        "Maintain RU/EN parity across routes and interface data"
+        "Present working cabinets, auth, and backend only as concept content, not claims",
+        "Keep public demo material local and typed instead of fetching a live API",
+        "Structure navigation around the future federation and academy model"
       ],
       "capabilities": [
-        "Public matches, predictions, and scoring",
-        "Athlete, recruiter, judge, and administrator workspaces",
-        "Profiles, transfers, rankings, and responsive navigation"
+        "Public demo of a new sport with scoring on global match outcomes",
+        "Micro-event predictions for pass, goal, dribbling, direction, shot, and out",
+        "Journey from online selection to national, continental, and world finals",
+        "Sections for rules, competitions, federations, academy, data room, and news"
       ],
       "architecture": [
-        "Vue Router and guards separate public and protected journeys",
-        "Composables encapsulate APIs, timing, match state, and authentication",
-        "A Cloudflare Worker and D1 form the typed backend boundary"
+        "Vue Router maps RU/EN routes to sport, competition, and federation pages",
+        "A typed content layer keeps demo material separated from components",
+        "Three.js renders the animated hero scene with a reduced-motion fallback",
+        "vue-i18n provides equivalent RU/EN interface copy"
       ],
       "verification": [
-        "The pinned frontend passes typecheck and production build",
-        "168 frontend unit tests and 221 Worker unit tests pass",
-        "The public MVP is available for interactive review"
+        "The pinned commit passes typecheck, lint, and the production build",
+        "A typed content spec covers the bilingual data layer",
+        "Six Playwright scenarios cover the main user journeys at the pinned commit",
+        "Operational backends and personal offices are presented as concept content only"
       ],
       "stack": [
         "Vue 3",
         "TypeScript",
         "Vue Router",
         "vue-i18n",
-        "Tailwind CSS",
-        "Cloudflare D1"
+        "Three.js",
+        "Tailwind CSS"
       ],
-      "outcome": "The MVP unifies complex role navigation and an event-driven game interface in one responsive product.",
+      "outcome": "The MVP prototype explains the sport format, prediction model, and institutional roadmap in one responsive bilingual site.",
       "roleFocus": {
-        "ai": "The interface exposes prediction flows and model results without claiming a production-ready AI system.",
-        "frontend": "Designed routes, role workspaces, realtime state, i18n, responsive behavior, and API boundaries."
+        "ai": "The prediction and scoring model is presented as product copy without claiming a production-ready AI system.",
+        "frontend": "Designed routes, the Three.js hero, typed content, i18n, and the responsive prototype experience."
       },
       "links": [
         {
           "label": "Live demo",
           "href": "https://dev.neurosport.pages.dev/",
           "kind": "demo"
+        },
+        {
+          "label": "GitHub",
+          "href": "https://github.com/a197428/Neurosport",
+          "kind": "source"
         }
       ],
       "source": {
         "repository": "https://github.com/a197428/Neurosport",
-        "commit": "bcea64bab9be538ef6d26d3af39a7a32f0db3a7c",
-        "verifiedAt": "2026-08-15",
-        "visibility": "private"
+        "commit": "7d4fdef4191d2be96e564902af768b26001a136b",
+        "verifiedAt": "2026-08-18",
+        "visibility": "public"
       },
       "media": { "poster": "/media/neurosport.webp" },
       "chapters": [],
-      "body": "## Verified context\n\nThe local snapshot and live demo substantiate the MVP architecture. The commit remains hidden provenance rather than a public repository claim."
+      "body": "## Verified context\n\nThe pinned public commit substantiates the demo pivot: a bilingual prototype with typed content, a Three.js scene, and an explicit boundary between concept material and implemented claims."
     },
     {
       "slug": "neurosport",
       "locale": "ru",
       "title": "Neurosport",
-      "eyebrow": "Vue platform · realtime sports UX",
+      "eyebrow": "Vue platform · прогнозы нового вида спорта",
       "status": "mvp",
       "roles": ["frontend"],
       "featured": true,
       "priority": { "ai": 0, "frontend": 80 },
-      "summary": "Многостраничная спортивная платформа с публичной игрой прогнозов и кабинетами спортсмена, рекрутера, судьи и администратора.",
-      "task": "Собрать связный интерфейс для разных ролей, live-событий, прогнозов, очков и операционных сценариев.",
+      "summary": "Двуязычный публичный сайт нового вида спорта, где участники зарабатывают очки на прогнозах исходов матчей и микрособытий — от online-отбора до финалов страны, континента и мира.",
+      "task": "Объяснить формат спорта и будущую институциональную структуру через убедительный публичный прототип без операционных backend-контуров.",
       "contribution": [
-        "Реализовал 30+ маршрутов и role-specific кабинеты на Vue Router",
-        "Собрал realtime prediction UI, состояния матчей и таблицы результатов",
-        "Связал i18n-клиент с Worker API, D1 и контуром авторизации"
+        "Собрал двуязычные маршруты правил, соревнований, федераций, академии, data room и новостей",
+        "Построил нарратив от online-отбора до финалов карточками событий и спортсменов",
+        "Реализовал Three.js hero-сцену и типизированный локализованный content layer"
       ],
       "decisions": [
-        "Разделить публичный игровой путь и защищённые рабочие кабинеты",
-        "Централизовать API-доступ и синхронизацию времени игрока",
-        "Сохранять RU/EN parity на уровне маршрутов и данных интерфейса"
+        "Показывать кабинеты, auth и backend только как концепт, а не как реализованные заявления",
+        "Хранить публичный demo-материал локально и типизированно вместо живого API",
+        "Строить навигацию вокруг будущей модели федераций и академии"
       ],
       "capabilities": [
-        "Публичные матчи, прогнозы и скоринг",
-        "Кабинеты спортсмена, рекрутера, судьи и администратора",
-        "Профили, трансферы, рейтинги и адаптивная навигация"
+        "Публичное демо нового вида спорта со скорингом глобальных исходов матчей",
+        "Прогнозы микрособытий — пас, гол, дриблинг, направление, удар и аут",
+        "Путь от online-отбора до финалов страны, континента и мира",
+        "Секции правил, соревнований, федераций, академии, data room и новостей"
       ],
       "architecture": [
-        "Vue Router и route guards разделяют публичные и защищённые сценарии",
-        "Composables инкапсулируют API, время, состояния матча и авторизацию",
-        "Cloudflare Worker и D1 предоставляют типизированную backend-границу"
+        "Vue Router сопоставляет RU/EN маршруты страницам спорта, соревнований и федераций",
+        "Типизированный content layer отделяет demo-материал от компонентов",
+        "Three.js рендерит анимированную hero-сцену с fallback для reduced-motion",
+        "vue-i18n предоставляет эквивалентные RU/EN тексты интерфейса"
       ],
       "verification": [
-        "Пинованный frontend проходит typecheck и production build",
-        "168 frontend unit-тестов и 221 Worker unit-тест проходят",
-        "Публичный MVP доступен для интерактивной проверки"
+        "Пинованный commit проходит typecheck, lint и production build",
+        "Типизированный content spec покрывает двуязычный слой данных",
+        "Шесть Playwright-сценариев покрывают основные пользовательские пути на пинованном commit",
+        "Операционные backend-контуры и личные кабинеты представлены только как концепт"
       ],
       "stack": [
         "Vue 3",
         "TypeScript",
         "Vue Router",
         "vue-i18n",
-        "Tailwind CSS",
-        "Cloudflare D1"
+        "Three.js",
+        "Tailwind CSS"
       ],
-      "outcome": "MVP объединяет сложную ролевую навигацию и событийный игровой интерфейс в одном адаптивном продукте.",
+      "outcome": "MVP-прототип объясняет формат спорта, модель прогнозов и институциональный roadmap в одном адаптивном двуязычном сайте.",
       "roleFocus": {
-        "ai": "Интерфейс визуализирует prediction workflow и результаты модели без заявления о готовом production AI-контуре.",
-        "frontend": "Спроектировал маршруты, ролевые кабинеты, realtime-состояния, i18n, адаптивность и API-границы."
+        "ai": "Модель прогнозов и скоринга представлена как продуктовый текст без заявления о готовом production AI-контуре.",
+        "frontend": "Спроектировал маршруты, Three.js hero, типизированный контент, i18n и адаптивный прототип."
       },
       "links": [
         {
           "label": "Live demo",
           "href": "https://dev.neurosport.pages.dev/",
           "kind": "demo"
+        },
+        {
+          "label": "GitHub",
+          "href": "https://github.com/a197428/Neurosport",
+          "kind": "source"
         }
       ],
       "source": {
         "repository": "https://github.com/a197428/Neurosport",
-        "commit": "bcea64bab9be538ef6d26d3af39a7a32f0db3a7c",
-        "verifiedAt": "2026-08-15",
-        "visibility": "private"
+        "commit": "7d4fdef4191d2be96e564902af768b26001a136b",
+        "verifiedAt": "2026-08-18",
+        "visibility": "public"
       },
       "media": { "poster": "/media/neurosport.webp" },
       "chapters": [],
-      "body": "## Доказательный контекст\n\nЛокальный снимок и доступное демо подтверждают архитектуру MVP. Commit используется только как provenance и не публикуется в интерфейсе."
+      "body": "## Доказательный контекст\n\nПинованный публичный commit подтверждает demo pivot: двуязычный прототип с типизированным контентом, Three.js-сценой и явной границей между концептом и реализованными заявлениями."
     },
     {
       "slug": "neurosport-tma",

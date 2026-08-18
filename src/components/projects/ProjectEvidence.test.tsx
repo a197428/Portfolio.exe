@@ -25,7 +25,7 @@ it('renders the Local AI Assistant video and evidence without exposing provenanc
   expect(screen.queryByText(project.source!.commit)).not.toBeInTheDocument();
 });
 
-it('renders a poster and demo while keeping private source provenance hidden', () => {
+it('shows the demo and the public GitHub source for a public project', () => {
   const project = getProject('neurosport', 'en')!;
 
   render(<ProjectEvidence project={project} />);
@@ -35,6 +35,10 @@ it('renders a poster and demo while keeping private source provenance hidden', (
     'href',
     'https://dev.neurosport.pages.dev/',
   );
-  expect(screen.queryByRole('link', { name: 'GitHub' })).not.toBeInTheDocument();
+  expect(screen.getByRole('link', { name: 'GitHub' })).toHaveAttribute(
+    'href',
+    'https://github.com/a197428/Neurosport',
+  );
+  // The pinned commit is never rendered, only the repository link.
   expect(screen.queryByText(project.source!.commit)).not.toBeInTheDocument();
 });

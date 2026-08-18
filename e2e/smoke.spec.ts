@@ -128,13 +128,15 @@ test('presents the ordered bilingual Frontend evidence with safe live demos', as
   const projectHrefs = await page
     .locator('#projects a[href^="/projects/"]')
     .evaluateAll((links) => links.map((link) => link.getAttribute('href')));
-  expect([...new Set(projectHrefs)].slice(0, 6)).toEqual([
+  expect([...new Set(projectHrefs)]).toEqual([
     '/projects/bitrix24-integrations',
     '/projects/video-sut',
     '/projects/shortsport-ai-forge',
     '/projects/todo-app',
     '/projects/neurosport-tma',
     '/projects/neurosport',
+    '/projects/neuralgrid-international',
+    '/projects/energo-ai',
   ]);
 
   await page.goto('/projects/neurosport-tma');
@@ -167,7 +169,7 @@ test('presents the ordered bilingual Frontend evidence with safe live demos', as
   await expect(
     page.getByText('Публичный deployment доступен как live demo'),
   ).toBeVisible();
-  await expect(page.locator('a[href*="github.com/a197428/EnergoAI"]')).toHaveCount(0);
+  await expect(page.locator('a[href*="github.com/a197428/EnergoAI"]')).toHaveCount(1);
 });
 
 test('presents Video Transcriber as a bilingual private-source evidence case', async ({

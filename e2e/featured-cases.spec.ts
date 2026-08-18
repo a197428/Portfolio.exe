@@ -7,6 +7,9 @@ const VIDEO_TRANSCRIBER_HREF = '/projects/video-sut';
 const NEUROSPORT_TMA_HREF = '/projects/neurosport-tma';
 const READ_CLOSE_BOT_HREF = '/projects/read-close-bot';
 const TODO_HREF = '/projects/todo-app';
+const NEUROSPORT_HREF = '/projects/neurosport';
+const NEURALGRID_HREF = '/projects/neuralgrid-international';
+const ENERGO_HREF = '/projects/energo-ai';
 
 async function featuredCards(page: Page) {
   const projects = page.locator('#projects');
@@ -330,15 +333,58 @@ test.describe('mirrored featured card', () => {
     expect(Math.abs(imgBox!.width - todoVisual!.width)).toBeLessThanOrEqual(1);
     expect(Math.abs(imgBox!.height - todoVisual!.height)).toBeLessThanOrEqual(1);
 
-    // Todo App is a featured card, never duplicated inside the Bento Grid.
-    await expect(projects.locator('.bento-project', { hasText: /Todo App/ })).toHaveCount(
-      0,
-    );
-    // The Bento Grid resumes at 006.
-    await expect(projects.locator('.bento-project').first()).toContainText('006');
+    // With every project featured in both lenses, the Bento Grid is hidden.
+    await expect(projects.locator('.portfolio-bento')).toHaveCount(0);
+
+    // Neurosport 006 (media-left), NeuralGrid 007 (media-right), EnergoAI 008 (media-left).
+    const neurosport = projects.locator(`a[href="${NEUROSPORT_HREF}"]`);
+    const neuralGrid = projects.locator(`a[href="${NEURALGRID_HREF}"]`);
+    const energoAi = projects.locator(`a[href="${ENERGO_HREF}"]`);
+    await expect(neurosport).toContainText('006 / mvp');
+    await expect(neuralGrid).toContainText('007 / active');
+    await expect(energoAi).toContainText('008 / active');
+
+    const neurosportCopy = await neurosport.locator('.featured-case-copy').boundingBox();
+    const neurosportVisual = await neurosport.locator('.featured-visual').boundingBox();
+    expect(neurosportVisual!.x).toBeLessThan(neurosportCopy!.x);
+    const neuralGridCopy = await neuralGrid.locator('.featured-case-copy').boundingBox();
+    const neuralGridVisual = await neuralGrid.locator('.featured-visual').boundingBox();
+    expect(neuralGridCopy!.x).toBeLessThan(neuralGridVisual!.x);
+    const energoCopy = await energoAi.locator('.featured-case-copy').boundingBox();
+    const energoVisual = await energoAi.locator('.featured-visual').boundingBox();
+    expect(energoVisual!.x).toBeLessThan(energoCopy!.x);
+
+    // Vertical order: TMA → Neurosport → NeuralGrid → EnergoAI.
+    const neurosportBox = await neurosport.boundingBox();
+    const neuralGridBox = await neuralGrid.boundingBox();
+    const energoBox = await energoAi.boundingBox();
+    expect(tmaBox!.y).toBeLessThan(neurosportBox!.y);
+    expect(neurosportBox!.y).toBeLessThan(neuralGridBox!.y);
+    expect(neuralGridBox!.y).toBeLessThan(energoBox!.y);
+
+    // The three site projects cover with their 1280×800 poster media and Live demo label.
+    for (const [href, path] of [
+      [NEUROSPORT_HREF, '/media/neurosport.webp'],
+      [NEURALGRID_HREF, '/media/neuralgrid-international.webp'],
+      [ENERGO_HREF, '/media/energo-ai.webp'],
+    ] as const) {
+      const img = projects.locator(`a[href="${href}"] .featured-visual img`);
+      await expect(img).toHaveAttribute('src', path);
+      await expect.poll(() => img.evaluate((el) => el.naturalWidth)).toBeGreaterThan(0);
+      await expect(img).toHaveCSS('object-fit', 'cover');
+      const imgBox = await img.boundingBox();
+      const visualBox = await projects
+        .locator(`a[href="${href}"] .featured-visual`)
+        .boundingBox();
+      expect(Math.abs(imgBox!.width - visualBox!.width)).toBeLessThanOrEqual(1);
+      expect(Math.abs(imgBox!.height - visualBox!.height)).toBeLessThanOrEqual(1);
+      await expect(projects.locator(`a[href="${href}"] .featured-visual`)).toContainText(
+        'Live demo',
+      );
+    }
   });
 
-  test('mobile frontend: Todo media above copy, no overflow, navigates to its page', async ({
+  test('mobile frontend: Todo and the 006–008 cards stack media-first without overflow', async ({
     page,
   }, testInfo) => {
     test.skip(testInfo.project.name !== 'mobile-chromium', 'mobile-only');
@@ -347,24 +393,52 @@ test.describe('mirrored featured card', () => {
 
     const projects = page.locator('#projects');
     const todo = projects.locator(`a[href="${TODO_HREF}"]`);
+    const neurosport = projects.locator(`a[href="${NEUROSPORT_HREF}"]`);
+    const neuralGrid = projects.locator(`a[href="${NEURALGRID_HREF}"]`);
+    const energoAi = projects.locator(`a[href="${ENERGO_HREF}"]`);
     await expect(todo).toBeVisible();
+    await expect(neurosport).toBeVisible();
+    await expect(neuralGrid).toBeVisible();
+    await expect(energoAi).toBeVisible();
 
     // Single column: copy and visual share the same track, media sits on top.
-    const copy = await todo.locator('.featured-case-copy').boundingBox();
-    const visual = await todo.locator('.featured-visual').boundingBox();
-    expect(Math.abs(copy!.x - visual!.x)).toBeLessThanOrEqual(1);
-    expect(Math.abs(copy!.width - visual!.width)).toBeLessThanOrEqual(1);
-    expect(visual!.y).toBeLessThan(copy!.y);
+    for (const card of [todo, neurosport, neuralGrid, energoAi]) {
+      const copy = await card.locator('.featured-case-copy').boundingBox();
+      const visual = await card.locator('.featured-visual').boundingBox();
+      expect(Math.abs(copy!.x - visual!.x)).toBeLessThanOrEqual(1);
+      expect(Math.abs(copy!.width - visual!.width)).toBeLessThanOrEqual(1);
+      expect(visual!.y).toBeLessThan(copy!.y);
+    }
 
-    // No horizontal overflow from the added card.
+    // No horizontal overflow from the added cards.
     expect(
       await page.evaluate(
         () => document.documentElement.scrollWidth > document.documentElement.clientWidth,
       ),
     ).toBe(false);
 
-    // Tapping the card opens its project page.
-    await todo.click();
-    await expect(page).toHaveURL(new RegExp(`${TODO_HREF}$`));
+    // Tapping a 006–008 card opens its project page.
+    await neurosport.click();
+    await expect(page).toHaveURL(new RegExp(`${NEUROSPORT_HREF}$`));
+  });
+
+  test('case pages open public Live demo and GitHub links in new tabs', async ({
+    page,
+  }) => {
+    const publicSources: Array<[string, string]> = [
+      ['neurosport', 'https://github.com/a197428/Neurosport'],
+      ['neuralgrid-international', 'https://github.com/a197428/NeuralGrid'],
+      ['energo-ai', 'https://github.com/a197428/EnergoAI'],
+    ];
+
+    for (const [slug, repo] of publicSources) {
+      await page.goto(`/projects/${slug}`);
+      const live = page.getByRole('link', { name: 'Live demo' });
+      await expect(live).toHaveAttribute('target', '_blank');
+      const github = page.getByRole('link', { name: 'GitHub' });
+      await expect(github).toHaveAttribute('href', repo);
+      await expect(github).toHaveAttribute('target', '_blank');
+      await expect(github).toHaveAttribute('rel', 'noreferrer');
+    }
   });
 });

@@ -37,12 +37,16 @@ roleFocus:
 source:
   repository: https://github.com/a197428/EnergoAI
   commit: 2fe165e50e1354180c094b8a08ce86a755dc4506
-  verifiedAt: '2026-08-15'
-  visibility: private
-links: [{ label: Live demo, href: https://energoai.pages.dev/, kind: demo }]
+  verifiedAt: '2026-08-18'
+  visibility: public
+links:
+  [
+    { label: Live demo, href: https://energoai.pages.dev/, kind: demo },
+    { label: GitHub, href: https://github.com/a197428/EnergoAI, kind: source },
+  ]
 media: { poster: /media/energo-ai.webp }
 ---
 
 ## Доказательный контекст
 
-Локальный репозиторий использован для проверки архитектуры и тестов. В публичном интерфейсе доступно только живое демо.
+Пинованный публичный commit подтверждает типизированный content layer, SVG-визуализации, интерактивные секции и 16 unit-тестов с 15 Playwright-сценариями.

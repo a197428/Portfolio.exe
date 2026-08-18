@@ -52,6 +52,9 @@ const videoTranscriberLinkName = /Video Transcriber/i;
 const neurosportTmaLinkName = /Neurosport TMA/i;
 const readCloseBotLinkName = /Read-Close-Bot/i;
 const todoLinkName = /Todo App/i;
+const neurosportLinkName = /006 \/ mvp/;
+const neuralGridLinkName = /007 \/ active/;
+const energoAiLinkName = /008 \/ active/;
 
 describe('HomePage featured cases', () => {
   it('renders the editorial portrait hero with accessible role-specific copy', async () => {
@@ -98,10 +101,8 @@ describe('HomePage featured cases', () => {
       '/image/preview/Industrial Bitrix24 integrations.png',
     );
 
-    // Regression: the Bento Grid container remains available for non-featured cases.
-    const bento = container.querySelector('.portfolio-bento') as HTMLElement;
-    expect(bento).not.toBeNull();
-    expect(within(bento).queryByText('Read-Close-Bot')).toBeNull();
+    // Every AI case is now a featured card, so the Bento Grid has no remaining projects.
+    expect(container.querySelector('.portfolio-bento')).toBeNull();
   });
 
   it('mirrors Local AI Assistant as visual→copy with reverse modifier', async () => {
@@ -135,10 +136,8 @@ describe('HomePage featured cases', () => {
       Array.from(copy.querySelectorAll('.tag-row span')).map((el) => el.textContent),
     ).toEqual(['Chrome MV3', 'React 19', 'TypeScript', 'FastAPI', 'LangGraph']);
 
-    // Local is a standalone second featured card, never inside the Bento Grid.
-    const bento = container.querySelector('.portfolio-bento') as HTMLElement;
-    expect(within(bento).queryByText('Local AI Assistant')).toBeNull();
-    expect(within(bento).queryByRole('link', { name: localLinkName })).toBeNull();
+    // Local is a standalone featured card; the Bento Grid has no remaining projects.
+    expect(container.querySelector('.portfolio-bento')).toBeNull();
     expect(screen.getAllByRole('link', { name: localLinkName })).toHaveLength(1);
   });
 
@@ -176,9 +175,8 @@ describe('HomePage featured cases', () => {
     );
     expect(within(visual).getByText('Live demo')).toBeInTheDocument();
 
-    // ShortSport is a featured card, never inside the Bento Grid.
-    const bento = container.querySelector('.portfolio-bento') as HTMLElement;
-    expect(within(bento).queryByText('ShortSport AI Forge')).toBeNull();
+    // ShortSport is a featured card; the Bento Grid has no remaining projects.
+    expect(container.querySelector('.portfolio-bento')).toBeNull();
   });
 
   it('adds Video Transcriber as the mirrored fourth featured card in AI lens', async () => {
@@ -203,11 +201,7 @@ describe('HomePage featured cases', () => {
     const copy = cardCopy(project);
     expect(within(copy).getByText('004 / mvp')).toBeInTheDocument();
     expect(within(copy).getByText('Video Transcriber')).toBeInTheDocument();
-    expect(
-      within(container.querySelector('.portfolio-bento') as HTMLElement).queryByText(
-        'Video Transcriber',
-      ),
-    ).toBeNull();
+    expect(container.querySelector('.portfolio-bento')).toBeNull();
   });
 
   it('adds Neurosport TMA as an independent fifth featured card in both lenses', async () => {
@@ -227,11 +221,7 @@ describe('HomePage featured cases', () => {
       'alt',
       'Neurosport Telegram Mini App prediction interface',
     );
-    expect(
-      within(container.querySelector('.portfolio-bento') as HTMLElement).queryByText(
-        'Neurosport TMA',
-      ),
-    ).toBeNull();
+    expect(container.querySelector('.portfolio-bento')).toBeNull();
 
     usePreferences.setState({ locale: 'en', role: 'frontend' });
     rerender(
@@ -261,11 +251,7 @@ describe('HomePage featured cases', () => {
     expect(
       within(cardVisual(project)).getByText('Agent architecture'),
     ).toBeInTheDocument();
-    expect(
-      within(container.querySelector('.portfolio-bento') as HTMLElement).queryByText(
-        'Read-Close-Bot',
-      ),
-    ).toBeNull();
+    expect(container.querySelector('.portfolio-bento')).toBeNull();
 
     // Todo App stays frontend-only and never appears in the AI lens.
     expect(screen.queryByRole('link', { name: todoLinkName })).toBeNull();
@@ -275,44 +261,82 @@ describe('HomePage featured cases', () => {
     expect(screen.queryByRole('link', { name: readCloseBotLinkName })).toBeNull();
   });
 
-  it('keeps all shared featured cases continuously numbered in the Frontend lens', async () => {
+  it('orders all eight featured cases 001→008 in the Frontend lens with mirrored geometry', async () => {
     const { container } = await renderHome('en', 'frontend');
 
     expect(screen.queryByRole('link', { name: localLinkName })).toBeNull();
+    expect(screen.queryByRole('link', { name: readCloseBotLinkName })).toBeNull();
 
     const bitrix = screen.getByRole('link', { name: bitrixLinkName });
     expect(isBefore(cardCopy(bitrix), cardVisual(bitrix))).toBe(true);
-
-    const shortSport = screen.getByRole('link', { name: shortSportLinkName });
-    expect(within(cardCopy(shortSport)).getByText('003 / mvp')).toBeInTheDocument();
-    expect(
-      within(cardCopy(shortSport)).getByText((content) =>
-        content.startsWith('Built the multi-step'),
-      ),
-    ).toBeInTheDocument();
+    expect(within(cardCopy(bitrix)).getByText('001 / production')).toBeInTheDocument();
 
     const videoTranscriber = screen.getByRole('link', {
       name: videoTranscriberLinkName,
     });
     expect(within(cardCopy(videoTranscriber)).getByText('002 / mvp')).toBeInTheDocument();
     expect(isBefore(cardVisual(videoTranscriber), cardCopy(videoTranscriber))).toBe(true);
-    expect(isBefore(videoTranscriber, shortSport)).toBe(true);
+
+    const shortSport = screen.getByRole('link', { name: shortSportLinkName });
+    expect(within(cardCopy(shortSport)).getByText('003 / mvp')).toBeInTheDocument();
+    expect(isBefore(cardCopy(shortSport), cardVisual(shortSport))).toBe(true);
 
     const todo = screen.getByRole('link', { name: todoLinkName });
-    expect(isBefore(shortSport, todo)).toBe(true);
     expect(within(cardCopy(todo)).getByText('004 / active')).toBeInTheDocument();
     expect(isBefore(cardVisual(todo), cardCopy(todo))).toBe(true);
 
     const neurosportTma = screen.getByRole('link', { name: neurosportTmaLinkName });
-    expect(isBefore(todo, neurosportTma)).toBe(true);
+    expect(within(cardCopy(neurosportTma)).getByText('005 / mvp')).toBeInTheDocument();
+    expect(isBefore(cardCopy(neurosportTma), cardVisual(neurosportTma))).toBe(true);
 
-    // Bento Grid resumes at 006.
-    const bento = container.querySelector('.portfolio-bento') as HTMLElement;
-    expect(
-      within(bento.querySelector('.bento-project') as HTMLElement).getByText((content) =>
-        content.startsWith('006'),
-      ),
-    ).toBeInTheDocument();
+    const neurosport = screen.getByRole('link', { name: neurosportLinkName });
+    expect(within(cardCopy(neurosport)).getByText('006 / mvp')).toBeInTheDocument();
+    expect(isBefore(cardVisual(neurosport), cardCopy(neurosport))).toBe(true);
+
+    const neuralGrid = screen.getByRole('link', { name: neuralGridLinkName });
+    expect(within(cardCopy(neuralGrid)).getByText('007 / active')).toBeInTheDocument();
+    expect(isBefore(cardCopy(neuralGrid), cardVisual(neuralGrid))).toBe(true);
+
+    const energoAi = screen.getByRole('link', { name: energoAiLinkName });
+    expect(within(cardCopy(energoAi)).getByText('008 / active')).toBeInTheDocument();
+    expect(isBefore(cardVisual(energoAi), cardCopy(energoAi))).toBe(true);
+
+    // Full vertical chain 001→008 in DOM order.
+    expect(isBefore(bitrix, videoTranscriber)).toBe(true);
+    expect(isBefore(videoTranscriber, shortSport)).toBe(true);
+    expect(isBefore(shortSport, todo)).toBe(true);
+    expect(isBefore(todo, neurosportTma)).toBe(true);
+    expect(isBefore(neurosportTma, neurosport)).toBe(true);
+    expect(isBefore(neurosport, neuralGrid)).toBe(true);
+    expect(isBefore(neuralGrid, energoAi)).toBe(true);
+
+    // The three site projects use their poster covers and the Live demo label.
+    const neurosportImg = cardVisual(neurosport).querySelector('img');
+    expect(neurosportImg).toHaveAttribute('src', '/media/neurosport.webp');
+    expect(neurosportImg).toHaveAttribute(
+      'alt',
+      'Neurosport new sport prediction platform',
+    );
+    expect(within(cardVisual(neurosport)).getByText('Live demo')).toBeInTheDocument();
+
+    const neuralGridImg = cardVisual(neuralGrid).querySelector('img');
+    expect(neuralGridImg).toHaveAttribute('src', '/media/neuralgrid-international.webp');
+    expect(neuralGridImg).toHaveAttribute(
+      'alt',
+      'NeuralGrid International technology landing',
+    );
+    expect(within(cardVisual(neuralGrid)).getByText('Live demo')).toBeInTheDocument();
+
+    const energoAiImg = cardVisual(energoAi).querySelector('img');
+    expect(energoAiImg).toHaveAttribute('src', '/media/energo-ai.webp');
+    expect(energoAiImg).toHaveAttribute(
+      'alt',
+      'EnergoAI energy intelligence product site',
+    );
+    expect(within(cardVisual(energoAi)).getByText('Live demo')).toBeInTheDocument();
+
+    // With every project featured, the Bento Grid has no remaining projects.
+    expect(container.querySelector('.portfolio-bento')).toBeNull();
   });
 
   it('adds Todo App as the mirrored fourth featured card in the Frontend lens', async () => {
@@ -340,9 +364,8 @@ describe('HomePage featured cases', () => {
       Array.from(copy.querySelectorAll('.tag-row span')).map((el) => el.textContent),
     ).toEqual(['Nuxt 3', 'Vue 3', 'TypeScript', 'Tailwind CSS', 'Axios']);
 
-    // Todo App is a featured card, never inside the Bento Grid.
-    const bento = container.querySelector('.portfolio-bento') as HTMLElement;
-    expect(within(bento).queryByText('Todo App')).toBeNull();
+    // Todo App is a featured card; the Bento Grid has no remaining projects.
+    expect(container.querySelector('.portfolio-bento')).toBeNull();
   });
 
   it('localizes the Todo App poster alt and watch label in Russian', async () => {
@@ -354,6 +377,18 @@ describe('HomePage featured cases', () => {
     expect(
       within(cardVisual(todo)).getByText('Смотреть презентацию · 1 demo'),
     ).toBeInTheDocument();
+  });
+
+  it('localizes the Neurosport card poster alt in Russian', async () => {
+    await renderHome('ru', 'frontend');
+
+    const neurosport = screen.getByRole('link', { name: neurosportLinkName });
+    expect(within(cardCopy(neurosport)).getByText('006 / mvp')).toBeInTheDocument();
+    expect(cardVisual(neurosport).querySelector('img')).toHaveAttribute(
+      'alt',
+      'Платформа прогнозов нового вида спорта Neurosport',
+    );
+    expect(within(cardVisual(neurosport)).getByText('Live demo')).toBeInTheDocument();
   });
 
   it('localizes ShortSport in Russian', async () => {
@@ -403,8 +438,7 @@ describe('HomePage featured cases', () => {
       ),
     ).toBeInTheDocument();
 
-    const bento = container.querySelector('.portfolio-bento') as HTMLElement;
-    expect(within(bento).queryByText('Local AI Assistant')).toBeNull();
+    expect(container.querySelector('.portfolio-bento')).toBeNull();
     expect(screen.getAllByRole('link', { name: localLinkName })).toHaveLength(1);
   });
 

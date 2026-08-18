@@ -26,6 +26,11 @@ export function HomePage() {
   const neurosportTma = projects.find((project) => project.slug === 'neurosport-tma');
   const readCloseBot = projects.find((project) => project.slug === 'read-close-bot');
   const todoApp = projects.find((project) => project.slug === 'todo-app');
+  const neurosport = projects.find((project) => project.slug === 'neurosport');
+  const neuralGrid = projects.find(
+    (project) => project.slug === 'neuralgrid-international',
+  );
+  const energoAi = projects.find((project) => project.slug === 'energo-ai');
   const otherProjects = projects.filter(
     (project) =>
       project.slug !== featured.slug &&
@@ -34,10 +39,14 @@ export function HomePage() {
       project.slug !== videoTranscriber?.slug &&
       project.slug !== neurosportTma?.slug &&
       project.slug !== readCloseBot?.slug &&
-      project.slug !== todoApp?.slug,
+      project.slug !== todoApp?.slug &&
+      project.slug !== neurosport?.slug &&
+      project.slug !== neuralGrid?.slug &&
+      project.slug !== energoAi?.slug,
   );
-  // Both lenses now feature the full card lineup, so the Bento Grid resumes at 006.
-  const bentoStartIndex = 6;
+  // Every project in both lenses is now a featured card, so the Bento Grid
+  // has no remaining projects and is conditionally hidden.
+  const bentoStartIndex = 9;
   const root = useRef<HTMLDivElement>(null);
 
   useAnimeScope(root, () => {
@@ -223,6 +232,87 @@ export function HomePage() {
     </Link>
   );
 
+  const neurosportCard = neurosport && (
+    <Link
+      className="featured-case featured-case--reverse glass-panel"
+      to={`/projects/${neurosport.slug}`}
+      key={neurosport.slug}
+    >
+      <div className="featured-visual">
+        <img
+          src={neurosport.cardPreview ?? neurosport.media?.poster}
+          alt={t('projects.neurosportPosterAlt')}
+        />
+        <span>{t('projects.liveDemo')}</span>
+      </div>
+      <div className="featured-case-copy">
+        <span className="project-index">006 / {neurosport.status}</span>
+        <p className="card-eyebrow">{neurosport.eyebrow}</p>
+        <h3>{neurosport.title}</h3>
+        <p>{neurosport.roleFocus[role]}</p>
+        <div className="tag-row">
+          {neurosport.stack.slice(0, 5).map((item) => (
+            <span key={item}>{item}</span>
+          ))}
+        </div>
+      </div>
+    </Link>
+  );
+
+  const neuralGridCard = neuralGrid && (
+    <Link
+      className="featured-case glass-panel"
+      to={`/projects/${neuralGrid.slug}`}
+      key={neuralGrid.slug}
+    >
+      <div className="featured-case-copy">
+        <span className="project-index">007 / {neuralGrid.status}</span>
+        <p className="card-eyebrow">{neuralGrid.eyebrow}</p>
+        <h3>{neuralGrid.title}</h3>
+        <p>{neuralGrid.roleFocus[role]}</p>
+        <div className="tag-row">
+          {neuralGrid.stack.slice(0, 5).map((item) => (
+            <span key={item}>{item}</span>
+          ))}
+        </div>
+      </div>
+      <div className="featured-visual">
+        <img
+          src={neuralGrid.cardPreview ?? neuralGrid.media?.poster}
+          alt={t('projects.neuralGridPosterAlt')}
+        />
+        <span>{t('projects.liveDemo')}</span>
+      </div>
+    </Link>
+  );
+
+  const energoAiCard = energoAi && (
+    <Link
+      className="featured-case featured-case--reverse glass-panel"
+      to={`/projects/${energoAi.slug}`}
+      key={energoAi.slug}
+    >
+      <div className="featured-visual">
+        <img
+          src={energoAi.cardPreview ?? energoAi.media?.poster}
+          alt={t('projects.energoAiPosterAlt')}
+        />
+        <span>{t('projects.liveDemo')}</span>
+      </div>
+      <div className="featured-case-copy">
+        <span className="project-index">008 / {energoAi.status}</span>
+        <p className="card-eyebrow">{energoAi.eyebrow}</p>
+        <h3>{energoAi.title}</h3>
+        <p>{energoAi.roleFocus[role]}</p>
+        <div className="tag-row">
+          {energoAi.stack.slice(0, 5).map((item) => (
+            <span key={item}>{item}</span>
+          ))}
+        </div>
+      </div>
+    </Link>
+  );
+
   return (
     <Shell>
       <div ref={root}>
@@ -379,6 +469,13 @@ export function HomePage() {
               </div>
             </Link>
           )}
+          {role === 'frontend' && (
+            <>
+              {neurosportCard}
+              {neuralGridCard}
+              {energoAiCard}
+            </>
+          )}
           {readCloseBot && (
             <Link
               className="featured-case featured-case--reverse glass-panel"
@@ -404,7 +501,9 @@ export function HomePage() {
               </div>
             </Link>
           )}
-          <BentoGrid projects={otherProjects} startIndex={bentoStartIndex} />
+          {otherProjects.length > 0 && (
+            <BentoGrid projects={otherProjects} startIndex={bentoStartIndex} />
+          )}
         </section>
 
         <section className="method-section" aria-labelledby="method-title">

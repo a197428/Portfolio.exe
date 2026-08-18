@@ -2,47 +2,54 @@
 slug: neurosport
 locale: en
 title: Neurosport
-eyebrow: Vue platform · realtime sports UX
+eyebrow: Vue platform · new sport predictions
 status: mvp
 roles: [frontend]
 featured: true
 priority: { ai: 0, frontend: 80 }
-summary: A multi-route sports platform combining a public prediction game with athlete, recruiter, judge, and admin workspaces.
-task: Create one coherent interface for distinct roles, live events, predictions, points, and operational workflows.
+summary: A bilingual public site for a new sport where participants score on predictions of match outcomes and micro-events, from online selection to national, continental, and world finals.
+task: Explain the sport format and future institutional structure through a credible public prototype without operational backends.
 contribution:
-  - Built 30+ routes and role-specific workspaces with Vue Router
-  - Implemented realtime prediction states, match flows, and result tables
-  - Connected the i18n client to Worker APIs, D1, and the authentication boundary
+  - Built bilingual routes for rules, competitions, federations, academy, data room, and news
+  - Composed the online-selection-to-finals narrative with event and athlete cards
+  - Implemented the Three.js hero scene and a typed localized content layer
 decisions:
-  - Separate the public game from protected operational workspaces
-  - Centralize API access and player-time synchronization in composables
-  - Maintain RU/EN parity across routes and interface data
+  - Present working cabinets, auth, and backend only as concept content, not claims
+  - Keep public demo material local and typed instead of fetching a live API
+  - Structure navigation around the future federation and academy model
 capabilities:
-  - Public matches, predictions, and scoring
-  - Athlete, recruiter, judge, and administrator workspaces
-  - Profiles, transfers, rankings, and responsive navigation
+  - Public demo of a new sport with scoring on global match outcomes
+  - Micro-event predictions for pass, goal, dribbling, direction, shot, and out
+  - Journey from online selection to national, continental, and world finals
+  - Sections for rules, competitions, federations, academy, data room, and news
 architecture:
-  - Vue Router and guards separate public and protected journeys
-  - Composables encapsulate APIs, timing, match state, and authentication
-  - A Cloudflare Worker and D1 form the typed backend boundary
+  - Vue Router maps RU/EN routes to sport, competition, and federation pages
+  - A typed content layer keeps demo material separated from components
+  - Three.js renders the animated hero scene with a reduced-motion fallback
+  - vue-i18n provides equivalent RU/EN interface copy
 verification:
-  - The pinned frontend passes typecheck and production build
-  - 168 frontend unit tests and 221 Worker unit tests pass
-  - The public MVP is available for interactive review
-stack: [Vue 3, TypeScript, Vue Router, vue-i18n, Tailwind CSS, Cloudflare D1]
-outcome: The MVP unifies complex role navigation and an event-driven game interface in one responsive product.
+  - The pinned commit passes typecheck, lint, and the production build
+  - A typed content spec covers the bilingual data layer
+  - Six Playwright scenarios cover the main user journeys at the pinned commit
+  - Operational backends and personal offices are presented as concept content only
+stack: [Vue 3, TypeScript, Vue Router, vue-i18n, Three.js, Tailwind CSS]
+outcome: The MVP prototype explains the sport format, prediction model, and institutional roadmap in one responsive bilingual site.
 roleFocus:
-  ai: The interface exposes prediction flows and model results without claiming a production-ready AI system.
-  frontend: Designed routes, role workspaces, realtime state, i18n, responsive behavior, and API boundaries.
+  ai: The prediction and scoring model is presented as product copy without claiming a production-ready AI system.
+  frontend: Designed routes, the Three.js hero, typed content, i18n, and the responsive prototype experience.
 source:
   repository: https://github.com/a197428/Neurosport
-  commit: bcea64bab9be538ef6d26d3af39a7a32f0db3a7c
-  verifiedAt: '2026-08-15'
-  visibility: private
-links: [{ label: Live demo, href: https://dev.neurosport.pages.dev/, kind: demo }]
+  commit: 7d4fdef4191d2be96e564902af768b26001a136b
+  verifiedAt: '2026-08-18'
+  visibility: public
+links:
+  [
+    { label: Live demo, href: https://dev.neurosport.pages.dev/, kind: demo },
+    { label: GitHub, href: https://github.com/a197428/Neurosport, kind: source },
+  ]
 media: { poster: /media/neurosport.webp }
 ---
 
 ## Verified context
 
-The local snapshot and live demo substantiate the MVP architecture. The commit remains hidden provenance rather than a public repository claim.
+The pinned public commit substantiates the demo pivot: a bilingual prototype with typed content, a Three.js scene, and an explicit boundary between concept material and implemented claims.
