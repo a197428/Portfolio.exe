@@ -325,7 +325,7 @@ describe('HomePage featured cases', () => {
 
     const visual = cardVisual(todo);
     const img = visual.querySelector('img');
-    expect(img).toHaveAttribute('src', '/media/todo-app-poster.webp');
+    expect(img).toHaveAttribute('src', '/image/preview/Todo App.png');
     expect(img).toHaveAttribute('alt', 'Todo App task list interface');
     expect(within(visual).getByText('Watch presentation · 1 demo')).toBeInTheDocument();
 

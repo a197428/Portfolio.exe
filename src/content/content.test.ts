@@ -235,6 +235,7 @@ describe('portfolio content', () => {
       'video-sut',
       'neurosport-tma',
       'read-close-bot',
+      'todo-app',
     ];
     for (const slug of slugs) {
       const english = getProject(slug, 'en')!;

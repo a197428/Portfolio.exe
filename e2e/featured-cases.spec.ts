@@ -321,9 +321,9 @@ test.describe('mirrored featured card', () => {
     expect(shortSportBox!.y).toBeLessThan(todoBox!.y);
     expect(todoBox!.y).toBeLessThan(tmaBox!.y);
 
-    // Todo's poster is its temporary cover: loads, crops, fills the visual frame.
+    // Todo's preview is its cover: loads, crops, fills the visual frame.
     const todoImg = todo.locator('.featured-visual img');
-    await expect(todoImg).toHaveAttribute('src', '/media/todo-app-poster.webp');
+    await expect(todoImg).toHaveAttribute('src', '/image/preview/Todo App.png');
     await expect.poll(() => todoImg.evaluate((el) => el.naturalWidth)).toBeGreaterThan(0);
     await expect(todoImg).toHaveCSS('object-fit', 'cover');
     const imgBox = await todoImg.boundingBox();

@@ -41,4 +41,5 @@ links: []
 media:
   poster: /media/todo-app-poster.webp
   video: /media/todo-app.mp4
+cardPreview: /image/preview/Todo App.png
 ---
