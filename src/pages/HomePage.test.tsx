@@ -51,6 +51,7 @@ const shortSportLinkName = /ShortSport AI Forge/i;
 const videoTranscriberLinkName = /Video Transcriber/i;
 const neurosportTmaLinkName = /Neurosport TMA/i;
 const readCloseBotLinkName = /Read-Close-Bot/i;
+const todoLinkName = /Todo App/i;
 
 describe('HomePage featured cases', () => {
   it('renders the editorial portrait hero with accessible role-specific copy', async () => {
@@ -266,6 +267,9 @@ describe('HomePage featured cases', () => {
       ),
     ).toBeNull();
 
+    // Todo App stays frontend-only and never appears in the AI lens.
+    expect(screen.queryByRole('link', { name: todoLinkName })).toBeNull();
+
     unmount();
     await renderHome('en', 'frontend');
     expect(screen.queryByRole('link', { name: readCloseBotLinkName })).toBeNull();
@@ -294,12 +298,61 @@ describe('HomePage featured cases', () => {
     expect(isBefore(cardVisual(videoTranscriber), cardCopy(videoTranscriber))).toBe(true);
     expect(isBefore(videoTranscriber, shortSport)).toBe(true);
 
-    // Bento Grid resumes at 004.
+    const todo = screen.getByRole('link', { name: todoLinkName });
+    expect(isBefore(shortSport, todo)).toBe(true);
+    expect(within(cardCopy(todo)).getByText('004 / active')).toBeInTheDocument();
+    expect(isBefore(cardVisual(todo), cardCopy(todo))).toBe(true);
+
+    const neurosportTma = screen.getByRole('link', { name: neurosportTmaLinkName });
+    expect(isBefore(todo, neurosportTma)).toBe(true);
+
+    // Bento Grid resumes at 006.
     const bento = container.querySelector('.portfolio-bento') as HTMLElement;
     expect(
       within(bento.querySelector('.bento-project') as HTMLElement).getByText((content) =>
-        content.startsWith('004'),
+        content.startsWith('006'),
       ),
+    ).toBeInTheDocument();
+  });
+
+  it('adds Todo App as the mirrored fourth featured card in the Frontend lens', async () => {
+    const { container } = await renderHome('en', 'frontend');
+
+    const todo = screen.getByRole('link', { name: todoLinkName });
+    expect(todo).toHaveAttribute('href', '/projects/todo-app');
+    expect(todo).toHaveClass('featured-case', 'featured-case--reverse', 'glass-panel');
+    expect(isBefore(cardVisual(todo), cardCopy(todo))).toBe(true);
+
+    const visual = cardVisual(todo);
+    const img = visual.querySelector('img');
+    expect(img).toHaveAttribute('src', '/media/todo-app-poster.webp');
+    expect(img).toHaveAttribute('alt', 'Todo App task list interface');
+    expect(within(visual).getByText('Watch presentation · 1 demo')).toBeInTheDocument();
+
+    const copy = cardCopy(todo);
+    expect(within(copy).getByText('004 / active')).toBeInTheDocument();
+    expect(
+      within(copy).getByText(
+        'Nuxt/Vue composables, role-aware UX, CRUD, filters, pagination, unit and e2e tests.',
+      ),
+    ).toBeInTheDocument();
+    expect(
+      Array.from(copy.querySelectorAll('.tag-row span')).map((el) => el.textContent),
+    ).toEqual(['Nuxt 3', 'Vue 3', 'TypeScript', 'Tailwind CSS', 'Axios']);
+
+    // Todo App is a featured card, never inside the Bento Grid.
+    const bento = container.querySelector('.portfolio-bento') as HTMLElement;
+    expect(within(bento).queryByText('Todo App')).toBeNull();
+  });
+
+  it('localizes the Todo App poster alt and watch label in Russian', async () => {
+    await renderHome('ru', 'frontend');
+
+    const todo = screen.getByRole('link', { name: todoLinkName });
+    const img = cardVisual(todo).querySelector('img');
+    expect(img).toHaveAttribute('alt', 'Интерфейс списка задач Todo App');
+    expect(
+      within(cardVisual(todo)).getByText('Смотреть презентацию · 1 demo'),
     ).toBeInTheDocument();
   });
 

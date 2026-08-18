@@ -132,9 +132,9 @@ test('presents the ordered bilingual Frontend evidence with safe live demos', as
     '/projects/bitrix24-integrations',
     '/projects/video-sut',
     '/projects/shortsport-ai-forge',
+    '/projects/todo-app',
     '/projects/neurosport-tma',
     '/projects/neurosport',
-    '/projects/neuralgrid-international',
   ]);
 
   await page.goto('/projects/neurosport-tma');

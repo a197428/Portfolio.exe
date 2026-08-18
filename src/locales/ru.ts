@@ -37,6 +37,7 @@ export const ru = {
     shortSportPosterAlt: 'Интерфейс редактора сторибордов ShortSport AI Forge',
     videoTranscriberPosterAlt: 'Интерфейс дашборда результатов Video Transcriber',
     neurosportTmaPosterAlt: 'Интерфейс прогнозов Telegram Mini App Neurosport',
+    todoPosterAlt: 'Интерфейс списка задач Todo App',
     readCloseBotPosterAlt: 'Архитектура AI-агента Read-Close-Bot',
     architecturePreview: 'Архитектура агента',
     liveDemo: 'Live demo',

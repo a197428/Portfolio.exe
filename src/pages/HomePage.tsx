@@ -25,6 +25,7 @@ export function HomePage() {
   const videoTranscriber = projects.find((project) => project.slug === 'video-sut');
   const neurosportTma = projects.find((project) => project.slug === 'neurosport-tma');
   const readCloseBot = projects.find((project) => project.slug === 'read-close-bot');
+  const todoApp = projects.find((project) => project.slug === 'todo-app');
   const otherProjects = projects.filter(
     (project) =>
       project.slug !== featured.slug &&
@@ -32,9 +33,11 @@ export function HomePage() {
       project.slug !== shortSport?.slug &&
       project.slug !== videoTranscriber?.slug &&
       project.slug !== neurosportTma?.slug &&
-      project.slug !== readCloseBot?.slug,
+      project.slug !== readCloseBot?.slug &&
+      project.slug !== todoApp?.slug,
   );
-  const bentoStartIndex = role === 'ai' ? 6 : 4;
+  // Both lenses now feature the full card lineup, so the Bento Grid resumes at 006.
+  const bentoStartIndex = 6;
   const root = useRef<HTMLDivElement>(null);
 
   useAnimeScope(root, () => {
@@ -193,6 +196,33 @@ export function HomePage() {
     </Link>
   );
 
+  const todoAppCard = todoApp && (
+    <Link
+      className="featured-case featured-case--reverse glass-panel"
+      to={`/projects/${todoApp.slug}`}
+      key={todoApp.slug}
+    >
+      <div className="featured-visual">
+        <img
+          src={todoApp.cardPreview ?? todoApp.media?.poster}
+          alt={t('projects.todoPosterAlt')}
+        />
+        <span>{t('projects.watch')} · 1 demo</span>
+      </div>
+      <div className="featured-case-copy">
+        <span className="project-index">004 / {todoApp.status}</span>
+        <p className="card-eyebrow">{todoApp.eyebrow}</p>
+        <h3>{todoApp.title}</h3>
+        <p>{todoApp.roleFocus[role]}</p>
+        <div className="tag-row">
+          {todoApp.stack.slice(0, 5).map((item) => (
+            <span key={item}>{item}</span>
+          ))}
+        </div>
+      </div>
+    </Link>
+  );
+
   return (
     <Shell>
       <div ref={root}>
@@ -316,6 +346,7 @@ export function HomePage() {
             <>
               {videoTranscriberCard}
               {shortSportCard}
+              {todoAppCard}
             </>
           ) : (
             <>

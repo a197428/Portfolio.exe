@@ -204,6 +204,29 @@ describe('portfolio content', () => {
     ).toBe(false);
   });
 
+  it('publishes Todo App as a featured frontend-only case with bilingual evidence', () => {
+    for (const locale of ['en', 'ru'] as const) {
+      const project = getProject('todo-app', locale)!;
+      expect(projectSchema.safeParse(project).success).toBe(true);
+      expect(project.roles).toEqual(['frontend']);
+      expect(project.status).toBe('active');
+      expect(project.featured).toBe(true);
+      expect(project.priority).toEqual({ ai: 0, frontend: 30 });
+      expect(project.media).toEqual({
+        poster: '/media/todo-app-poster.webp',
+        video: '/media/todo-app.mp4',
+      });
+      expect(project.capabilities).toHaveLength(4);
+      expect(project.architecture).toHaveLength(4);
+      expect(project.verification).toHaveLength(4);
+    }
+
+    expect(getProjects('en', 'frontend').some(({ slug }) => slug === 'todo-app')).toBe(
+      true,
+    );
+    expect(getProjects('en', 'ai').some(({ slug }) => slug === 'todo-app')).toBe(false);
+  });
+
   it('publishes an identical cardPreview for every featured case in both locales', () => {
     const slugs = [
       'bitrix24-integrations',

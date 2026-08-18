@@ -1276,20 +1276,37 @@
       "eyebrow": "Frontend system · Nuxt 3",
       "status": "active",
       "roles": ["frontend"],
-      "featured": false,
+      "featured": true,
       "priority": { "ai": 0, "frontend": 30 },
       "summary": "A task-management application with role-based access, CRUD, search, filtering, sorting, and pagination.",
       "task": "Build a complete testable frontend for different user roles and task states.",
       "contribution": [
-        "Built the Nuxt/Vue interface and composables",
-        "Prepared API mocks",
-        "unit",
-        "and e2e checks"
+        "Built the Nuxt/Vue interface and shared composables",
+        "Prepared API mocks, unit tests, and e2e checks",
+        "Implemented role-aware task management with CRUD, search, filtering, sorting, and pagination"
       ],
       "decisions": [
         "Admin/user role model",
         "MSW for development APIs",
         "State/UI separation through composables"
+      ],
+      "capabilities": [
+        "Role-based access with admin and user permissions",
+        "Complete task lifecycle with create, read, update, delete, and status handling",
+        "Search, filtering, sorting, and pagination across task states",
+        "Authentication flow with session state and protected routes"
+      ],
+      "architecture": [
+        "Nuxt 3 pages and layouts separate data, UI, and state",
+        "Composable functions encapsulate task queries and mutations",
+        "MSW intercepts API calls during development and testing",
+        "Vitest and Playwright verify units, flows, and role scenarios"
+      ],
+      "verification": [
+        "Unit tests cover composables, filters, sorting, and pagination logic",
+        "MSW mocks keep component tests deterministic and offline",
+        "Playwright e2e covers login, role-based access, and the full task cycle",
+        "TypeScript strict mode is enabled across the codebase"
       ],
       "stack": [
         "Nuxt 3",
@@ -1307,6 +1324,10 @@
         "frontend": "Nuxt/Vue composables, role-aware UX, CRUD, filters, pagination, unit and e2e tests."
       },
       "links": [],
+      "media": {
+        "poster": "/media/todo-app-poster.webp",
+        "video": "/media/todo-app.mp4"
+      },
       "chapters": [],
       "body": ""
     },
@@ -1317,19 +1338,37 @@
       "eyebrow": "Frontend system · Nuxt 3",
       "status": "active",
       "roles": ["frontend"],
-      "featured": false,
+      "featured": true,
       "priority": { "ai": 0, "frontend": 30 },
       "summary": "Приложение управления задачами с ролевым доступом, CRUD, поиском, фильтрацией, сортировкой и пагинацией.",
       "task": "Реализовать полноценный тестируемый frontend для разных пользовательских ролей и состояний задач.",
       "contribution": [
-        "Собрал Nuxt/Vue интерфейс и composables",
-        "Подготовил API mocks",
-        "unit и e2e проверки"
+        "Собрал Nuxt/Vue интерфейс и общие composables",
+        "Подготовил API mocks, unit и e2e проверки",
+        "Реализовал ролевое управление задачами с CRUD, поиском, фильтрацией, сортировкой и пагинацией"
       ],
       "decisions": [
         "Ролевая модель admin/user",
         "MSW для development API",
         "Разделение состояния и UI через composables"
+      ],
+      "capabilities": [
+        "Ролевой доступ с правами admin и user",
+        "Полный цикл задач — создание, чтение, обновление, удаление и статусы",
+        "Поиск, фильтрация, сортировка и пагинация по состояниям задач",
+        "Аутентификация с состоянием сессии и защищёнными маршрутами"
+      ],
+      "architecture": [
+        "Страницы и layouts Nuxt 3 разделяют данные, UI и состояние",
+        "Composables инкапсулируют запросы и изменения задач",
+        "MSW перехватывает API-запросы при разработке и в тестах",
+        "Vitest и Playwright проверяют юниты, сценарии и ролевые сценарии"
+      ],
+      "verification": [
+        "Unit-тесты покрывают composables, фильтры, сортировку и пагинацию",
+        "MSW-моки делают тесты компонентов детерминированными и офлайн",
+        "Playwright e2e покрывает вход, ролевой доступ и полный цикл задач",
+        "TypeScript strict включён по всей кодовой базе"
       ],
       "stack": [
         "Nuxt 3",
@@ -1347,6 +1386,10 @@
         "frontend": "Nuxt/Vue composables, role-aware UX, CRUD, filters, pagination, unit and e2e tests."
       },
       "links": [],
+      "media": {
+        "poster": "/media/todo-app-poster.webp",
+        "video": "/media/todo-app.mp4"
+      },
       "chapters": [],
       "body": ""
     },

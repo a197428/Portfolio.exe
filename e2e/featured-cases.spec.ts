@@ -6,6 +6,7 @@ const SHORTSPORT_HREF = '/projects/shortsport-ai-forge';
 const VIDEO_TRANSCRIBER_HREF = '/projects/video-sut';
 const NEUROSPORT_TMA_HREF = '/projects/neurosport-tma';
 const READ_CLOSE_BOT_HREF = '/projects/read-close-bot';
+const TODO_HREF = '/projects/todo-app';
 
 async function featuredCards(page: Page) {
   const projects = page.locator('#projects');
@@ -65,8 +66,15 @@ test.describe('mirrored featured card', () => {
     test.skip(testInfo.project.name === 'mobile-chromium', 'desktop-only');
     await page.goto('/');
 
-    const { bitrix, local, shortSport, videoTranscriber, neurosportTma, readCloseBot } =
-      await featuredCards(page);
+    const {
+      projects,
+      bitrix,
+      local,
+      shortSport,
+      videoTranscriber,
+      neurosportTma,
+      readCloseBot,
+    } = await featuredCards(page);
 
     // Horizontal ordering: Bitrix text→media, Local media→text.
     const bitrixCopy = bitrix.locator('.featured-case-copy');
@@ -141,6 +149,9 @@ test.describe('mirrored featured card', () => {
       '/image/preview/Read-Close-Bot.png',
     );
     await expect(videoVisual).toContainText('Watch presentation · 1 demo');
+
+    // Todo App stays frontend-only and is never a card in the AI lens.
+    await expect(projects.locator(`a[href="${TODO_HREF}"]`)).toHaveCount(0);
 
     // Hover parity: both cards raise and glow identically.
     await bitrix.hover();
@@ -235,7 +246,41 @@ test.describe('mirrored featured card', () => {
     ).toHaveCount(0);
   });
 
-  test('frontend: Video precedes ShortSport while both keep their geometry', async ({
+  test('todo-app case page shows the poster and plays a seekable video', async ({
+    page,
+  }) => {
+    await page.goto('/projects/todo-app');
+    const video = page.locator('main video');
+    await expect(video).toBeVisible();
+    await expect(video).toHaveAttribute('poster', '/media/todo-app-poster.webp');
+    await expect(video).toHaveAttribute('src', '/media/todo-app.mp4');
+    await expect(video.evaluate((el) => el.controls)).resolves.toBe(true);
+    await expect(video.evaluate((el) => el.preload)).resolves.toBe('metadata');
+
+    // The browser parses the H.264/AAC metadata and reports the ~85s duration.
+    await expect
+      .poll(() => video.evaluate((el) => el.readyState))
+      .toBeGreaterThanOrEqual(1);
+    await expect.poll(() => video.evaluate((el) => el.duration)).toBeGreaterThan(50);
+
+    // Seeking moves the playhead.
+    await video.evaluate((el) => {
+      el.currentTime = 10;
+    });
+    await expect.poll(() => video.evaluate((el) => el.currentTime)).toBeGreaterThan(5);
+
+    // Muted playback advances the timeline.
+    await video.evaluate((el) => {
+      el.muted = true;
+      return el.play();
+    });
+    const before = await video.evaluate((el) => el.currentTime);
+    await expect
+      .poll(() => video.evaluate((el) => el.currentTime))
+      .toBeGreaterThan(before + 0.3);
+  });
+
+  test('frontend: Video 002 → ShortSport 003 → Todo 004 → TMA 005 in DOM order', async ({
     page,
   }, testInfo) => {
     test.skip(testInfo.project.name === 'mobile-chromium', 'desktop-only');
@@ -246,6 +291,7 @@ test.describe('mirrored featured card', () => {
     const shortSport = projects.locator(`a[href="${SHORTSPORT_HREF}"]`);
     const videoTranscriber = projects.locator(`a[href="${VIDEO_TRANSCRIBER_HREF}"]`);
     const neurosportTma = projects.locator(`a[href="${NEUROSPORT_TMA_HREF}"]`);
+    const todo = projects.locator(`a[href="${TODO_HREF}"]`);
     await expect(projects.locator(`a[href="${LOCAL_HREF}"]`)).toHaveCount(0);
     await expect(projects.locator(`a[href="${READ_CLOSE_BOT_HREF}"]`)).toHaveCount(0);
     await expect(shortSport).toContainText('003 / mvp');
@@ -258,9 +304,67 @@ test.describe('mirrored featured card', () => {
     const videoCopy = await videoTranscriber.locator('.featured-case-copy').boundingBox();
     const videoVisual = await videoTranscriber.locator('.featured-visual').boundingBox();
     expect(videoVisual!.x).toBeLessThan(videoCopy!.x);
+
+    // Todo App is the mirrored fourth card: media on the left, copy on the right.
+    await expect(todo).toContainText('004 / active');
+    await expect(todo).toHaveClass(/featured-case--reverse/);
+    const todoCopy = await todo.locator('.featured-case-copy').boundingBox();
+    const todoVisual = await todo.locator('.featured-visual').boundingBox();
+    expect(todoVisual!.x).toBeLessThan(todoCopy!.x);
+
+    // Vertical order: Video → ShortSport → Todo → Neurosport TMA.
     const shortSportBox = await shortSport.boundingBox();
     const videoBox = await videoTranscriber.boundingBox();
+    const todoBox = await todo.boundingBox();
+    const tmaBox = await neurosportTma.boundingBox();
     expect(videoBox!.y).toBeLessThan(shortSportBox!.y);
-    await expect(projects.locator('.bento-project').first()).toContainText('004');
+    expect(shortSportBox!.y).toBeLessThan(todoBox!.y);
+    expect(todoBox!.y).toBeLessThan(tmaBox!.y);
+
+    // Todo's poster is its temporary cover: loads, crops, fills the visual frame.
+    const todoImg = todo.locator('.featured-visual img');
+    await expect(todoImg).toHaveAttribute('src', '/media/todo-app-poster.webp');
+    await expect.poll(() => todoImg.evaluate((el) => el.naturalWidth)).toBeGreaterThan(0);
+    await expect(todoImg).toHaveCSS('object-fit', 'cover');
+    const imgBox = await todoImg.boundingBox();
+    expect(Math.abs(imgBox!.width - todoVisual!.width)).toBeLessThanOrEqual(1);
+    expect(Math.abs(imgBox!.height - todoVisual!.height)).toBeLessThanOrEqual(1);
+
+    // Todo App is a featured card, never duplicated inside the Bento Grid.
+    await expect(projects.locator('.bento-project', { hasText: /Todo App/ })).toHaveCount(
+      0,
+    );
+    // The Bento Grid resumes at 006.
+    await expect(projects.locator('.bento-project').first()).toContainText('006');
+  });
+
+  test('mobile frontend: Todo media above copy, no overflow, navigates to its page', async ({
+    page,
+  }, testInfo) => {
+    test.skip(testInfo.project.name !== 'mobile-chromium', 'mobile-only');
+    await page.goto('/');
+    await page.getByRole('button', { name: 'Frontend Developer' }).click();
+
+    const projects = page.locator('#projects');
+    const todo = projects.locator(`a[href="${TODO_HREF}"]`);
+    await expect(todo).toBeVisible();
+
+    // Single column: copy and visual share the same track, media sits on top.
+    const copy = await todo.locator('.featured-case-copy').boundingBox();
+    const visual = await todo.locator('.featured-visual').boundingBox();
+    expect(Math.abs(copy!.x - visual!.x)).toBeLessThanOrEqual(1);
+    expect(Math.abs(copy!.width - visual!.width)).toBeLessThanOrEqual(1);
+    expect(visual!.y).toBeLessThan(copy!.y);
+
+    // No horizontal overflow from the added card.
+    expect(
+      await page.evaluate(
+        () => document.documentElement.scrollWidth > document.documentElement.clientWidth,
+      ),
+    ).toBe(false);
+
+    // Tapping the card opens its project page.
+    await todo.click();
+    await expect(page).toHaveURL(new RegExp(`${TODO_HREF}$`));
   });
 });
