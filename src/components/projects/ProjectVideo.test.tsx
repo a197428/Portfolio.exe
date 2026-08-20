@@ -38,7 +38,9 @@ it('switches to the selected product presentation from the beginning', async () 
   expect(pause).toHaveBeenCalled();
   expect(load).toHaveBeenCalled();
   expect(play).toHaveBeenCalled();
-  expect(screen.getByRole('tabpanel')).toHaveTextContent('Manage accounts, smart locks');
+  expect(screen.getByRole('tabpanel')).toHaveTextContent(
+    'Build a production-ready Bitrix24–TTLock UI',
+  );
   expect(screen.getByRole('tabpanel')).toHaveTextContent('Production UI');
   expect(screen.getByRole('tabpanel')).toHaveTextContent(
     'All 11 component tests in the public snapshot pass',

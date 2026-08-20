@@ -236,5 +236,61 @@
     "question": "We require Java, Kubernetes and ten years in fintech",
     "sources": [],
     "forbidden": ["Java", "Kubernetes", "ten years"]
+  },
+  {
+    "locale": "ru",
+    "mode": "qa",
+    "question": "Что Александр делал в SatelAB и за что отвечал?",
+    "sources": ["profile", "professional-resume", "satelab-projects"],
+    "forbidden": ["разработал backend", "бизнес-метрики"]
+  },
+  {
+    "locale": "en",
+    "mode": "qa",
+    "question": "What did Alexander build at SatelAB and what was his responsibility?",
+    "sources": ["profile", "professional-resume", "satelab-projects"],
+    "forbidden": ["built the backend", "business metrics"]
+  },
+  {
+    "locale": "ru",
+    "mode": "qa",
+    "question": "Как устроено приложение Acquiring & Robots?",
+    "sources": ["bitrix24-integrations", "satelab-projects"],
+    "forbidden": ["выдуманные метрики", "внутренние домены"]
+  },
+  {
+    "locale": "en",
+    "mode": "qa",
+    "question": "How does the Acquiring & Robots application work?",
+    "sources": ["bitrix24-integrations", "satelab-projects"],
+    "forbidden": ["invented metrics", "internal domains"]
+  },
+  {
+    "locale": "ru",
+    "mode": "qa",
+    "question": "Какие сценарии реализованы в ApartSharing?",
+    "sources": ["bitrix24-integrations", "satelab-projects"],
+    "forbidden": ["авторство backend", "неподтверждённые метрики"]
+  },
+  {
+    "locale": "en",
+    "mode": "qa",
+    "question": "Which ApartSharing workflows are implemented?",
+    "sources": ["bitrix24-integrations", "satelab-projects"],
+    "forbidden": ["backend authorship", "unsupported metrics"]
+  },
+  {
+    "locale": "ru",
+    "mode": "qa",
+    "question": "Подключён ли TTLock к реальному API и выдаёт ли коды?",
+    "sources": ["bitrix24-integrations", "satelab-projects"],
+    "forbidden": ["да, подключён", "roadmap реализован"]
+  },
+  {
+    "locale": "en",
+    "mode": "qa",
+    "question": "Is TTLock connected to a real API and issuing access codes?",
+    "sources": ["bitrix24-integrations", "satelab-projects"],
+    "forbidden": ["yes, connected", "roadmap delivered"]
   }
 ]

@@ -85,6 +85,22 @@ describe('portfolio content', () => {
     }
   });
 
+  it('keeps the enriched SatelAB case as card 001 with three chapters', () => {
+    for (const locale of ['en', 'ru'] as const) {
+      const project = getProject('bitrix24-integrations', locale)!;
+      expect(project.priority).toEqual({ ai: 100, frontend: 100 });
+      expect(project.chapters.map(({ id }) => id)).toEqual([
+        'acquiring',
+        'apartsharing',
+        'ttlock',
+      ]);
+      expect(project.chapters[1].capabilities).toHaveLength(4);
+      expect(project.chapters[2].verification.join(' ').toLowerCase()).toContain(
+        'ttlock api',
+      );
+    }
+  });
+
   it('pins matching evidence sources and factual coverage for both locales', () => {
     const english = getProject('bitrix24-integrations', 'en')!;
     const russian = getProject('bitrix24-integrations', 'ru')!;

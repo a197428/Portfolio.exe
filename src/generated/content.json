@@ -99,8 +99,8 @@
       "roles": ["ai", "frontend"],
       "featured": true,
       "priority": { "ai": 100, "frontend": 100 },
-      "summary": "A three-product suite for acquiring, property operations, and smart locks, modernized with Vue 3 and TypeScript.",
-      "task": "Replace legacy interfaces with a modern stack and prepare resilient integration applications running inside Bitrix24.",
+      "summary": "Three embedded Bitrix24 applications for acquiring, apartment operations, and smart locks, modernized with Vue 3 and TypeScript.",
+      "task": "Move three legacy interfaces to a modern stack without losing domain API contracts or the constraints of running inside a Bitrix24 iframe.",
       "contribution": [
         "Designed component boundaries and centralized API layers",
         "Implemented production and development context, mocks, loading, and error states",
@@ -127,19 +127,19 @@
           "status": "production-integration",
           "video": "/media/bitrix24-acquiring.mp4",
           "poster": "/media/bitrix24-acquiring-poster.webp",
-          "task": "Manage bank handlers, subscription state, and automation robots.",
+          "task": "Give Bitrix24 administrators one iframe interface for acquiring handlers, subscription validity, and automation robots.",
           "capabilities": [
-            "Track subscription validity and handler availability",
-            "Install and remove acquiring integrations for banks and payment systems",
+            "Track subscription validity, availability, and installation state",
+            "Install and remove bank and payment handlers covering cards, SBP, holding, and receipt-related capabilities",
             "Install and remove Bitrix24 automation robots"
           ],
           "architecture": [
             "Bitrix24 SDK initialization with URL and development-only fallback",
-            "API composable injects portal and member_id into query parameters or request bodies",
-            "Parallel initial loading with operation-level pending states"
+            "A typed API composable injects portal and member_id into query parameters or JSON bodies across seven REST operations",
+            "Subscription, handlers, and robots load in parallel with separate loading, failure, retry, and operation states"
           ],
           "contribution": [
-            "Built typed interfaces for acquiring handlers and robots",
+            "Built typed handler and robot tables with badges, logo fallbacks, and operation feedback",
             "Connected the UI to production and development API environments",
             "Implemented loading, failure, retry, and per-operation feedback"
           ],
@@ -169,19 +169,20 @@
           "status": "production-integration",
           "video": "/media/bitrix24-apartsharing.mp4",
           "poster": "/media/bitrix24-apartsharing-poster.webp",
-          "task": "Synchronize CRM data with a property management platform.",
+          "task": "Configure the Bitrix24-to-ApartSharing synchronization for accounts, deal fields, booking sources, apartments, and events.",
           "capabilities": [
-            "Manage ApartSharing accounts from inside Bitrix24",
-            "Map CRM fields, lead sources, and apartments",
+            "Add, select, and remove ApartSharing accounts from inside Bitrix24",
+            "Map CRM deal fields, booking sources, and apartments, including text and enumerated fields",
+            "Manage event auto-synchronization and settings for the selected account",
             "Search, filter, and paginate the apartment catalog"
           ],
           "architecture": [
             "SDK-first context with timeout, URL fallback, and development environment",
-            "Boundary normalization for multiple API response and CRM field shapes",
+            "One API layer spans backend HTTP and Bitrix24 REST while normalizing object/array responses and CRM field shapes",
             "Request deduplication, race protection, and lifecycle cleanup"
           ],
           "contribution": [
-            "Split accounts, apartments, and mappings into focused modules",
+            "Split accounts, fields, sources, apartments, and synchronization settings into focused modules",
             "Centralized endpoints, types, normalization, and API access",
             "Prepared production/development builds and local workflows through mocks"
           ],
@@ -211,20 +212,20 @@
           "status": "production-ui",
           "video": "/media/bitrix24-ttlock.mp4",
           "poster": "/media/bitrix24-ttlock-poster.webp",
-          "task": "Manage accounts, smart locks, tariffs, and transactions.",
+          "task": "Build a production-ready Bitrix24–TTLock UI for accounts, active and reserve locks, common zones, tariffs, and transactions; the wider domain distinguishes online access from one-time offline codes.",
           "capabilities": [
-            "Configure an account and its first-entry field",
-            "Search active and available locks and manage common-zone state",
-            "Calculate tariffs and inspect balance, lock packages, and transaction history"
+            "Configure multiple accounts and select the CRM field used for first-entry tracking",
+            "Search, rename, activate, and deactivate locks; inspect battery/status and manage common-zone state",
+            "Select tariffs and extra packages, calculate cost, inspect balance, and paginate transaction history"
           ],
           "architecture": [
             "Settings and Tariffs separation through Vue Router",
             "Component contracts based on props, emits, and computed state",
-            "Long-list virtualization with a safe fallback when ScrollArea is unavailable"
+            "Virtualization from 20 items with a safe fallback, keyboard interaction, and reduced-motion support"
           ],
           "contribution": [
             "Built the Production UI for two operational areas",
-            "Implemented lock search, activation, deactivation, and editing",
+            "Implemented filters, copy feedback, lock activation/deactivation/editing, and common-zone controls",
             "Covered key component behavior with unit tests"
           ],
           "decisions": [
@@ -248,7 +249,7 @@
           }
         }
       ],
-      "body": "## Evidence dossier\n\n### Acquiring\n\nThe pinned snapshot defines contracts for retrieving subscription validity, handlers, and robots, plus installing and removing handlers and robots. Bitrix24 context comes from the SDK, URL parameters, or development configuration; production does not use an environment fallback.\n\n### ApartSharing\n\nThe pinned snapshot covers accounts, apartments, CRM fields, sources, and synchronization settings. Its integration layer normalizes heterogeneous responses, deduplicates selected GET requests, and protects the UI from stale asynchronous results.\n\n### TTLock\n\nThe pinned snapshot verifies the Settings and Tariffs Production UI, lock-list behavior, and 11 passing component tests. Its public implementation uses local data; this source does not verify a connected TTLock API."
+      "body": "## Evidence dossier\n\n### Acquiring\n\nThe pinned snapshot defines seven REST operations for retrieving subscription validity, handlers, and robots and for installing or removing handlers and robots. Bitrix24 context comes from the SDK or URL parameters; production does not use a development environment fallback.\n\n### ApartSharing\n\nThe pinned snapshot covers accounts, apartments, CRM fields, sources, and synchronization settings. One integration layer spans backend HTTP and Bitrix24 REST, normalizes object/array response shapes, deduplicates selected GET requests, and cancels stale asynchronous work.\n\n### TTLock\n\nThe pinned snapshot verifies the production-ready Settings and Tariffs UI, multi-account workflows, lock lists, tariff calculations, and 11 tests in the pinned commit. It does not verify the backend, a connected TTLock API, or real online/offline code issuance."
     },
     {
       "slug": "bitrix24-integrations",
@@ -259,8 +260,8 @@
       "roles": ["ai", "frontend"],
       "featured": true,
       "priority": { "ai": 100, "frontend": 100 },
-      "summary": "Единая система из трёх встроенных приложений для эквайринга, недвижимости и умных замков, модернизированная на Vue 3 и TypeScript.",
-      "task": "Перевести legacy-интерфейсы на современный стек и подготовить устойчивые интеграционные приложения для работы внутри Bitrix24.",
+      "summary": "Три встроенных Bitrix24-приложения для эквайринга, управления апартаментами и умными замками, модернизированные на Vue 3 и TypeScript.",
+      "task": "Перевести три legacy-интерфейса на современный стек, не потеряв контракты доменных API и особенности работы в iframe Bitrix24.",
       "contribution": [
         "Спроектировал компонентную структуру и централизованные API-слои",
         "Реализовал prod/dev контекст, моки, состояния загрузки и обработку ошибок",
@@ -287,19 +288,19 @@
           "status": "production-integration",
           "video": "/media/bitrix24-acquiring.mp4",
           "poster": "/media/bitrix24-acquiring-poster.webp",
-          "task": "Управление банковскими обработчиками, подпиской и роботами автоматизации.",
+          "task": "Дать администратору Bitrix24 единый iframe-интерфейс для эквайринг-обработчиков, срока подписки и роботов автоматизации.",
           "capabilities": [
-            "Контроль срока подписки и доступности обработчиков",
-            "Установка и удаление эквайринга для банков и платёжных систем",
+            "Контроль срока подписки, доступности и статуса обработчиков",
+            "Установка и удаление банковских и платёжных обработчиков с учётом карт, СБП, холдирования и чеков",
             "Установка и удаление роботов автоматизации Bitrix24"
           ],
           "architecture": [
             "Инициализация через Bitrix24 SDK с URL и безопасным dev fallback",
-            "API composable добавляет portal и member_id в query или тело запроса",
-            "Параллельная начальная загрузка и независимые состояния операций"
+            "Типизированный API composable добавляет portal и member_id в query или JSON-body семи REST-операций",
+            "Параллельная загрузка подписки, обработчиков и роботов; отдельные loading, error, retry и operation states"
           ],
           "contribution": [
-            "Собрал типизированный интерфейс обработчиков и роботов",
+            "Собрал типизированные таблицы обработчиков и роботов с бейджами, fallback-логотипами и operation feedback",
             "Связал UI с production/dev API-контурами",
             "Реализовал загрузку, ошибки, повторный запрос и состояние каждой операции"
           ],
@@ -329,19 +330,20 @@
           "status": "production-integration",
           "video": "/media/bitrix24-apartsharing.mp4",
           "poster": "/media/bitrix24-apartsharing-poster.webp",
-          "task": "Синхронизация CRM с платформой управления недвижимостью.",
+          "task": "Настроить внутри Bitrix24 синхронизацию CRM с ApartSharing: аккаунты, поля сделок, источники бронирований, квартиры и события.",
           "capabilities": [
-            "CRUD аккаунтов ApartSharing внутри Bitrix24",
-            "Сопоставление CRM-полей, источников лидов и квартир",
+            "Добавление, выбор и удаление аккаунтов ApartSharing внутри Bitrix24",
+            "Mapping CRM-полей сделок, источников бронирований и квартир, включая текстовые и списочные поля",
+            "Управление автосинхронизацией событий и настройками выбранного аккаунта",
             "Поиск, фильтрация и пагинация каталога квартир"
           ],
           "architecture": [
             "SDK-first контекст с таймаутом, URL fallback и dev-окружением",
-            "Нормализация разных форматов API и CRM-полей на границе",
+            "Единый API-слой для backend HTTP и Bitrix24 REST; нормализация object/array ответов и CRM-полей",
             "Дедупликация запросов, защита от гонок и очистка lifecycle-эффектов"
           ],
           "contribution": [
-            "Разделил аккаунты, квартиры и mappings на самостоятельные модули",
+            "Разделил аккаунты, поля, источники, квартиры и sync settings на самостоятельные модули",
             "Централизовал endpoints, типы, нормализацию и API-доступ",
             "Подготовил production/dev сборки и локальную работу через моки"
           ],
@@ -371,20 +373,20 @@
           "status": "production-ui",
           "video": "/media/bitrix24-ttlock.mp4",
           "poster": "/media/bitrix24-ttlock-poster.webp",
-          "task": "Управление аккаунтами, умными замками, тарифами и транзакциями.",
+          "task": "Собрать production-ready UI для Bitrix24–TTLock: аккаунты, активные и резервные замки, общие зоны, тарифы и транзакции; доменно система различает online-доступ и разовые offline-коды.",
           "capabilities": [
-            "Настройки аккаунта и поля первого ввода",
-            "Активные и доступные замки с поиском и управлением общей зоной",
-            "Тарифный расчёт, баланс, пакеты замков и история транзакций"
+            "Мультиаккаунтные настройки и выбор CRM-поля для фиксации первого ввода",
+            "Поиск, редактирование, активация и деактивация замков, battery/status и управление общей зоной",
+            "Выбор тарифа, дополнительные пакеты, динамический расчёт, баланс и пагинация истории транзакций"
           ],
           "architecture": [
             "Разделение Settings и Tariffs через Vue Router",
             "Компонентные контракты на props/emits и вычисляемое состояние",
-            "Виртуализация длинных списков с безопасным fallback без ScrollArea"
+            "Виртуализация от 20 элементов с fallback, keyboard-управление и prefers-reduced-motion"
           ],
           "contribution": [
             "Собрал Production UI двух операционных разделов",
-            "Реализовал поиск, активацию, деактивацию и редактирование замков",
+            "Реализовал фильтры, copy feedback, активацию, деактивацию, редактирование и общие зоны",
             "Покрыл ключевые компоненты поведения unit-тестами"
           ],
           "decisions": [
@@ -408,7 +410,7 @@
           }
         }
       ],
-      "body": "## Evidence dossier\n\n### Acquiring\n\nПроверенный снимок содержит контракты получения срока подписки, обработчиков и роботов, а также установки и удаления обработчиков и роботов. Контекст Bitrix24 читается через SDK, URL-параметры или dev-конфигурацию; production не использует env fallback.\n\n### ApartSharing\n\nПроверенный снимок охватывает аккаунты, квартиры, CRM-поля, источники и настройки синхронизации. Интеграционный слой нормализует неоднородные ответы, дедуплицирует часть GET-запросов и защищает интерфейс от устаревших асинхронных результатов.\n\n### TTLock\n\nПроверенный снимок подтверждает Production UI настроек и тарифов, работу со списками замков и 11 component-тестов. Данные в публичной версии локальные; подключение к реальному TTLock API этим источником не подтверждается."
+      "body": "## Evidence dossier\n\n### Acquiring\n\nПроверенный снимок содержит семь REST-операций: получение срока подписки, обработчиков и роботов, а также их install/uninstall-операции. Контекст Bitrix24 читается через SDK или URL; production не использует dev env fallback.\n\n### ApartSharing\n\nПроверенный снимок охватывает аккаунты, квартиры, CRM-поля, источники и настройки синхронизации. Интеграционный слой объединяет backend HTTP и Bitrix24 REST, нормализует object/array-ответы, дедуплицирует часть GET-запросов и отменяет устаревшую асинхронную работу.\n\n### TTLock\n\nПроверенный снимок подтверждает production-ready UI настроек и тарифов, мультиаккаунтные сценарии, списки замков, тарифный расчёт и 11 тестов зафиксированного commit. Текущий источник не подтверждает backend, TTLock API и реальную выдачу online/offline-кодов."
     },
     {
       "slug": "energo-ai",

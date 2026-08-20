@@ -23,6 +23,26 @@ const fallbackKnowledge = generatedKnowledge as KnowledgeChunk[];
 type CandidateIntent =
   'skills' | 'resume' | 'experience' | 'education' | 'availability' | 'candidate';
 
+type ProjectSubject = 'satelab' | 'acquiring' | 'apartsharing' | 'ttlock' | 'bitrix24';
+
+const subjectPrefixes: Record<ProjectSubject, string[]> = {
+  satelab: ['satelab', 'сателаб'],
+  acquiring: ['acquiring', 'эквайр'],
+  apartsharing: ['apartsharing', 'apart', 'апартшеринг'],
+  ttlock: [
+    'ttlock',
+    'smart lock',
+    'electronic lock',
+    'lock',
+    'умный замок',
+    'умные замки',
+    'электронный замок',
+    'электронные замки',
+    'замк',
+  ],
+  bitrix24: ['bitrix24', 'битрикс24', 'битрикс'],
+};
+
 const intentPrefixes: Record<CandidateIntent, string[]> = {
   skills: [
     'skill',
@@ -96,12 +116,37 @@ function normalizedWords(value: string) {
 }
 
 function canonicalTerm(term: string) {
+  for (const [subject, prefixes] of Object.entries(subjectPrefixes)) {
+    if (prefixes.some((prefix) => !prefix.includes(' ') && term.startsWith(prefix))) {
+      return `subject:${subject}`;
+    }
+  }
   for (const [intent, prefixes] of Object.entries(intentPrefixes)) {
     if (prefixes.some((prefix) => !prefix.includes(' ') && term.startsWith(prefix))) {
       return `intent:${intent}`;
     }
   }
   return term;
+}
+
+function detectSubjects(value: string): Set<ProjectSubject> {
+  const words = normalizedWords(value);
+  const normalized = words.join(' ');
+  const subjects = new Set<ProjectSubject>();
+  for (const [subject, prefixes] of Object.entries(subjectPrefixes) as Array<
+    [ProjectSubject, string[]]
+  >) {
+    if (
+      prefixes.some((prefix) =>
+        prefix.includes(' ')
+          ? normalized.includes(prefix)
+          : words.some((word) => word.startsWith(prefix)),
+      )
+    ) {
+      subjects.add(subject);
+    }
+  }
+  return subjects;
 }
 
 function terms(value: string) {
@@ -185,6 +230,7 @@ function intentBoost(type: KnowledgeChunk['type'], intents: Set<CandidateIntent>
     if (type === 'resume') boost += 0.58;
     if (type === 'profile') boost += 0.36;
     if (type === 'project') boost += 0.08;
+    if (type === 'fact') boost += 0.18;
   }
   if (intents.has('education')) {
     if (type === 'fact') boost += 0.62;
@@ -206,6 +252,7 @@ function intentBoost(type: KnowledgeChunk['type'], intents: Set<CandidateIntent>
 export function lexicalRetrieve(request: ChatRequest): RetrievedEvidence[] {
   const queryTerms = terms(request.message);
   const intents = detectIntents(request.message);
+  const subjects = detectSubjects(request.message);
   const ranked = fallbackKnowledge
     .filter((chunk) => chunk.locale === request.locale)
     .map((chunk) => {
@@ -230,6 +277,7 @@ export function lexicalRetrieve(request: ChatRequest): RetrievedEvidence[] {
     requiredTypes.push('resume');
   }
   if (intents.has('education')) requiredTypes.push('fact');
+  if (intents.has('experience') || subjects.size > 0) requiredTypes.push('fact');
 
   const selected = requiredTypes.flatMap((type) => {
     const match = ranked.find((item) => item.type === type);
@@ -240,7 +288,13 @@ export function lexicalRetrieve(request: ChatRequest): RetrievedEvidence[] {
   for (const item of ranked) {
     if (selected.length === 8) break;
     if (genericCandidateQuestion && item.type === 'project') continue;
-    if (!intents.has('education') && item.type === 'fact') continue;
+    if (
+      !intents.has('education') &&
+      !intents.has('experience') &&
+      subjects.size === 0 &&
+      item.type === 'fact'
+    )
+      continue;
     if (!selected.some(({ id }) => id === item.id)) selected.push(item);
   }
   return selected;

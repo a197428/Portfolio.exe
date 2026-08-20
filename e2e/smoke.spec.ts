@@ -36,10 +36,12 @@ test('loads, switches role, and opens a project', async ({ page }) => {
   );
   await page.getByRole('tab', { name: /ApartSharing/ }).click();
   await expect(page.getByRole('tabpanel')).toContainText(
-    'Map CRM fields, lead sources, and apartments',
+    'Map CRM deal fields, booking sources, and apartments',
   );
   await page.getByRole('tab', { name: /TTLock Connector/ }).click();
-  await expect(page.getByRole('tabpanel')).toContainText('Manage accounts, smart locks');
+  await expect(page.getByRole('tabpanel')).toContainText(
+    'Build a production-ready Bitrix24–TTLock UI',
+  );
   await expect(page.getByRole('tabpanel')).toContainText('Production UI');
   await expect(page.getByRole('tabpanel')).toContainText('All 11 component tests');
   await expect(page.locator('video')).toHaveAttribute(

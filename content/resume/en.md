@@ -17,10 +17,11 @@ AI Application Developer and full-stack developer with commercial experience in 
 
 - Develops and modernizes internal business applications with Vue 3, TypeScript, and Vite.
 - Migrated three legacy applications to a modern frontend stack.
-- Built a bank-acquiring SPA embedded in Bitrix24.
-- Developed iframe-based CRM interfaces, including ApartSharing workflows.
-- Developed the frontend of a TTLock electronic-lock management system covering multiple accounts, tariffs, tables, filtering, pagination, and forms.
-- Works from technical specifications and Figma layouts, integrating REST APIs and Bitrix24 interfaces.
+- Built an iframe SPA for managing acquiring handlers, automation robots, and subscription validity inside Bitrix24.
+- Developed the ApartSharing integration: accounts, CRM field/source/apartment mappings, synchronization settings, search, and pagination.
+- Built the production-ready TTLock UI for multiple accounts, active and reserve locks, common zones, tariffs, balance, and transactions.
+- Designed typed API boundaries, response normalization, production/development context, mocks, loading/error/retry flows, and stale-request protection.
+- Works from technical specifications and Figma layouts, integrating REST APIs, the Bitrix24 SDK/UI, strict TypeScript, and component tests.
 
 ### Freelance — Full-stack Developer, since March 2026
 

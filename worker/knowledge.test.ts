@@ -52,4 +52,42 @@ describe('knowledge retrieval fallback', () => {
       );
     }
   });
+
+  it.each([
+    ['Что Александр делал в SatelAB?', 'SatelAB'],
+    ['Как устроена интеграция эквайринга?', 'Acquiring'],
+    ['Расскажи про ApartSharing', 'ApartSharing'],
+    ['Какой опыт есть с умными замками?', 'TTLock'],
+    ['Что он разрабатывал для Битрикс24?', 'Bitrix24'],
+  ])('retrieves the SatelAB dossier for a project subject: %s', (message, term) => {
+    const evidence = lexicalRetrieve({
+      mode: 'qa',
+      message,
+      history: [],
+      locale: 'ru',
+      role: 'frontend',
+    });
+    expect(
+      evidence.some(
+        ({ type, title, content }) =>
+          type === 'fact' && `${title} ${content}`.includes(term),
+      ),
+    ).toBe(true);
+    expect(evidence.some(({ type }) => type === 'project')).toBe(true);
+  });
+
+  it('anchors general commercial-experience questions in profile, resume, and SatelAB facts', () => {
+    const evidence = lexicalRetrieve({
+      mode: 'qa',
+      message: 'Расскажи о коммерческом опыте и обязанностях',
+      history: [],
+      locale: 'ru',
+      role: 'frontend',
+    });
+    expect(evidence.some(({ type }) => type === 'profile')).toBe(true);
+    expect(evidence.some(({ type }) => type === 'resume')).toBe(true);
+    expect(
+      evidence.some(({ type, title }) => type === 'fact' && title.includes('SatelAB')),
+    ).toBe(true);
+  });
 });
