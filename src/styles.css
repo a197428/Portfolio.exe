@@ -1194,25 +1194,27 @@ a:focus-visible {
   white-space: nowrap;
 }
 .hero-stage {
-  position: relative;
+  /* Desktop: pin the stage to the same bounds as the decorative hero panel
+     (.hero::before / .hero::after use the same inset), so the portrait spans
+     the full panel top to bottom. Tablet and mobile restore flow layout. */
+  position: absolute;
+  inset: 9% 7% 7%;
   z-index: 2;
   display: grid;
   grid-template-columns: minmax(13rem, 1fr) minmax(20rem, 27rem) minmax(15rem, 1fr);
   grid-template-areas: 'left portrait right';
   align-items: end;
   gap: clamp(1.5rem, 4vw, 4.5rem);
-  width: min(92%, 1240px);
-  min-height: min(72vh, 46rem);
-  margin: auto;
+  min-height: 0;
 }
 .hero-portrait {
   position: relative;
   z-index: 3;
   grid-area: portrait;
-  align-self: end;
+  align-self: stretch;
   width: 100%;
-  height: min(68vh, 42rem);
-  min-height: 34rem;
+  height: auto;
+  min-height: 0;
   margin: 0;
   overflow: hidden;
   border: 1px solid rgb(220 255 235 / 18%);
@@ -1222,21 +1224,6 @@ a:focus-visible {
     0 38px 100px rgb(0 0 0 / 48%),
     0 0 90px rgb(184 255 99 / 8%),
     inset 0 1px 0 rgb(255 255 255 / 12%);
-}
-/* Blend the photo's black top edge into the dark-green hero canvas with a
-   narrow fade, without a full transparency mask on the portrait. */
-.hero-portrait::before {
-  position: absolute;
-  inset: 0;
-  z-index: 2;
-  background: linear-gradient(
-    to bottom,
-    rgb(6 16 13 / 96%) 0%,
-    rgb(6 16 13 / 58%) 15%,
-    rgb(6 16 13 / 0%) 32%
-  );
-  content: '';
-  pointer-events: none;
 }
 .hero-portrait::after {
   position: absolute;
@@ -1398,6 +1385,10 @@ a:focus-visible {
     font-size: clamp(4.5rem, 11.2vw, 7.6rem);
   }
   .hero-stage {
+    position: relative;
+    inset: auto;
+    width: min(92%, 1240px);
+    margin: auto;
     grid-template-columns: minmax(13rem, 0.8fr) minmax(19rem, 25rem);
     grid-template-areas:
       'left portrait'
@@ -1406,7 +1397,9 @@ a:focus-visible {
     min-height: 44rem;
   }
   .hero-portrait {
+    align-self: end;
     height: 39rem;
+    min-height: 34rem;
   }
   .hero-rail {
     padding-bottom: 2.25rem;
@@ -1463,14 +1456,18 @@ a:focus-visible {
     white-space: normal;
   }
   .hero-stage {
+    position: relative;
+    inset: auto;
     display: flex;
     width: 100%;
     min-height: 0;
+    margin: 0;
     flex-direction: column;
     gap: 1.5rem;
   }
   .hero-portrait {
     order: 1;
+    align-self: center;
     width: min(100%, 29rem);
     height: min(118vw, 36rem);
     min-height: 27rem;
