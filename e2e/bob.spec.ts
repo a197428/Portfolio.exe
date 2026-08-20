@@ -1,4 +1,4 @@
-import { expect, test } from '@playwright/test';
+import { expect, test, type Locator, type Page } from '@playwright/test';
 
 const answerStream = [
   'event: sources',
@@ -126,4 +126,59 @@ test('Bob keeps the interface calm and uses the dialog border as its wait state'
   await expect(dialog).not.toHaveClass(/bob-dialog--streaming/);
   await expect(dialog.locator('[data-bob-mark]')).toHaveCount(2);
   await expect(page.locator('[data-bob-mark]')).toHaveCount(4);
+});
+
+test('every Bob surface keeps two glowing accent eyes distinct from the inner screen', async ({
+  page,
+}, testInfo) => {
+  if (testInfo.project.name === 'mobile-chromium') {
+    await page.emulateMedia({ reducedMotion: 'reduce' });
+  }
+  await page.route('**/api/bob/config', (route) =>
+    route.fulfill({ json: { turnstileSiteKey: null } }),
+  );
+  await page.route('**/api/chat', (route) =>
+    route.fulfill({ status: 200, contentType: 'text/event-stream', body: answerStream }),
+  );
+  await page.goto('/');
+
+  // Every Bob mark (launcher and the intro card on this route) carries exactly
+  // two visible eyes painted with the accent color, not the inner screen color.
+  const assertEyes = async (scope: Page | Locator) => {
+    const marks = scope.locator('[data-bob-mark]');
+    // Wait for the marks to mount before counting (count() does not retry).
+    await expect(marks).not.toHaveCount(0);
+    for (let i = 0; i < (await marks.count()); i += 1) {
+      const mark = marks.nth(i);
+      const eyes = mark.locator('[data-bob-eye]');
+      await expect(eyes).toHaveCount(2);
+      const faceFill = await mark
+        .locator('[data-bob-face]')
+        .evaluate((node) => getComputedStyle(node).fill);
+      for (let e = 0; e < 2; e += 1) {
+        const eye = eyes.nth(e);
+        await expect(eye).toBeVisible();
+        const box = await eye.boundingBox();
+        expect(box!.width).toBeGreaterThan(0);
+        expect(box!.height).toBeGreaterThan(0);
+        const eyeFill = await eye.evaluate((node) => getComputedStyle(node).fill);
+        expect(eyeFill).toBe('rgb(184, 255, 99)');
+        expect(eyeFill).not.toBe(faceFill);
+      }
+    }
+  };
+
+  await assertEyes(page);
+
+  const launcher = page.getByRole('button', { name: 'Open chat with Bob' });
+  await launcher.click();
+  const dialog = page.getByRole('dialog', { name: 'Bob — portfolio assistant' });
+  await expect(dialog).toBeVisible();
+  await assertEyes(dialog);
+
+  await dialog.getByPlaceholder(/which projects demonstrate/i).fill('Cloudflare?');
+  await dialog.getByRole('button', { name: 'Send' }).click();
+  await expect(dialog).toContainText('Verified evidence');
+  await expect(dialog.locator('[data-bob-mark]')).toHaveCount(2);
+  await assertEyes(dialog);
 });

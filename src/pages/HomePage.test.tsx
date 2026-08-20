@@ -82,7 +82,17 @@ describe('HomePage featured cases', () => {
       '/image/Аватар_1.png',
     );
     expect(container.querySelector('.signal-card')).toBeNull();
-    expect(container.querySelector('[data-hero-portrait]')).not.toHaveClass('avatar');
+
+    // The editorial portrait figure keeps its tall frame (not the small avatar)
+    // and the caption overlay, straightening only the top corners in CSS.
+    const portrait = container.querySelector('[data-hero-portrait]');
+    expect(portrait).toHaveClass('hero-portrait');
+    expect(portrait).not.toHaveClass('avatar');
+    expect(portrait!.querySelector('.hero-portrait-halo')).not.toBeNull();
+    expect(portrait!.querySelector('figcaption')).toHaveTextContent(
+      'PORTFOLIO.EXE2026 / 001',
+    );
+    expect(portrait!.querySelector('img')).toHaveAttribute('src', '/image/Аватар_1.png');
   });
 
   it('keeps the Bitrix24 card as the untouched copy→visual featured case', async () => {

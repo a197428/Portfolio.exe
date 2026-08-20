@@ -49,6 +49,7 @@ export function BobMark({ size = 28, className }: BobMarkProps) {
         opacity=".34"
       />
       <path
+        data-bob-face
         d="M15 27.5c0-7.3 6.2-11.9 13.1-11.9h9.1c8.1 0 12.2 5.8 11.8 13.4l-.5 8.4c-.5 8.6-6.3 14-14.9 14h-4.8C20.2 51.4 15 46 15 37.4v-9.9Z"
         fill="#06120d"
       />
@@ -59,9 +60,11 @@ export function BobMark({ size = 28, className }: BobMarkProps) {
         strokeLinecap="round"
         opacity=".12"
       />
-      <g filter={`url(#${glowId})`} fill="currentColor">
-        <rect x="23" y="28" width="5" height="12" rx="2.5" />
-        <rect x="37" y="28" width="5" height="12" rx="2.5" />
+      {/* Eyes use the portfolio accent, independent of the inherited
+          currentColor, so they stay visible on dark faces everywhere. */}
+      <g filter={`url(#${glowId})`} fill="var(--accent)">
+        <rect data-bob-eye x="23" y="28" width="5" height="12" rx="2.5" />
+        <rect data-bob-eye x="37" y="28" width="5" height="12" rx="2.5" />
       </g>
     </svg>
   );

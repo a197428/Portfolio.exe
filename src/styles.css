@@ -1216,12 +1216,27 @@ a:focus-visible {
   margin: 0;
   overflow: hidden;
   border: 1px solid rgb(220 255 235 / 18%);
-  border-radius: 48% 48% 2.5rem 2.5rem;
+  border-radius: 0 0 2.5rem 2.5rem;
   background: #000;
   box-shadow:
     0 38px 100px rgb(0 0 0 / 48%),
     0 0 90px rgb(184 255 99 / 8%),
     inset 0 1px 0 rgb(255 255 255 / 12%);
+}
+/* Blend the photo's black top edge into the dark-green hero canvas with a
+   narrow fade, without a full transparency mask on the portrait. */
+.hero-portrait::before {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  background: linear-gradient(
+    to bottom,
+    rgb(6 16 13 / 96%) 0%,
+    rgb(6 16 13 / 58%) 15%,
+    rgb(6 16 13 / 0%) 32%
+  );
+  content: '';
+  pointer-events: none;
 }
 .hero-portrait::after {
   position: absolute;
@@ -1460,7 +1475,7 @@ a:focus-visible {
     height: min(118vw, 36rem);
     min-height: 27rem;
     margin: 0 auto;
-    border-radius: 45% 45% 2rem 2rem;
+    border-radius: 0 0 2rem 2rem;
   }
   .hero-rail {
     width: 100%;
