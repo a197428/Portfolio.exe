@@ -200,6 +200,28 @@ describe('portfolio content', () => {
     expect(site.roles).toEqual(['frontend']);
   });
 
+  it('publishes the verified LLM boundaries without changing project ordering', () => {
+    for (const locale of ['en', 'ru'] as const) {
+      const video = getProject('video-sut', locale)!;
+      const tma = getProject('neurosport-tma', locale)!;
+      const readClose = getProject('read-close-bot', locale)!;
+      const shortSport = getProject('shortsport-ai-forge', locale)!;
+
+      expect(video.status).toBe('mvp');
+      expect(video.stack).toEqual(
+        expect.arrayContaining(['Supadata', 'DeepSeek v3.2', 'RouterAI']),
+      );
+      expect(video.verification?.join(' ')).toMatch(/3–7/);
+      expect(tma.stack).toEqual(expect.arrayContaining(['OpenRouter', 'RouterAI']));
+      expect(tma.verification?.join(' ')).toContain('AI_CARD_AUTOMATION_ENABLED');
+      expect(readClose.status).toBe('active');
+      expect(readClose.outcome.toLowerCase()).toMatch(/paused|disabled|отключ/);
+      expect(shortSport.body.toLowerCase()).toMatch(
+        /does not contain an embedded llm|llm-вызова.*нет/,
+      );
+    }
+  });
+
   it('publishes Read-Close-Bot as an AI-only image-backed case', () => {
     for (const locale of ['en', 'ru'] as const) {
       const project = getProject('read-close-bot', locale)!;

@@ -36,7 +36,7 @@ verification:
   - Scoring adds 2 points for relevance and 1 point for depth
   - The Telegram layer supports /digest, /help, and free-form search
 stack: [Cloudflare Workers, D1, Cron Triggers, DeepSeek v3.2, Telegram Bot API]
-outcome: A scheduled autonomous edge agent delivers a filtered digest and answers Telegram searches against accumulated articles.
+outcome: The fully working edge agent delivers a filtered digest and answers Telegram searches; it is currently paused by choice to avoid paid model-token spend.
 roleFocus:
   ai: Agent processing, scoring, memory, and scheduled automation.
   frontend: Telegram interaction and concise result presentation.

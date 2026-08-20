@@ -980,33 +980,47 @@
       "contribution": [
         "Built the React Telegram Mini App interface and role-aware product flows",
         "Connected predictions, attempts, NPAI, duels, and rankings to a transactional Worker API",
-        "Built an AI-assisted card preparation pipeline with diagnostics and controlled publication"
+        "Built a backend-only LLM normalization pipeline with failover, auditing, and controlled publication"
       ],
       "decisions": [
         "Keep game points and attempts separate from monetary stakes and withdrawals",
         "Record balances and rewards through a server-side ledger and idempotent operations",
-        "Separate synchronous API work, realtime coordination, and background jobs at the edge"
+        "Separate synchronous API work, realtime coordination, and background jobs at the edge",
+        "Call a free OpenRouter primary and paid RouterAI fallback only from the Worker"
       ],
       "capabilities": [
         "Vertical feed of binary Yes or No predictions",
         "Attempts, NPAI, daily top, leagues, and achievements",
         "Card creation, duels, teams, referrals, and crowd verification",
-        "AI-assisted card discovery and preparation with human control"
+        "LLM normalization of sports markets into RU/EN statements and deterministic Yes/No criteria",
+        "Sponsor-campaign translation saved as pending_review for manual publication"
       ],
       "architecture": [
         "The React 19 Telegram Mini App communicates with a Hono API through shared Zod contracts",
         "Cloudflare Worker and D1 own domain state while R2 serves media",
-        "Durable Objects, WebSockets, Queues, and Cron separate realtime and background processing"
+        "Durable Objects, WebSockets, Queues, and Cron separate realtime and background processing",
+        "The Worker calls nvidia/nemotron-3-super-120b-a12b:free through OpenRouter and uses deepseek/deepseek-v3.2 through RouterAI only after a technical failure",
+        "temperature=0, Zod output validation, D1 auditing of model, latency, tokens, and errors, plus 1/3/6/12/24-hour backoff"
       ],
       "verification": [
         "The public commit pins the frontend, Worker, shared contracts, and forward-only D1 migrations",
         "The repository includes unit and Worker tests for core prediction and social workflows",
-        "The presentation demonstrates the real mobile workflow inside Telegram"
+        "The presentation demonstrates the real mobile workflow inside Telegram",
+        "AI_CARD_AUTOMATION_ENABLED is false in development and production; the legacy Tavily + RouterAI pilot is not an active feature"
       ],
-      "stack": ["React 19", "TypeScript", "Hono", "Cloudflare Workers", "D1", "Zod"],
+      "stack": [
+        "React 19",
+        "TypeScript",
+        "Hono",
+        "Cloudflare Workers",
+        "D1",
+        "Zod",
+        "OpenRouter",
+        "RouterAI"
+      ],
       "outcome": "The MVP combines a mobile-first game experience with a verifiable edge architecture and controlled AI-assisted content preparation.",
       "roleFocus": {
-        "ai": "Designed AI-assisted card preparation, diagnostics, and a human publication boundary inside a verifiable prediction system.",
+        "ai": "Designed backend-only LLM failover, strict structured output, D1 auditing, backoff, and a human publication boundary.",
         "frontend": "Built the React 19 Telegram Mini App, mobile-first feed, predictions, duels, teams, profile, and typed API boundary."
       },
       "links": [
@@ -1028,7 +1042,7 @@
       },
       "cardPreview": "/image/preview/Neurosport TMA.png",
       "chapters": [],
-      "body": "## Verified context\n\nThis card describes the standalone Telegram Mini App and does not reuse claims from the Vue-based Neurosport project. Capabilities are tied to the public `dev` branch commit."
+      "body": "## Verified context\n\nThis card describes the standalone Telegram Mini App and does not reuse claims from the Vue-based Neurosport project. LLM calls are backend-only, so the React client never receives provider secrets. The automation is implemented but currently disabled by a kill switch."
     },
     {
       "slug": "neurosport-tma",
@@ -1044,33 +1058,47 @@
       "contribution": [
         "Реализовал React-интерфейс Telegram Mini App и ролевые продуктовые сценарии",
         "Связал прогнозы, попытки, NPAI, дуэли и рейтинги с транзакционным Worker API",
-        "Собрал AI-assisted контур подготовки карточек с диагностикой и контролируемой публикацией"
+        "Собрал backend-only LLM-контур нормализации карточек с failover, аудитом и ручной публикацией"
       ],
       "decisions": [
         "Отделить игровые очки и попытки от денежных ставок и вывода средств",
         "Фиксировать балансы и награды серверным ledger и идемпотентными операциями",
-        "Разделить синхронный API, realtime-координацию и фоновые задачи на edge-уровне"
+        "Разделить синхронный API, realtime-координацию и фоновые задачи на edge-уровне",
+        "Вызывать бесплатный OpenRouter primary и платный RouterAI fallback только из Worker"
       ],
       "capabilities": [
         "Вертикальная лента бинарных прогнозов «Да» или «Нет»",
         "Попытки, NPAI, дневной топ, лиги и достижения",
         "Создание карточек, дуэли, команды, рефералы и крауд-верификация",
-        "AI-assisted поиск и подготовка карточек с ручным контролем"
+        "LLM-нормализация спортивных рынков в RU/EN-утверждения и критерии Yes/No",
+        "Перевод спонсорских кампаний со статусом pending_review и ручной публикацией"
       ],
       "architecture": [
         "React 19 Telegram Mini App общается с Hono API через общие Zod-контракты",
         "Cloudflare Worker и D1 хранят доменное состояние, R2 обслуживает медиа",
-        "Durable Objects, WebSockets, Queues и Cron разделяют realtime и фоновую обработку"
+        "Durable Objects, WebSockets, Queues и Cron разделяют realtime и фоновую обработку",
+        "Worker вызывает nvidia/nemotron-3-super-120b-a12b:free через OpenRouter, а при техническом сбое — deepseek/deepseek-v3.2 через RouterAI",
+        "temperature=0, Zod-валидация, D1-аудит модели, latency, токенов и ошибок; backoff 1/3/6/12/24 ч"
       ],
       "verification": [
         "Публичный commit фиксирует frontend, Worker, shared-контракты и forward-only D1-миграции",
         "Репозиторий содержит unit- и Worker-тесты для ключевых прогнозных и социальных сценариев",
-        "Видеопрезентация показывает реальный mobile workflow в Telegram"
+        "Видеопрезентация показывает реальный mobile workflow в Telegram",
+        "AI_CARD_AUTOMATION_ENABLED выключен в dev и production; legacy Tavily + RouterAI пилот не является активной функцией"
       ],
-      "stack": ["React 19", "TypeScript", "Hono", "Cloudflare Workers", "D1", "Zod"],
+      "stack": [
+        "React 19",
+        "TypeScript",
+        "Hono",
+        "Cloudflare Workers",
+        "D1",
+        "Zod",
+        "OpenRouter",
+        "RouterAI"
+      ],
       "outcome": "MVP объединяет mobile-first игровой UX и проверяемую edge-архитектуру с контролируемой AI-assisted подготовкой контента.",
       "roleFocus": {
-        "ai": "Спроектировал AI-assisted подготовку карточек, диагностику и ручную границу публикации внутри проверяемой игровой системы.",
+        "ai": "Спроектировал backend-only LLM failover, строгий structured output, D1-аудит, backoff и ручную границу публикации.",
         "frontend": "Реализовал React 19 Telegram Mini App, mobile-first ленту, прогнозы, дуэли, команды, профиль и типизированную API-границу."
       },
       "links": [
@@ -1092,7 +1120,7 @@
       },
       "cardPreview": "/image/preview/Neurosport TMA.png",
       "chapters": [],
-      "body": "## Проверенный контекст\n\nКарточка описывает отдельную Telegram Mini App и не использует факты из Vue-проекта Neurosport. Возможности привязаны к публичному commit ветки `dev`."
+      "body": "## Проверенный контекст\n\nКарточка описывает отдельную Telegram Mini App и не использует факты из Vue-проекта Neurosport. LLM вызывается только на backend; React-клиент не получает provider secrets. Автоматизация реализована, но сейчас отключена kill switch."
     },
     {
       "slug": "read-close-bot",
@@ -1139,7 +1167,7 @@
         "DeepSeek v3.2",
         "Telegram Bot API"
       ],
-      "outcome": "A scheduled autonomous edge agent delivers a filtered digest and answers Telegram searches against accumulated articles.",
+      "outcome": "The fully working edge agent delivers a filtered digest and answers Telegram searches; it is currently paused by choice to avoid paid model-token spend.",
       "roleFocus": {
         "ai": "Agent processing, scoring, memory, and scheduled automation.",
         "frontend": "Telegram interaction and concise result presentation."
@@ -1200,7 +1228,7 @@
         "DeepSeek v3.2",
         "Telegram Bot API"
       ],
-      "outcome": "Автономный edge-агент по расписанию готовит отфильтрованный дайджест и отвечает на поисковые запросы из Telegram.",
+      "outcome": "Полностью рабочий edge-агент готовит дайджест и отвечает на поисковые запросы; сейчас бот намеренно отключён, чтобы не расходовать платные токены.",
       "roleFocus": {
         "ai": "Агентная обработка, scoring, память и автоматизация по расписанию.",
         "frontend": "Telegram-интерфейс и ясное представление результатов."
@@ -1280,7 +1308,7 @@
       "media": { "poster": "/media/shortsport-ai-forge.webp" },
       "cardPreview": "/image/preview/ShortSport AI Forge.png",
       "chapters": [],
-      "body": "## Verified context\n\nThe public snapshot substantiates the client workflow and Cloudflare delivery path. It is a controlled MVP with manual approval, not a claim of autonomous publishing."
+      "body": "## Verified context\n\nThe public snapshot substantiates the client workflow and Cloudflare delivery path. It is a controlled MVP with manual approval. “AI-assisted” describes the product workflow; the project does not contain an embedded LLM call."
     },
     {
       "slug": "shortsport-ai-forge",
@@ -1345,7 +1373,7 @@
       "media": { "poster": "/media/shortsport-ai-forge.webp" },
       "cardPreview": "/image/preview/ShortSport AI Forge.png",
       "chapters": [],
-      "body": "## Проверенный контекст\n\nПубличный снимок подтверждает клиентский workflow и Cloudflare-контур. Это управляемый MVP с ручным подтверждением результата, а не заявление об автономной публикации."
+      "body": "## Проверенный контекст\n\nПубличный снимок подтверждает клиентский workflow и Cloudflare-контур. Это управляемый MVP с ручным подтверждением результата. Формулировка AI-assisted описывает продуктовый workflow; встроенного LLM-вызова в проекте нет."
     },
     {
       "slug": "todo-app",
@@ -1477,21 +1505,25 @@
       "slug": "video-sut",
       "locale": "en",
       "title": "Video Transcriber",
-      "eyebrow": "Frontend prototype · YouTube contextualization",
+      "eyebrow": "LLM pipeline · YouTube transcription",
       "status": "mvp",
       "roles": ["ai", "frontend"],
       "featured": true,
       "priority": { "ai": 40, "frontend": 85 },
-      "summary": "An interactive frontend prototype for a YouTube video transcription and summarization service, demonstrating complex processing states and bento-style dashboard.",
-      "task": "Present a professional AI-assisted workflow for extracting structured knowledge from video content.",
+      "summary": "A service extracts a Russian YouTube transcript and summarizes it with DeepSeek v3.2 before presenting the result in a bento dashboard.",
+      "task": "Turn a YouTube URL into a readable expert brief with a main idea, key takeaways, conclusion, and timestamps.",
       "contribution": [
         "Designed the user AI scenario from URL input to structured output",
         "Built the Next.js/React interface and processing states",
+        "Integrated Supadata and RouterAI/DeepSeek into a protected API pipeline",
         "Developed the responsive bento-dashboard and interaction flows",
         "Defined typed application states and the structured result model"
       ],
       "decisions": [
-        "Focus on high-fidelity frontend states rather than backend complexity for the prototype",
+        "Limit the LLM to summarizing an existing transcript without agent architecture",
+        "tool calling",
+        "RAG",
+        "or memory",
         "Use explicit processing stages to build user trust during async operations",
         "Separate input, processing, and result views into focused components",
         "Present summaries, takeaways, timestamps, and actions in a responsive bento layout"
@@ -1504,18 +1536,21 @@
         "Summary, key points, time-codes, and recommendations output",
         "Individual block and full result copying",
         "Deep links to specific YouTube timestamps",
-        "Responsive bento-style results dashboard"
+        "Responsive bento-style results dashboard",
+        "Authentication, rate limiting, credit charging, and a seven-day result cache"
       ],
       "architecture": [
         "Next.js App Router owns the application shell and client entry point",
         "React 19 local state models idle / processing / success / error transitions",
         "Typed AppState and VideoResult contracts keep the UI flow explicit",
         "Tailwind CSS v4 and Radix-based components form the responsive interface",
-        "Dedicated components isolate URL input, progress feedback, examples, and results"
+        "Dedicated components isolate URL input, progress feedback, examples, and results",
+        "Supadata returns the Russian transcript; RouterAI calls deepseek/deepseek-v3.2 with temperature 0.3 and top_p 0.95"
       ],
       "verification": [
         "The pinned source snapshot contains the typed four-state UI flow",
-        "The source renders five simulated processing stages before a structured result",
+        "The verified pipeline extracts a transcript and sends it to the LLM after auth, rate-limit, and credit checks",
+        "The LLM returns Markdown with a main idea, 3–7 takeaways, and a conclusion without promotional noise",
         "The presentation demonstrates URL input, processing feedback, and the result dashboard"
       ],
       "stack": [
@@ -1525,11 +1560,14 @@
         "Tailwind CSS v4",
         "shadcn/ui",
         "Radix UI",
-        "Vercel Analytics"
+        "Vercel Analytics",
+        "Supadata",
+        "DeepSeek v3.2",
+        "RouterAI"
       ],
-      "outcome": "A high-fidelity interactive prototype that validates the user experience for a video transcription service.",
+      "outcome": "The MVP combines real transcription, narrowly scoped LLM summarization, and a responsive result experience.",
       "roleFocus": {
-        "ai": "Designed the user AI journey—from context extraction and stage orchestration to structured output presentation.",
+        "ai": "Designed a controlled Supadata → RouterAI/DeepSeek → cached-summary pipeline with explicit boundaries on LLM use.",
         "frontend": "Built the Next.js dashboard, processing states, responsive bento layout, typed result model, and interactive components."
       },
       "links": [],
@@ -1551,21 +1589,24 @@
       "slug": "video-sut",
       "locale": "ru",
       "title": "Video Transcriber",
-      "eyebrow": "Frontend prototype · YouTube contextualization",
+      "eyebrow": "LLM pipeline · YouTube transcription",
       "status": "mvp",
       "roles": ["ai", "frontend"],
       "featured": true,
       "priority": { "ai": 40, "frontend": 85 },
-      "summary": "Интерактивный frontend-прототип сервиса транскрибации и суммаризации YouTube-видео, демонстрирующий сложные состояния обработки и bento-дашборд.",
-      "task": "Представить профессиональный AI-assisted рабочий процесс извлечения структурированных знаний из видеоконтента.",
+      "summary": "Сервис извлекает русскоязычный транскрипт YouTube-видео и суммаризует его через DeepSeek v3.2, выводя результат в bento-дашборде.",
+      "task": "Превратить YouTube URL в читаемый экспертный конспект с главной мыслью, тезисами, выводом и тайм-кодами.",
       "contribution": [
         "Проектирование пользовательского AI-сценария от URL до структурированного результата",
         "Реализация Next.js/React-интерфейса и состояний обработки",
+        "Интеграция Supadata и RouterAI/DeepSeek в защищённый API pipeline",
         "Разработка адаптивного bento-дашборда и логики взаимодействия",
         "Определение типизированных состояний приложения и модели результата"
       ],
       "decisions": [
-        "Фокус на высокой точности состояний фронтенда вместо сложности бэкенда для прототипа",
+        "Ограничить LLM суммаризацией готового транскрипта без agent architecture",
+        "tool calling",
+        "RAG и памяти",
         "Использование явных стадий обработки для формирования доверия пользователя при асинхронных операциях",
         "Разделение ввода, обработки и результата на сфокусированные компоненты",
         "Представление саммари, тезисов, тайм-кодов и действий в адаптивной bento-раскладке"
@@ -1578,18 +1619,21 @@
         "Вывод summary, ключевых тезисов, тайм-кодов и рекомендаций",
         "Копирование отдельных блоков и всего результата целиком",
         "Переходы к соответствующим тайм-кодам YouTube",
-        "Адаптивный bento-дашборд результатов"
+        "Адаптивный bento-дашборд результатов",
+        "Авторизация, rate limit, списание кредита и cache результата на 7 дней"
       ],
       "architecture": [
         "Next.js App Router формирует оболочку приложения и клиентскую точку входа",
         "Локальное состояние React 19 моделирует переходы idle / processing / success / error",
         "Типы AppState и VideoResult явно фиксируют контракт интерфейсного сценария",
         "Tailwind CSS v4 и компоненты на основе Radix формируют адаптивный интерфейс",
-        "Отдельные компоненты изолируют ввод URL, прогресс, примеры и результат"
+        "Отдельные компоненты изолируют ввод URL, прогресс, примеры и результат",
+        "Supadata возвращает русский транскрипт; RouterAI вызывает deepseek/deepseek-v3.2 с temperature 0.3 и top_p 0.95"
       ],
       "verification": [
         "Закреплённый снимок исходного кода содержит типизированный сценарий из четырёх состояний",
-        "Исходный код показывает пять имитируемых стадий до вывода структурированного результата",
+        "Проверенный pipeline извлекает транскрипт и отправляет его в LLM после auth/rate-limit/credit проверок",
+        "LLM возвращает Markdown с главной мыслью 3–7 тезисами и итогом без рекламного шума",
         "Презентация демонстрирует ввод URL, обратную связь обработки и дашборд результата"
       ],
       "stack": [
@@ -1599,11 +1643,14 @@
         "Tailwind CSS v4",
         "shadcn/ui",
         "Radix UI",
-        "Vercel Analytics"
+        "Vercel Analytics",
+        "Supadata",
+        "DeepSeek v3.2",
+        "RouterAI"
       ],
-      "outcome": "Высокоточный интерактивный прототип, подтверждающий пользовательский опыт сервиса транскрибации видео.",
+      "outcome": "MVP объединяет реальную транскрибацию, узко ограниченную LLM-суммаризацию и адаптивное представление результата.",
       "roleFocus": {
-        "ai": "Проектирование пользовательского AI-сценария — от извлечения контекста и оркестрации стадий до представления структурированного результата.",
+        "ai": "Спроектировал контролируемый pipeline Supadata → RouterAI/DeepSeek → cached summary с явными границами применения LLM.",
         "frontend": "Реализация Next.js дашборда, состояний обработки, адаптивной bento-раскладки, типизированной модели результата и интерактивных компонентов."
       },
       "links": [],

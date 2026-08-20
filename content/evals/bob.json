@@ -292,5 +292,73 @@
     "question": "Is TTLock connected to a real API and issuing access codes?",
     "sources": ["bitrix24-integrations", "satelab-projects"],
     "forbidden": ["yes, connected", "roadmap delivered"]
+  },
+  {
+    "locale": "ru",
+    "mode": "qa",
+    "question": "В каких проектах используется LLM?",
+    "sources": [
+      "llm-projects",
+      "local-ai-assistant",
+      "video-sut",
+      "neurosport-tma",
+      "read-close-bot"
+    ],
+    "forbidden": ["ShortSport AI Forge использует LLM"]
+  },
+  {
+    "locale": "en",
+    "mode": "qa",
+    "question": "Which portfolio projects use LLMs?",
+    "sources": [
+      "llm-projects",
+      "local-ai-assistant",
+      "video-sut",
+      "neurosport-tma",
+      "read-close-bot"
+    ],
+    "forbidden": ["ShortSport AI Forge uses an LLM"]
+  },
+  {
+    "locale": "ru",
+    "mode": "qa",
+    "question": "Video Transcriber — это агент с RAG и анализом видео?",
+    "sources": ["video-sut", "llm-projects"],
+    "forbidden": ["agent architecture", "RAG", "мультимодальный анализ"]
+  },
+  {
+    "locale": "en",
+    "mode": "qa",
+    "question": "Does Video Transcriber use an agent, RAG, or multimodal video analysis?",
+    "sources": ["video-sut", "llm-projects"],
+    "forbidden": ["it uses RAG", "multimodal model"]
+  },
+  {
+    "locale": "ru",
+    "mode": "qa",
+    "question": "Где вызывается LLM в Neurosport TMA и активна ли автоматизация?",
+    "sources": ["neurosport-tma", "llm-projects"],
+    "forbidden": ["LLM вызывается из React", "автоматизация активна"]
+  },
+  {
+    "locale": "en",
+    "mode": "qa",
+    "question": "Where does Neurosport TMA call its LLM, and is automation enabled?",
+    "sources": ["neurosport-tma", "llm-projects"],
+    "forbidden": ["called from React", "automation is enabled"]
+  },
+  {
+    "locale": "ru",
+    "mode": "qa",
+    "question": "Read-Close-Bot сломан или не завершён?",
+    "sources": ["read-close-bot", "llm-projects"],
+    "forbidden": ["сломан", "не завершён"]
+  },
+  {
+    "locale": "en",
+    "mode": "qa",
+    "question": "Is Read-Close-Bot broken or unfinished?",
+    "sources": ["read-close-bot", "llm-projects"],
+    "forbidden": ["broken", "unfinished"]
   }
 ]

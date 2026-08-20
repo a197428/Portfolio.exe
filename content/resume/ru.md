@@ -28,6 +28,7 @@ AI Application Developer и Fullstack-разработчик с коммерче
 - Разработка интеграционных приложений для Bitrix24 для постоянного заказчика.
 - Проектирование frontend, API-взаимодействий и прикладной логики.
 - AI-автоматизация: агент управления репутацией на n8n с DeepSeek и Firecrawl.
+- LLM-интеграции: LangGraph tool-calling агент, суммаризация транскриптов, backend-only structured generation с provider failover и Telegram-агент по техническим статьям.
 
 ## Навыки
 

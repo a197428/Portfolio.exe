@@ -48,4 +48,4 @@ cardPreview: /image/preview/ShortSport AI Forge.png
 
 ## Verified context
 
-The public snapshot substantiates the client workflow and Cloudflare delivery path. It is a controlled MVP with manual approval, not a claim of autonomous publishing.
+The public snapshot substantiates the client workflow and Cloudflare delivery path. It is a controlled MVP with manual approval. “AI-assisted” describes the product workflow; the project does not contain an embedded LLM call.

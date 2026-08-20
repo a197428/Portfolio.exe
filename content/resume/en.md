@@ -28,6 +28,7 @@ AI Application Developer and full-stack developer with commercial experience in 
 - Develops Bitrix24 integration applications for a recurring client.
 - Designs frontend flows, API interactions, and application logic.
 - Built AI automation for reputation management with n8n, DeepSeek, and Firecrawl.
+- Built LLM integrations spanning a LangGraph tool-calling agent, transcript summarization, backend-only structured generation with provider failover, and a Telegram agent for technical articles.
 
 ## Skills
 

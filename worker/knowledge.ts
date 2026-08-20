@@ -21,7 +21,7 @@ export interface RetrievedEvidence extends KnowledgeChunk {
 const fallbackKnowledge = generatedKnowledge as KnowledgeChunk[];
 
 type CandidateIntent =
-  'skills' | 'resume' | 'experience' | 'education' | 'availability' | 'candidate';
+  'skills' | 'resume' | 'experience' | 'education' | 'availability' | 'candidate' | 'llm';
 
 type ProjectSubject = 'satelab' | 'acquiring' | 'apartsharing' | 'ttlock' | 'bitrix24';
 
@@ -104,7 +104,53 @@ const intentPrefixes: Record<CandidateIntent, string[]> = {
     'попов',
     'о себе',
   ],
+  llm: [
+    'llm',
+    'language model',
+    'large language model',
+    'generative ai',
+    'deepseek',
+    'openrouter',
+    'routerai',
+    'summar',
+    'языковая модель',
+    'языковые модели',
+    'языков',
+    'модел',
+    'нейросет',
+    'генеративн',
+    'суммариз',
+  ],
 };
+
+const llmProjectHrefs = [
+  '/projects/local-ai-assistant',
+  '/projects/video-sut',
+  '/projects/neurosport-tma',
+  '/projects/read-close-bot',
+] as const;
+
+function isLlmDossier(chunk: KnowledgeChunk) {
+  return (
+    chunk.type === 'fact' &&
+    /four projects using llms|четыре проекта с llm/i.test(chunk.title)
+  );
+}
+
+function isExhaustiveLlmQuestion(value: string) {
+  const normalized = normalizedWords(value).join(' ');
+  return [
+    'which project',
+    'what project',
+    'all project',
+    'list project',
+    'какие проект',
+    'каких проект',
+    'все проект',
+    'назови проект',
+    'перечисли проект',
+  ].some((phrase) => normalized.includes(phrase));
+}
 
 function normalizedWords(value: string) {
   return value
@@ -246,6 +292,11 @@ function intentBoost(type: KnowledgeChunk['type'], intents: Set<CandidateIntent>
     if (type === 'resume') boost += 0.24;
     if (type === 'fact') boost += 0.08;
   }
+  if (intents.has('llm')) {
+    if (type === 'project') boost += 0.34;
+    if (type === 'fact') boost += 0.46;
+    if (type === 'resume') boost += 0.12;
+  }
   return boost;
 }
 
@@ -270,6 +321,14 @@ export function lexicalRetrieve(request: ChatRequest): RetrievedEvidence[] {
     .filter(({ score }) => score > 0.08)
     .sort((left, right) => right.score - left.score);
 
+  if (intents.has('llm') && isExhaustiveLlmQuestion(request.message)) {
+    const mandatory = [
+      ranked.find(isLlmDossier),
+      ...llmProjectHrefs.map((href) => ranked.find((item) => item.href === href)),
+    ].filter((item): item is RetrievedEvidence => Boolean(item));
+    return mandatory.slice(0, 8);
+  }
+
   if (intents.size === 0) return ranked.slice(0, 8);
 
   const requiredTypes: KnowledgeChunk['type'][] = ['profile'];
@@ -278,6 +337,7 @@ export function lexicalRetrieve(request: ChatRequest): RetrievedEvidence[] {
   }
   if (intents.has('education')) requiredTypes.push('fact');
   if (intents.has('experience') || subjects.size > 0) requiredTypes.push('fact');
+  if (intents.has('llm')) requiredTypes.push('fact');
 
   const selected = requiredTypes.flatMap((type) => {
     const match = ranked.find((item) => item.type === type);
@@ -288,6 +348,7 @@ export function lexicalRetrieve(request: ChatRequest): RetrievedEvidence[] {
   for (const item of ranked) {
     if (selected.length === 8) break;
     if (genericCandidateQuestion && item.type === 'project') continue;
+    if (intents.has('llm') && item.href === '/projects/shortsport-ai-forge') continue;
     if (
       !intents.has('education') &&
       !intents.has('experience') &&
@@ -344,7 +405,9 @@ export async function retrieveEvidence(
 
   // Semantic retrieval can miss short, general questions such as "skills?". Merge
   // verified profile/resume anchors so production Vectorize behaves like the local fallback.
-  const anchors = lexicalRetrieve(request).filter(({ type }) => type !== 'project');
+  const anchors = lexicalRetrieve(request).filter(
+    ({ type }) => intents.has('llm') || type !== 'project',
+  );
   const merged = new Map<string, RetrievedEvidence>();
   for (const item of [...semanticEvidence, ...anchors]) {
     const current = merged.get(item.id);

@@ -12,28 +12,33 @@ task: Построить цельный игровой продукт внутр
 contribution:
   - Реализовал React-интерфейс Telegram Mini App и ролевые продуктовые сценарии
   - Связал прогнозы, попытки, NPAI, дуэли и рейтинги с транзакционным Worker API
-  - Собрал AI-assisted контур подготовки карточек с диагностикой и контролируемой публикацией
+  - Собрал backend-only LLM-контур нормализации карточек с failover, аудитом и ручной публикацией
 decisions:
   - Отделить игровые очки и попытки от денежных ставок и вывода средств
   - Фиксировать балансы и награды серверным ledger и идемпотентными операциями
   - Разделить синхронный API, realtime-координацию и фоновые задачи на edge-уровне
+  - Вызывать бесплатный OpenRouter primary и платный RouterAI fallback только из Worker
 capabilities:
   - Вертикальная лента бинарных прогнозов «Да» или «Нет»
   - Попытки, NPAI, дневной топ, лиги и достижения
   - Создание карточек, дуэли, команды, рефералы и крауд-верификация
-  - AI-assisted поиск и подготовка карточек с ручным контролем
+  - LLM-нормализация спортивных рынков в RU/EN-утверждения и критерии Yes/No
+  - Перевод спонсорских кампаний со статусом pending_review и ручной публикацией
 architecture:
   - React 19 Telegram Mini App общается с Hono API через общие Zod-контракты
   - Cloudflare Worker и D1 хранят доменное состояние, R2 обслуживает медиа
   - Durable Objects, WebSockets, Queues и Cron разделяют realtime и фоновую обработку
+  - 'Worker вызывает nvidia/nemotron-3-super-120b-a12b:free через OpenRouter, а при техническом сбое — deepseek/deepseek-v3.2 через RouterAI'
+  - 'temperature=0, Zod-валидация, D1-аудит модели, latency, токенов и ошибок; backoff 1/3/6/12/24 ч'
 verification:
   - Публичный commit фиксирует frontend, Worker, shared-контракты и forward-only D1-миграции
   - Репозиторий содержит unit- и Worker-тесты для ключевых прогнозных и социальных сценариев
   - Видеопрезентация показывает реальный mobile workflow в Telegram
-stack: [React 19, TypeScript, Hono, Cloudflare Workers, D1, Zod]
+  - AI_CARD_AUTOMATION_ENABLED выключен в dev и production; legacy Tavily + RouterAI пилот не является активной функцией
+stack: [React 19, TypeScript, Hono, Cloudflare Workers, D1, Zod, OpenRouter, RouterAI]
 outcome: MVP объединяет mobile-first игровой UX и проверяемую edge-архитектуру с контролируемой AI-assisted подготовкой контента.
 roleFocus:
-  ai: Спроектировал AI-assisted подготовку карточек, диагностику и ручную границу публикации внутри проверяемой игровой системы.
+  ai: Спроектировал backend-only LLM failover, строгий structured output, D1-аудит, backoff и ручную границу публикации.
   frontend: Реализовал React 19 Telegram Mini App, mobile-first ленту, прогнозы, дуэли, команды, профиль и типизированную API-границу.
 source:
   repository: https://github.com/a197428/Neurosport-TMA
@@ -49,4 +54,4 @@ cardPreview: /image/preview/Neurosport TMA.png
 
 ## Проверенный контекст
 
-Карточка описывает отдельную Telegram Mini App и не использует факты из Vue-проекта Neurosport. Возможности привязаны к публичному commit ветки `dev`.
+Карточка описывает отдельную Telegram Mini App и не использует факты из Vue-проекта Neurosport. LLM вызывается только на backend; React-клиент не получает provider secrets. Автоматизация реализована, но сейчас отключена kill switch.

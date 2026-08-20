@@ -90,4 +90,54 @@ describe('knowledge retrieval fallback', () => {
       evidence.some(({ type, title }) => type === 'fact' && title.includes('SatelAB')),
     ).toBe(true);
   });
+
+  it.each([
+    ['ru', 'В каких проектах используется LLM?'],
+    ['ru', 'Назови все проекты с языковыми моделями'],
+    ['en', 'Which projects use large language models?'],
+    ['en', 'List all projects that use LLMs'],
+  ] as const)(
+    'returns the exact four-project LLM portfolio set: %s',
+    (locale, message) => {
+      const evidence = lexicalRetrieve({
+        mode: 'qa',
+        message,
+        history: [],
+        locale,
+        role: 'ai',
+      });
+      expect(
+        evidence.filter(({ type }) => type === 'project').map(({ href }) => href),
+      ).toEqual([
+        '/projects/local-ai-assistant',
+        '/projects/video-sut',
+        '/projects/neurosport-tma',
+        '/projects/read-close-bot',
+      ]);
+      expect(
+        evidence.some(({ title }) => /four projects|четыре проекта/i.test(title)),
+      ).toBe(true);
+      expect(evidence.some(({ href }) => href === '/projects/shortsport-ai-forge')).toBe(
+        false,
+      );
+    },
+  );
+
+  it('merges all LLM anchors with production semantic retrieval', async () => {
+    const evidence = await retrieveEvidence(
+      {
+        mode: 'qa',
+        message: 'Which projects use LLMs?',
+        history: [],
+        locale: 'en',
+        role: 'ai',
+      },
+      { id: 'embedding', embed: vi.fn(async () => [0.1, 0.2]) },
+      { query: vi.fn(async () => ({ matches: [] })) } as unknown as VectorizeIndex,
+    );
+    expect(evidence.filter(({ type }) => type === 'project')).toHaveLength(4);
+    expect(evidence.some(({ href }) => href === '/projects/shortsport-ai-forge')).toBe(
+      false,
+    );
+  });
 });
