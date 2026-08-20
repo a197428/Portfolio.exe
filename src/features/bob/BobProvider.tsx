@@ -10,6 +10,7 @@ import {
 } from 'react';
 import type { Citation, ChatMode, ChatRequest } from '@/features/bob/contracts';
 import { BobApiError, streamBob } from '@/features/bob/api';
+import { bobPlainText } from '@/features/bob/plainText';
 import { usePreferences } from '@/features/preferences/store';
 
 export interface BobMessage {
@@ -69,7 +70,7 @@ export function BobProvider({ children }: { children: ReactNode }) {
       const assistantId = crypto.randomUUID();
       const history = messages.slice(-8).map(({ role: itemRole, content }) => ({
         role: itemRole,
-        content,
+        content: itemRole === 'assistant' ? bobPlainText(content) : content,
       }));
       setMessages((current) => [
         ...current,

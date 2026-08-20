@@ -36,6 +36,8 @@ npm run deploy
 ```
 
 Secrets must be stored with Wrangler and never added to `.dev.vars` in Git.
+Bob uses `OPENROUTER_API_KEY` as the primary generator and `ROUTERAI_API_KEY` as the
+secondary generator. Configure both as Wrangler secrets in production.
 
 ## Git workflow
 

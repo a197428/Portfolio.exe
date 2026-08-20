@@ -87,4 +87,45 @@ describe('Bob Worker API', () => {
     expect(body).not.toContain('authorization-secret');
     expect(body).not.toContain('openrouter-secret');
   });
+
+  it('falls back to RouterAI when OpenRouter cannot start a response', async () => {
+    const calls: string[] = [];
+    vi.stubGlobal(
+      'fetch',
+      vi.fn(async (input: string | URL | Request) => {
+        const url = String(input);
+        calls.push(url);
+        if (url.startsWith('https://openrouter.ai/')) {
+          return new Response('unavailable', { status: 503 });
+        }
+        if (url.startsWith('https://routerai.ru/')) {
+          return new Response(
+            'data: {"choices":[{"delta":{"content":"Fallback answer"}}]}\n\ndata: [DONE]\n\n',
+            { headers: { 'Content-Type': 'text/event-stream' } },
+          );
+        }
+        throw new Error(`Unexpected URL: ${url}`);
+      }),
+    );
+
+    const response = await app.request(
+      '/api/chat',
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(requestBody),
+      },
+      {
+        OPENROUTER_API_KEY: 'primary-key',
+        ROUTERAI_API_KEY: 'fallback-key',
+      },
+    );
+
+    expect(response.status).toBe(200);
+    await expect(response.text()).resolves.toContain('Fallback answer');
+    expect(calls).toEqual([
+      'https://openrouter.ai/api/v1/chat/completions',
+      'https://routerai.ru/api/v1/chat/completions',
+    ]);
+  });
 });

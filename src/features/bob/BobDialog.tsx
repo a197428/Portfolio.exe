@@ -1,8 +1,10 @@
-import { ExternalLink, LoaderCircle, RotateCcw, Send, Square, X } from 'lucide-react';
+import { ExternalLink, FileSearch2, RotateCcw, Send, Square, X } from 'lucide-react';
 import { useEffect, useId, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import { useTranslation } from 'react-i18next';
 import { useBob } from '@/features/bob/BobProvider';
+import { BobMark } from '@/features/bob/BobMark';
+import { bobPlainText } from '@/features/bob/plainText';
 
 declare global {
   interface Window {
@@ -105,16 +107,21 @@ export function BobDialog() {
     >
       <section
         ref={dialog}
-        className="bob-dialog glass-panel"
+        className={`bob-dialog glass-panel${bob.streaming ? ' bob-dialog--streaming' : ''}`}
         role="dialog"
         aria-modal="true"
         aria-labelledby={titleId}
         onMouseDown={(event) => event.stopPropagation()}
       >
         <header className="bob-dialog-head">
-          <div>
-            <span className="card-eyebrow">AI / GROUNDED</span>
-            <h2 id={titleId}>{t('bob.title')}</h2>
+          <div className="bob-dialog-identity">
+            <span className="bob-dialog-mark">
+              <BobMark size={38} />
+            </span>
+            <div>
+              <h2 id={titleId}>{t('bob.title')}</h2>
+              <span>{bob.streaming ? t('bob.thinking') : t('bob.status')}</span>
+            </div>
           </div>
           <button
             type="button"
@@ -126,23 +133,6 @@ export function BobDialog() {
           </button>
         </header>
 
-        <div className="bob-mode" aria-label={t('bob.mode')}>
-          <button
-            type="button"
-            className={bob.mode === 'qa' ? 'active' : ''}
-            onClick={() => bob.setMode('qa')}
-          >
-            {t('bob.ask')}
-          </button>
-          <button
-            type="button"
-            className={bob.mode === 'vacancy' ? 'active' : ''}
-            onClick={() => bob.setMode('vacancy')}
-          >
-            {t('bob.vacancy')}
-          </button>
-        </div>
-
         <div className="bob-messages" aria-live="polite" aria-busy={bob.streaming}>
           {bob.messages.length === 0 && (
             <div className="bob-welcome">
@@ -152,23 +142,37 @@ export function BobDialog() {
           )}
           {bob.messages.map((message) => (
             <article className={`bob-message ${message.role}`} key={message.id}>
-              <span>{message.role === 'assistant' ? 'Боб' : t('bob.you')}</span>
-              <p>{message.content || (bob.streaming ? t('bob.retrieving') : '')}</p>
+              <span className="bob-message-author">
+                {message.role === 'assistant' && <BobMark size={18} />}
+                {message.role === 'assistant' ? 'Боб' : t('bob.you')}
+              </span>
+              <p>
+                {message.content
+                  ? bobPlainText(message.content)
+                  : bob.streaming
+                    ? t('bob.retrieving')
+                    : ''}
+              </p>
               {message.sources && message.sources.length > 0 && (
-                <div className="bob-sources" aria-label={t('bob.sources')}>
-                  {message.sources.map((source) => (
-                    <a
-                      href={source.href}
-                      key={source.id}
-                      target={source.href.startsWith('http') ? '_blank' : undefined}
-                      rel="noreferrer"
-                    >
-                      <span>{source.type}</span>
-                      {source.title}
-                      <ExternalLink size={12} />
-                    </a>
-                  ))}
-                </div>
+                <details className="bob-sources">
+                  <summary>
+                    {t('bob.sourcesCount', { count: message.sources.length })}
+                  </summary>
+                  <div aria-label={t('bob.sources')}>
+                    {message.sources.map((source) => (
+                      <a
+                        href={source.href}
+                        key={source.id}
+                        target={source.href.startsWith('http') ? '_blank' : undefined}
+                        rel="noreferrer"
+                      >
+                        <span>{source.type}</span>
+                        {source.title}
+                        <ExternalLink size={12} />
+                      </a>
+                    ))}
+                  </div>
+                </details>
               )}
             </article>
           ))}
@@ -187,6 +191,17 @@ export function BobDialog() {
             submit();
           }}
         >
+          <div className="bob-composer-mode">
+            <button
+              type="button"
+              className={bob.mode === 'vacancy' ? 'active' : ''}
+              aria-pressed={bob.mode === 'vacancy'}
+              onClick={() => bob.setMode(bob.mode === 'vacancy' ? 'qa' : 'vacancy')}
+            >
+              {bob.mode === 'vacancy' ? <X size={14} /> : <FileSearch2 size={15} />}
+              {bob.mode === 'vacancy' ? t('bob.vacancyActive') : t('bob.vacancy')}
+            </button>
+          </div>
           <textarea
             ref={textarea}
             value={bob.draft}
@@ -195,7 +210,7 @@ export function BobDialog() {
               bob.mode === 'vacancy' ? t('bob.vacancyPlaceholder') : t('bob.placeholder')
             }
             maxLength={bob.mode === 'vacancy' ? 12_000 : 2_000}
-            rows={3}
+            rows={bob.mode === 'vacancy' ? 5 : 2}
             onKeyDown={(event) => {
               if (event.key === 'Enter' && !event.shiftKey) {
                 event.preventDefault();
@@ -204,9 +219,11 @@ export function BobDialog() {
             }}
           />
           <div className="bob-composer-actions">
-            <small>
-              {bob.draft.length}/{bob.mode === 'vacancy' ? '12000' : '2000'}
-            </small>
+            {(bob.mode === 'vacancy' || bob.draft.length >= 1_600) && (
+              <small>
+                {bob.draft.length}/{bob.mode === 'vacancy' ? '12000' : '2000'}
+              </small>
+            )}
             {bob.error && (
               <button type="button" className="bob-secondary" onClick={bob.retry}>
                 <RotateCcw size={15} />
@@ -226,12 +243,9 @@ export function BobDialog() {
             )}
           </div>
         </form>
-        {bob.streaming && (
-          <div className="bob-progress">
-            <LoaderCircle size={14} />
-            {t('bob.thinking')}
-          </div>
-        )}
+        <span className="sr-only" aria-live="polite">
+          {bob.streaming ? t('bob.thinking') : ''}
+        </span>
       </section>
     </div>,
     document.body,

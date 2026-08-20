@@ -506,9 +506,29 @@ export function HomePage() {
           )}
         </section>
 
+        <section
+          className="experience-section"
+          id="about"
+          aria-labelledby="experience-title"
+        >
+          <div className="section-heading">
+            <span>02 / {t('experience.kicker')}</span>
+            <h2 id="experience-title">{t('experience.title')}</h2>
+          </div>
+          <div className="experience-grid">
+            {profile.credentials.map((item, index) => (
+              <article className="experience-card glass-panel" key={item.title}>
+                <span>0{index + 1}</span>
+                <h3>{item.title}</h3>
+                <p>{item.text}</p>
+              </article>
+            ))}
+          </div>
+        </section>
+
         <section className="method-section" aria-labelledby="method-title">
           <div className="section-heading">
-            <span>02 / {t('method.kicker')}</span>
+            <span>03 / {t('method.kicker')}</span>
             <h2 id="method-title">{t('method.title')}</h2>
           </div>
           <div className="method-grid">
@@ -524,7 +544,7 @@ export function HomePage() {
 
         <section className="ai-preview" aria-labelledby="ai-preview-title">
           <div>
-            <span className="card-eyebrow">03 / {t('aiPreview.kicker')}</span>
+            <span className="card-eyebrow">04 / {t('aiPreview.kicker')}</span>
             <h2 id="ai-preview-title">{t('aiPreview.title')}</h2>
             <p>{t('aiPreview.text')}</p>
           </div>
@@ -533,7 +553,7 @@ export function HomePage() {
 
         <section className="contact-section glass-panel" id="contact">
           <div>
-            <span className="card-eyebrow">04 / {t('contact.kicker')}</span>
+            <span className="card-eyebrow">05 / {t('contact.kicker')}</span>
             <h2>{t('contact.title')}</h2>
           </div>
           <div className="contact-links">

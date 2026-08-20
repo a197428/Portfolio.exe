@@ -17,6 +17,13 @@ roleProfiles:
 experience:
   - SatelAB — Frontend Developer, since December 2025
   - Freelance — Full-stack Developer, since March 2026
+credentials:
+  - title: Commercial practice
+    text: SatelAB — Vue 3, TypeScript, Bitrix24, and TTLock; freelance — full-stack delivery and AI automation.
+  - title: Programming diploma with honors
+    text: Programming, algorithms, and architecture, plus a final 1C configuration for trade accounting.
+  - title: Continuous learning
+    text: Completed frontend, AI-agent, and 1C programs; currently studying AI engineering, RAG, and LangChain/LangGraph.
 contacts:
   email: a197428@yandex.ru
   telegram: https://t.me/AVPopoff

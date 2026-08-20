@@ -22,6 +22,8 @@ describe('Bob grounding prompt', () => {
     expect(prompt).toContain('Use only the evidence');
     expect(prompt).toContain('Match, Evidence, Gaps, Interview questions');
     expect(prompt).toContain('Never invent');
+    expect(prompt).toContain('clean plain text only');
+    expect(prompt).not.toContain('Cite claims inline');
     expect(prompt).toContain('Uses a Worker.');
   });
 });

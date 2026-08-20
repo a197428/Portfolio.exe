@@ -273,12 +273,38 @@ a:focus-visible {
   background: var(--accent);
 }
 
+.experience-section,
 .method-section,
 .ai-preview,
 .contact-section {
   max-width: 1120px;
   margin: 0 auto;
   padding: 6rem 0;
+}
+.experience-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+}
+.experience-card {
+  min-height: 15rem;
+  padding: clamp(1.25rem, 2.4vw, 2rem);
+  border-radius: var(--radius-lg);
+}
+.experience-card > span {
+  color: var(--accent);
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+}
+.experience-card h3 {
+  margin: 3.5rem 0 0.75rem;
+  font-size: clamp(1.25rem, 2vw, 1.65rem);
+  letter-spacing: -0.035em;
+}
+.experience-card p {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.6;
 }
 .method-grid {
   display: grid;
@@ -363,12 +389,9 @@ a:focus-visible {
   font-weight: 700;
   cursor: pointer;
 }
-.bob-launcher-pulse {
-  width: 0.42rem;
-  height: 0.42rem;
-  border-radius: 50%;
-  background: #071008;
-  box-shadow: 0 0 0 5px rgb(7 16 8 / 12%);
+.bob-launcher-mark {
+  flex: 0 0 auto;
+  color: #071008;
 }
 .bob-intro {
   padding: 1.25rem;
@@ -398,12 +421,12 @@ a:focus-visible {
   color: var(--accent);
   background: rgb(175 255 83 / 7%);
 }
+.bob-orbit svg {
+  color: var(--accent);
+}
 .bob-suggestions {
   display: grid;
   gap: 0.55rem;
-}
-.bob-intro-mode {
-  margin: 0 0 0.8rem;
 }
 .bob-suggestions button {
   display: flex;
@@ -433,6 +456,7 @@ a:focus-visible {
   backdrop-filter: blur(10px);
 }
 .bob-dialog {
+  --bob-border-angle: 0deg;
   position: relative;
   display: flex;
   width: min(760px, 100%);
@@ -443,15 +467,69 @@ a:focus-visible {
   background: rgb(4 14 10 / 96%);
   box-shadow: 0 30px 100px rgb(0 0 0 / 65%);
 }
+.bob-dialog::before {
+  position: absolute;
+  z-index: 20;
+  inset: 0;
+  padding: 1.5px;
+  border-radius: inherit;
+  background: conic-gradient(
+    from var(--bob-border-angle),
+    transparent 0 58%,
+    rgb(184 255 99 / 16%) 67%,
+    rgb(184 255 99 / 95%) 76%,
+    rgb(111 255 195 / 44%) 84%,
+    transparent 94%
+  );
+  content: '';
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 220ms ease;
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+}
+.bob-dialog--streaming {
+  border-color: rgb(184 255 99 / 28%);
+  animation: bob-dialog-glow 1.8s ease-in-out infinite alternate;
+}
+.bob-dialog--streaming::before {
+  opacity: 1;
+  animation: bob-border-orbit 2.2s linear infinite;
+}
 .bob-dialog-head {
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 1.25rem 1.25rem 0.8rem;
 }
+.bob-dialog-identity {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+.bob-dialog-mark {
+  display: grid;
+  width: 3rem;
+  height: 3rem;
+  flex: 0 0 auto;
+  place-items: center;
+  border: 1px solid rgb(184 255 99 / 20%);
+  border-radius: 1rem;
+  color: var(--accent);
+  background: rgb(184 255 99 / 6%);
+}
 .bob-dialog-head h2 {
-  margin: 0.3rem 0 0;
+  margin: 0;
   font-size: clamp(1.35rem, 3vw, 2rem);
+}
+.bob-dialog-identity > div > span {
+  display: block;
+  margin-top: 0.18rem;
+  color: var(--muted);
+  font-size: 0.72rem;
 }
 .bob-icon-button {
   display: grid;
@@ -463,27 +541,6 @@ a:focus-visible {
   color: var(--foreground);
   background: transparent;
   cursor: pointer;
-}
-.bob-mode {
-  display: flex;
-  gap: 0.35rem;
-  margin: 0 1.25rem;
-  padding: 0.3rem;
-  border: 1px solid var(--glass-border);
-  border-radius: 999px;
-}
-.bob-mode button {
-  flex: 1;
-  padding: 0.65rem;
-  border: 0;
-  border-radius: 999px;
-  color: var(--muted);
-  background: transparent;
-  cursor: pointer;
-}
-.bob-mode button.active {
-  color: var(--accent-ink);
-  background: var(--accent);
 }
 .bob-messages {
   display: flex;
@@ -518,11 +575,17 @@ a:focus-visible {
   align-self: flex-end;
   background: rgb(175 255 83 / 9%);
 }
-.bob-message > span {
+.bob-message-author {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
   color: var(--accent);
   font-size: 0.68rem;
   text-transform: uppercase;
   letter-spacing: 0.12em;
+}
+.bob-message-author svg {
+  flex: 0 0 auto;
 }
 .bob-message p {
   margin: 0.4rem 0 0;
@@ -530,10 +593,23 @@ a:focus-visible {
   line-height: 1.58;
 }
 .bob-sources {
+  margin-top: 0.8rem;
+}
+.bob-sources summary {
+  width: fit-content;
+  color: var(--muted);
+  font-size: 0.72rem;
+  cursor: pointer;
+  user-select: none;
+}
+.bob-sources[open] summary {
+  margin-bottom: 0.55rem;
+  color: var(--accent);
+}
+.bob-sources > div {
   display: flex;
   flex-wrap: wrap;
   gap: 0.4rem;
-  margin-top: 0.8rem;
 }
 .bob-sources a {
   display: inline-flex;
@@ -566,6 +642,33 @@ a:focus-visible {
   border: 1px solid var(--glass-border);
   border-radius: 1.2rem;
   background: rgb(0 7 4 / 80%);
+}
+.bob-composer-mode {
+  display: flex;
+  margin-bottom: 0.35rem;
+}
+.bob-composer-mode button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.38rem;
+  padding: 0.42rem 0.6rem;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  color: var(--muted);
+  background: transparent;
+  font: inherit;
+  font-size: 0.72rem;
+  cursor: pointer;
+}
+.bob-composer-mode button:hover,
+.bob-composer-mode button:focus-visible {
+  border-color: var(--glass-border);
+  color: var(--foreground);
+}
+.bob-composer-mode button.active {
+  border-color: rgb(184 255 99 / 24%);
+  color: var(--accent);
+  background: rgb(184 255 99 / 7%);
 }
 .bob-composer textarea {
   width: 100%;
@@ -610,20 +713,36 @@ a:focus-visible {
   color: var(--foreground);
   background: rgb(255 255 255 / 8%);
 }
-.bob-progress {
-  display: flex;
-  align-items: center;
-  gap: 0.4rem;
-  padding: 0 1.25rem 0.8rem;
-  color: var(--muted);
-  font-size: 0.75rem;
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
 }
-.bob-progress svg {
-  animation: bob-spin 1s linear infinite;
+@property --bob-border-angle {
+  syntax: '<angle>';
+  initial-value: 0deg;
+  inherits: false;
 }
-@keyframes bob-spin {
+@keyframes bob-border-orbit {
   to {
-    transform: rotate(360deg);
+    --bob-border-angle: 360deg;
+  }
+}
+@keyframes bob-dialog-glow {
+  from {
+    box-shadow:
+      0 30px 100px rgb(0 0 0 / 65%),
+      0 0 24px rgb(184 255 99 / 6%);
+  }
+  to {
+    box-shadow:
+      0 30px 100px rgb(0 0 0 / 65%),
+      0 0 44px rgb(184 255 99 / 18%);
   }
 }
 .ai-prompt-field {
@@ -818,6 +937,15 @@ a:focus-visible {
   .method-grid {
     grid-template-columns: 1fr;
   }
+  .experience-grid {
+    grid-template-columns: 1fr;
+  }
+  .experience-card {
+    min-height: 12rem;
+  }
+  .experience-card h3 {
+    margin-top: 2.5rem;
+  }
   .method-grid article {
     min-height: 13rem;
   }
@@ -850,8 +978,12 @@ a:focus-visible {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .bob-progress svg {
+  .bob-dialog--streaming,
+  .bob-dialog--streaming::before {
     animation: none;
+  }
+  .bob-dialog--streaming::before {
+    background: linear-gradient(120deg, rgb(184 255 99 / 75%), transparent 70%);
   }
 }
 

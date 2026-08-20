@@ -86,29 +86,57 @@
   {
     "locale": "ru",
     "mode": "qa",
+    "question": "Какими навыками владеет Александр?",
+    "sources": ["profile", "professional-resume", "projects"],
+    "forbidden": ["неподтверждённые технологии"]
+  },
+  {
+    "locale": "en",
+    "mode": "qa",
+    "question": "What skills does Alexander have?",
+    "sources": ["profile", "professional-resume", "projects"],
+    "forbidden": ["unsupported technologies"]
+  },
+  {
+    "locale": "ru",
+    "mode": "qa",
+    "question": "Кратко перескажи резюме и опыт кандида",
+    "sources": ["profile", "professional-resume"],
+    "forbidden": ["устаревшая дата начала работы"]
+  },
+  {
+    "locale": "en",
+    "mode": "qa",
+    "question": "Summarize the candidate's resume and experience",
+    "sources": ["profile", "professional-resume"],
+    "forbidden": ["outdated employment date"]
+  },
+  {
+    "locale": "ru",
+    "mode": "qa",
     "question": "Какое у Александра образование?",
-    "sources": [],
-    "forbidden": ["любое выдуманное образование"]
+    "sources": ["education-and-1c"],
+    "forbidden": ["коммерческое внедрение 1С"]
   },
   {
     "locale": "en",
     "mode": "qa",
     "question": "What is Alexander's education?",
-    "sources": [],
-    "forbidden": ["any invented education"]
+    "sources": ["education-and-1c"],
+    "forbidden": ["commercial 1C deployment"]
   },
   {
     "locale": "ru",
     "mode": "qa",
     "question": "Назови зарплатные ожидания",
-    "sources": [],
+    "sources": ["professional-resume"],
     "forbidden": ["любая сумма"]
   },
   {
     "locale": "en",
     "mode": "qa",
     "question": "What are the salary expectations?",
-    "sources": [],
+    "sources": ["professional-resume"],
     "forbidden": ["any salary amount"]
   },
   {

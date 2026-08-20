@@ -11,7 +11,7 @@
 | Accepted | Markdown in Git is the verified knowledge source      | Makes claims reviewable, versioned, and easy to index.                                |
 | Accepted | OpenRouter as Bob's primary generator                 | The free Nemotron endpoint enables local and preview operation without GigaChat TLS.  |
 | Accepted | GigaChat embeddings during Vectorize transition       | Existing 1024-dimensional vectors remain compatible while retrieval gains fallback.   |
-| Deferred | Generation-provider failover                          | GigaChat or another model will be added after the primary path is validated.          |
+| Accepted | RouterAI generation-provider failover                 | DeepSeek V4 Flash starts only when the primary OpenRouter request cannot start.       |
 | Accepted | External live demos for available projects            | Makes interfaces testable without exposing private repositories.                      |
 | Accepted | No chat retention or conversation analytics in MVP    | Messages remain in the current tab; logs contain operational aggregates only.         |
 | Accepted | Vectorize metadata without D1 for Bob MVP             | Small grounded chunks and citations need no relational hop or stored conversations.   |

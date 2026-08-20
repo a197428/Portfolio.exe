@@ -2,6 +2,8 @@ import { Hono } from 'hono';
 import { chatRequestSchema, type ChatStreamEvent } from '../src/features/bob/contracts';
 import { GigaChatError, GigaChatProvider } from './ai/gigachat';
 import { OpenRouterError, OpenRouterProvider } from './ai/openrouter';
+import type { GenerationProvider } from './ai/provider';
+import { RouterAIError, RouterAIProvider } from './ai/routerai';
 import { citationsFromEvidence, retrieveEvidence } from './knowledge';
 
 interface Env {
@@ -11,6 +13,9 @@ interface Env {
   OPENROUTER_API_KEY?: string;
   OPENROUTER_MODEL?: string;
   OPENROUTER_SITE_URL?: string;
+  ROUTERAI_API_KEY?: string;
+  ROUTERAI_MODEL?: string;
+  ROUTERAI_BASE_URL?: string;
   TURNSTILE_SECRET_KEY?: string;
   TURNSTILE_SITE_KEY?: string;
   TURNSTILE_HOSTNAME?: string;
@@ -182,18 +187,32 @@ app.post('/api/chat', async (context) => {
     );
   }
 
-  if (!context.env.OPENROUTER_API_KEY) {
+  const providers: GenerationProvider[] = [];
+  if (context.env.OPENROUTER_API_KEY) {
+    providers.push(
+      new OpenRouterProvider({
+        apiKey: context.env.OPENROUTER_API_KEY,
+        model: context.env.OPENROUTER_MODEL,
+        siteUrl: context.env.OPENROUTER_SITE_URL,
+      }),
+    );
+  }
+  if (context.env.ROUTERAI_API_KEY) {
+    providers.push(
+      new RouterAIProvider({
+        apiKey: context.env.ROUTERAI_API_KEY,
+        model: context.env.ROUTERAI_MODEL,
+        baseUrl: context.env.ROUTERAI_BASE_URL,
+      }),
+    );
+  }
+
+  if (providers.length === 0) {
     return context.json(
       safeError('provider_unavailable', 'Bob is not configured in this environment yet.'),
       503,
     );
   }
-
-  const provider = new OpenRouterProvider({
-    apiKey: context.env.OPENROUTER_API_KEY,
-    model: context.env.OPENROUTER_MODEL,
-    siteUrl: context.env.OPENROUTER_SITE_URL,
-  });
   const embeddingProvider =
     context.env.GIGACHAT_EMBEDDINGS_ENABLED === 'true' && context.env.GIGACHAT_AUTH_KEY
       ? new GigaChatProvider({
@@ -219,13 +238,36 @@ app.post('/api/chat', async (context) => {
         404,
       );
     }
-    const upstream = await provider.stream(parsed.data, evidence, context.req.raw.signal);
+    let activeProvider: GenerationProvider | undefined;
+    let upstream: ReadableStream<Uint8Array> | undefined;
+    let lastProviderError: unknown;
+    for (const candidate of providers) {
+      try {
+        upstream = await candidate.stream(parsed.data, evidence, context.req.raw.signal);
+        activeProvider = candidate;
+        break;
+      } catch (error) {
+        if (context.req.raw.signal.aborted) throw error;
+        lastProviderError = error;
+        console.warn(
+          JSON.stringify({
+            event: 'bob_provider_failover',
+            requestId,
+            provider: candidate.id,
+            nextProvider: providers[providers.indexOf(candidate) + 1]?.id ?? null,
+            status: 'failed_to_start',
+          }),
+        );
+      }
+    }
+    if (!upstream || !activeProvider) throw lastProviderError ?? new Error('No provider');
     console.log(
       JSON.stringify({
         event: 'bob_chat',
         requestId,
         mode: parsed.data.mode,
         locale: parsed.data.locale,
+        provider: activeProvider.id,
         evidenceCount: evidence.length,
         latencyMs: Date.now() - startedAt,
         status: 'streaming',
@@ -256,19 +298,23 @@ app.post('/api/chat', async (context) => {
     );
   } catch (error) {
     const auth =
-      (error instanceof OpenRouterError || error instanceof GigaChatError) &&
+      (error instanceof OpenRouterError ||
+        error instanceof RouterAIError ||
+        error instanceof GigaChatError) &&
       error.kind === 'auth';
     console.error(
       JSON.stringify({
         event: 'bob_chat',
         requestId,
-        provider: provider.id,
+        provider: providers.map(({ id }) => id).join(' -> '),
         mode: parsed.data.mode,
         locale: parsed.data.locale,
         latencyMs: Date.now() - startedAt,
         status: auth ? 'provider_auth' : 'provider_unavailable',
         failure:
-          error instanceof OpenRouterError || error instanceof GigaChatError
+          error instanceof OpenRouterError ||
+          error instanceof RouterAIError ||
+          error instanceof GigaChatError
             ? error.message
             : error instanceof Error
               ? `${error.name}: ${error.message}`

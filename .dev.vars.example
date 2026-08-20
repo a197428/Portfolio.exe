@@ -2,6 +2,11 @@ OPENROUTER_API_KEY=
 OPENROUTER_MODEL=nvidia/nemotron-3-ultra-550b-a55b:free
 OPENROUTER_SITE_URL=http://localhost:5173
 
+# Secondary generation provider. Used only when OpenRouter cannot start a response.
+ROUTERAI_API_KEY=
+ROUTERAI_MODEL=deepseek/deepseek-v4-flash-0731
+ROUTERAI_BASE_URL=https://routerai.ru/api/v1
+
 # Optional while GigaChat is used only for Vectorize query embeddings.
 GIGACHAT_AUTH_KEY=
 GIGACHAT_SCOPE=GIGACHAT_API_PERS

@@ -16,7 +16,7 @@ and receive an evidence-backed answer linked to relevant experience and projects
 - Home and project-detail routes.
 - Liquid-glass design foundation with accessible reduced-motion behavior.
 - React client and Cloudflare Worker deployed as one unit.
-- Versioned Markdown placeholders for verified resume, project, and fact content.
+- Versioned bilingual Markdown for the verified profile, resume, projects, education, and learning facts.
 
 ## Published portfolio content
 
@@ -25,6 +25,7 @@ and receive an evidence-backed answer linked to relevant experience and projects
 - Role-aware project catalogue sourced from validated Markdown.
 - Full public Bitrix24 presentation with product chapter navigation.
 - Frontend positioning grounded in SatelAB experience since December 2025.
+- A concise public experience and education section backed by the same verified Markdown used by Bob.
 - Frontend evidence sequence: Bitrix24, ShortSport, Neurosport, NeuralGrid, and EnergoAI.
 - Public live demos for four modern product cases with private provenance kept out of the UI.
 
@@ -33,13 +34,13 @@ and receive an evidence-backed answer linked to relevant experience and projects
 - RU/EN RAG chat grounded exclusively in verified portfolio content, with visible citations.
 - Vacancy description analysis with relevant evidence and case selection.
 - Transparent distinction between retrieved facts and model inference.
-- OpenRouter Nemotron generation, with GigaChat Embeddings and Cloudflare Vectorize retrieval where available.
+- OpenRouter Nemotron generation with RouterAI DeepSeek V4 Flash failover, plus GigaChat Embeddings and Cloudflare Vectorize retrieval where available.
 - Public abuse protection with rate limiting and Turnstile escalation; no conversation retention.
 
 ## Explicitly deferred
 
 - Executable or generated code experiences.
-- Voice, long-term memory, conversation analytics, OpenRouter fallback, and an editorial admin UI.
+- Voice, long-term memory, conversation analytics, provider failover, and an editorial admin UI.
 
 ## Success principles
 

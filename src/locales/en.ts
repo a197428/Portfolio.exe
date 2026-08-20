@@ -63,10 +63,14 @@ export const en = {
       },
     ],
   },
+  experience: {
+    kicker: 'Professional foundation',
+    title: 'Experience, education, practice.',
+  },
   aiPreview: {
     kicker: 'The portfolio answers',
     title: 'Meet Bob.',
-    text: 'A grounded AI assistant for employers: ask about skills and projects or paste a vacancy.',
+    text: 'Bob has studied Alexander’s projects, résumé, and verified professional facts, so he answers with evidence. If the facts are missing, he says so. Inventing experience is forbidden; the occasional dry joke is still within policy.',
     label: 'Grounded portfolio assistant',
     placeholder: 'Which projects match my vacancy?',
   },
@@ -78,6 +82,7 @@ export const en = {
     close: 'Close chat',
     ask: 'Ask a question',
     vacancy: 'Check a vacancy',
+    vacancyActive: 'Vacancy mode',
     mode: 'Conversation mode',
     welcome:
       'Hi! I know the verified material in this portfolio and never pad the experience — not even to be polite.',
@@ -87,6 +92,7 @@ export const en = {
     retrieving: 'Finding evidence…',
     thinking: 'Bob is composing an answer from the retrieved sources',
     sources: 'Answer sources',
+    sourcesCount: 'Sources · {{count}}',
     placeholder: 'For example: which projects demonstrate AI agent experience?',
     vacancyPlaceholder: 'Paste the full vacancy description…',
     send: 'Send',

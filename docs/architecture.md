@@ -29,7 +29,7 @@ an internal dependency of selected Kokonut components.
 
 ## Content and grounded retrieval
 
-Verified knowledge is authored as Markdown in `content/profile`, `content/projects`, and
+Verified knowledge is authored as Markdown in `content/profile`, `content/projects`,
 `content/resume`, and `content/facts`. `npm run content:build` validates localized content and
 creates stable knowledge chunks. `npm run knowledge:index` requests 1024-dimensional GigaChat
 `Embeddings`, idempotently upserts them into the `portfolio-knowledge` Vectorize V2 index, and
@@ -54,9 +54,15 @@ The `/api/chat` request path is:
 
 1. Validate the question or vacancy description.
 2. Retrieve relevant verified chunks from Vectorize.
-3. Build a provider-neutral prompt with explicit citations and uncertainty rules.
-4. Call OpenRouter's Nemotron free endpoint through the provider boundary and stream its grounded answer.
-5. Stream the answer and evidence to the client.
+3. Build a provider-neutral prompt with grounding and uncertainty rules.
+4. Start the response with OpenRouter's Nemotron free endpoint.
+5. If OpenRouter cannot start the response, retry once through RouterAI with DeepSeek V4 Flash.
+6. Stream clean text and a separate structured evidence list to the client.
+
+Short general questions are also classified into candidate intents such as skills, resume,
+experience, education, and availability. Russian word forms are normalized through stable lexical
+prefixes. For these intents, the verified profile and the relevant resume or fact chunks are merged
+into semantic results, preventing a one-word question from losing essential candidate context.
 
 Provider credentials and the Turnstile secret remain Worker secrets. GigaChat OAuth tokens used by
 the transitional embedding path are shared inside a Worker isolate and refreshed before expiry. Vectorize metadata contains the small source
@@ -66,15 +72,17 @@ The GigaChat query-embedding path is opt-in through `GIGACHAT_EMBEDDINGS_ENABLED
 without it, Bob uses deterministic lexical retrieval and never contacts GigaChat at runtime.
 
 Production setup is explicit: create the V2 index with `npm run knowledge:create`, store
-`OPENROUTER_API_KEY`, optional `GIGACHAT_AUTH_KEY`, and `TURNSTILE_SECRET_KEY` using `wrangler secret put`, configure the public
-`TURNSTILE_SITE_KEY`/expected hostname as Worker variables, and run `npm run knowledge:index` only
-after the publication-approved RU/EN resume and facts are complete. Never place provider secrets in
+`OPENROUTER_API_KEY`, `ROUTERAI_API_KEY`, optional `GIGACHAT_AUTH_KEY`, and
+`TURNSTILE_SECRET_KEY` using `wrangler secret put`, configure the public
+`TURNSTILE_SITE_KEY`/expected hostname as Worker variables, and run `npm run knowledge:index` after
+reviewing the publication-approved RU/EN resume and facts. Never place provider secrets in
 Vite variables or generated content. The build removes Cloudflare's local `.dev.vars` copy from
 `dist`; production deployments receive secrets only from Worker secret bindings.
 
 ## AI boundary
 
-The OpenRouter generation adapter and GigaChat embedding adapter are isolated from the Hono route. UI components consume portfolio-specific
+The OpenRouter and RouterAI generation adapters and GigaChat embedding adapter are isolated from
+the Hono route. UI components consume portfolio-specific
 SSE events, never provider objects. The contract distinguishes validation, missing evidence, rate
 limits, Turnstile challenge, provider authentication, provider availability, and interrupted
 streams. Generation-provider failover remains deferred.

@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from 'vitest';
-import { retrieveEvidence } from './knowledge';
+import { lexicalRetrieve, retrieveEvidence } from './knowledge';
 
 describe('knowledge retrieval fallback', () => {
   it('uses verified lexical knowledge when embeddings or Vectorize fail', async () => {
@@ -16,5 +16,40 @@ describe('knowledge retrieval fallback', () => {
     );
     expect(evidence.length).toBeGreaterThan(0);
     expect(evidence.every(({ locale }) => locale === 'en')).toBe(true);
+  });
+
+  it.each([
+    ['Какими навыками владеет Александр?', ['profile', 'resume']],
+    ['Расскажите о его профессиональном опыте', ['profile', 'resume']],
+    ['Покажи резюме кандидата', ['profile', 'resume']],
+  ])('recognizes Russian candidate intent and morphology: %s', (message, types) => {
+    const evidence = lexicalRetrieve({
+      mode: 'qa',
+      message,
+      history: [],
+      locale: 'ru',
+      role: 'ai',
+    });
+    for (const type of types)
+      expect(evidence.some((item) => item.type === type)).toBe(true);
+  });
+
+  it('retrieves verified education and work-format facts', () => {
+    for (const message of [
+      'Какое у него образование?',
+      'Доступен ли он для удаленной работы?',
+    ]) {
+      const evidence = lexicalRetrieve({
+        mode: 'qa',
+        message,
+        history: [],
+        locale: 'ru',
+        role: 'frontend',
+      });
+      expect(evidence.some(({ type }) => type === 'profile')).toBe(true);
+      expect(evidence.some(({ type }) => type === 'resume' || type === 'fact')).toBe(
+        true,
+      );
+    }
   });
 });
