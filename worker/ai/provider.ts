@@ -1,11 +1,11 @@
 import type { ChatRequest } from '../../src/features/bob/contracts';
-import type { RetrievedEvidence } from '../knowledge';
+import type { RetrievalResult } from '../knowledge';
 
 export interface GenerationProvider {
   readonly id: string;
   stream(
     request: ChatRequest,
-    evidence: RetrievedEvidence[],
+    retrieval: RetrievalResult,
     signal?: AbortSignal,
   ): Promise<ReadableStream<Uint8Array>>;
 }

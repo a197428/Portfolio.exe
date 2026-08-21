@@ -2,8 +2,40 @@ import { describe, expect, it, vi } from 'vitest';
 import { lexicalRetrieve, retrieveEvidence } from './knowledge';
 
 describe('knowledge retrieval fallback', () => {
+  it.each([
+    ['ru', 'У кандидата есть фронтенд-проекты. Расскажи о них'],
+    ['ru', 'Какие проекты фронтенда есть в портфолио?'],
+    ['en', 'Tell me about all frontend projects'],
+  ] as const)('returns the complete frontend catalog: %s', async (locale, message) => {
+    const result = await retrieveEvidence({
+      mode: 'qa',
+      message,
+      history: [],
+      locale,
+      role: 'ai',
+    });
+    const hrefs = new Set(
+      result.evidence.filter(({ type }) => type === 'project').map(({ href }) => href),
+    );
+    expect(result.coverage.complete).toBe(true);
+    expect(result.coverage.roleFocus).toBe('frontend');
+    expect(hrefs).toEqual(
+      new Set([
+        '/projects/bitrix24-integrations',
+        '/projects/energo-ai',
+        '/projects/neuralgrid-international',
+        '/projects/neurosport',
+        '/projects/neurosport-tma',
+        '/projects/shortsport-ai-forge',
+        '/projects/todo-app',
+        '/projects/video-sut',
+      ]),
+    );
+    expect(hrefs.has('/projects/read-close-bot')).toBe(false);
+  });
+
   it('uses verified lexical knowledge when embeddings or Vectorize fail', async () => {
-    const evidence = await retrieveEvidence(
+    const { evidence } = await retrieveEvidence(
       {
         mode: 'qa',
         message: 'Cloudflare Workers',
@@ -124,7 +156,7 @@ describe('knowledge retrieval fallback', () => {
   );
 
   it('merges all LLM anchors with production semantic retrieval', async () => {
-    const evidence = await retrieveEvidence(
+    const { evidence } = await retrieveEvidence(
       {
         mode: 'qa',
         message: 'Which projects use LLMs?',
@@ -138,6 +170,53 @@ describe('knowledge retrieval fallback', () => {
     expect(evidence.filter(({ type }) => type === 'project')).toHaveLength(4);
     expect(evidence.some(({ href }) => href === '/projects/shortsport-ai-forge')).toBe(
       false,
+    );
+  });
+
+  it('uses recent conversation context for a short follow-up', async () => {
+    const result = await retrieveEvidence({
+      mode: 'qa',
+      message: 'А какие технологии там использованы?',
+      history: [
+        { role: 'user', content: 'Расскажи про Todo App' },
+        { role: 'assistant', content: 'Todo App — проект на Nuxt и Vue.' },
+      ],
+      locale: 'ru',
+      role: 'frontend',
+    });
+    expect(result.coverage.usedHistory).toBe(true);
+    expect(result.evidence.some(({ href }) => href === '/projects/todo-app')).toBe(true);
+  });
+
+  it('hydrates semantic matches from current local knowledge and ignores stale ids', async () => {
+    const local = lexicalRetrieve({
+      mode: 'qa',
+      message: 'Cloudflare Workers',
+      history: [],
+      locale: 'en',
+      role: 'ai',
+    })[0];
+    const result = await retrieveEvidence(
+      {
+        mode: 'qa',
+        message: 'Cloudflare Workers',
+        history: [],
+        locale: 'en',
+        role: 'ai',
+      },
+      { id: 'embedding', embed: vi.fn(async () => [0.1, 0.2]) },
+      {
+        query: vi.fn(async () => ({
+          matches: [
+            { id: 'stale-id', score: 0.99, metadata: { content: 'stale' } },
+            { id: local.id, score: 0.98, metadata: { content: 'tampered' } },
+          ],
+        })),
+      } as unknown as VectorizeIndex,
+    );
+    expect(result.evidence.some(({ id }) => id === 'stale-id')).toBe(false);
+    expect(result.evidence.find(({ id }) => id === local.id)?.content).toBe(
+      local.content,
     );
   });
 });

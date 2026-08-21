@@ -26,6 +26,7 @@ interface Chunk {
   route: string;
   sourceUrl?: string;
   roles: string[];
+  relatedProjects?: string[];
   content: string;
 }
 
@@ -54,7 +55,7 @@ function makeChunk(input: Omit<Chunk, 'id'>, part: number): Chunk {
   return {
     ...input,
     content,
-    id: idFor([input.locale, input.type, input.href, input.title, String(part)]),
+    id: idFor([input.locale, input.type, input.href, input.title, String(part), content]),
   };
 }
 
@@ -135,6 +136,9 @@ for (const [directory, type] of [
       roles: Array.isArray(parsed.data.roles)
         ? parsed.data.roles.map(String)
         : ['ai', 'frontend'],
+      relatedProjects: Array.isArray(parsed.data.relatedProjects)
+        ? parsed.data.relatedProjects.map(String)
+        : undefined,
       content: parsed.content,
     });
   }
@@ -144,6 +148,6 @@ for (const [key, locales] of supplementalLocales) {
   if (locales.size !== 2) throw new Error(`${key}: expected matching ru/en documents`);
 }
 
-const output = await format(JSON.stringify(chunks), { parser: 'json', printWidth: 100 });
+const output = await format(JSON.stringify(chunks), { parser: 'json', printWidth: 90 });
 await writeFile(resolve(root, 'worker/knowledge.generated.json'), output);
 console.log(`knowledge: ${chunks.length} verified chunks`);

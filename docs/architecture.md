@@ -31,9 +31,10 @@ an internal dependency of selected Kokonut components.
 
 Verified knowledge is authored as Markdown in `content/profile`, `content/projects`,
 `content/resume`, and `content/facts`. `npm run content:build` validates localized content and
-creates stable knowledge chunks. `npm run knowledge:index` requests 1024-dimensional GigaChat
-`Embeddings`, idempotently upserts them into the `portfolio-knowledge` Vectorize V2 index, and
-removes obsolete IDs only after a successful upsert.
+creates content-addressed knowledge chunks. `npm run knowledge:index` requests 1024-dimensional
+GigaChat `Embeddings`, idempotently upserts them into the `portfolio-knowledge` Vectorize V2
+index, removes obsolete IDs only after a successful upsert, and verifies that every current ID is
+present.
 
 The current build already validates localized profile and project frontmatter with Zod through
 `npm run content:build`, then generates the typed client dataset in `src/generated/content.json`.
@@ -53,16 +54,26 @@ must not imply that its public snapshot contains a connected production API.
 The `/api/chat` request path is:
 
 1. Validate the question or vacancy description.
-2. Retrieve relevant verified chunks from Vectorize.
-3. Build a provider-neutral prompt with grounding and uncertainty rules.
-4. Start the response with OpenRouter's Nemotron free endpoint.
-5. If OpenRouter cannot start the response, retry once through RouterAI with DeepSeek V4 Flash.
-6. Stream clean text and a separate structured evidence list to the client.
+2. Classify the question, its requested evidence types, role focus, completeness requirement, and
+   whether recent conversation context is needed.
+3. Combine deterministic lexical retrieval with Vectorize ranking. Vectorize returns IDs only;
+   the Worker hydrates them from its current built-in corpus and ignores stale or unknown IDs.
+4. Build a provider-neutral prompt with grounding, coverage, and uncertainty rules.
+5. Start the response with OpenRouter's Nemotron free endpoint.
+6. If OpenRouter cannot start the response, retry once through RouterAI with DeepSeek V4 Flash.
+7. Stream clean text and a separate structured evidence list to the client.
 
-Short general questions are also classified into candidate intents such as skills, resume,
-experience, education, and availability. Russian word forms are normalized through stable lexical
-prefixes. For these intents, the verified profile and the relevant resume or fact chunks are merged
-into semantic results, preventing a one-word question from losing essential candidate context.
+Questions are classified into skills, resume, experience, education, availability, projects,
+implementation details, comparisons, and LLM topics. Hyphens and Russian word forms are
+normalized before ranking. Project names and technology terms are discovered from the corpus.
+The AI/Frontend lens is a ranking preference, never an information filter. Broad project questions
+receive a deterministic complete set based on project `roles`; focused questions receive a bounded
+hybrid result. Recent history is included for short referential follow-ups.
+
+Retrieval passes explicit coverage metadata to the generation prompt. Bob may describe a list as
+complete only when deterministic retrieval marked it complete, and must not interpret absence from
+a focused result as absence from the portfolio. Project role membership comes only from `roles`,
+not from descriptive `roleFocus` text. Citations are deduplicated by source route before streaming.
 
 Provider credentials and the Turnstile secret remain Worker secrets. GigaChat OAuth tokens used by
 the transitional embedding path are shared inside a Worker isolate and refreshed before expiry. Vectorize metadata contains the small source

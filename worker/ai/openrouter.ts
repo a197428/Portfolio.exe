@@ -1,5 +1,5 @@
 import type { ChatRequest } from '../../src/features/bob/contracts';
-import type { RetrievedEvidence } from '../knowledge';
+import type { RetrievalResult } from '../knowledge';
 import { buildBobPrompt } from '../prompt';
 import type { GenerationProvider } from './provider';
 
@@ -32,7 +32,7 @@ export class OpenRouterProvider implements GenerationProvider {
 
   async stream(
     request: ChatRequest,
-    evidence: RetrievedEvidence[],
+    retrieval: RetrievalResult,
     signal?: AbortSignal,
   ): Promise<ReadableStream<Uint8Array>> {
     const headers: Record<string, string> = {
@@ -49,7 +49,7 @@ export class OpenRouterProvider implements GenerationProvider {
       body: JSON.stringify({
         model: this.options.model ?? DEFAULT_OPENROUTER_MODEL,
         messages: [
-          { role: 'system', content: buildBobPrompt(request, evidence) },
+          { role: 'system', content: buildBobPrompt(request, retrieval) },
           ...request.history,
           { role: 'user', content: request.message },
         ],

@@ -8,19 +8,29 @@ const request = {
   locale: 'en' as const,
   role: 'ai' as const,
 };
-const evidence = [
-  {
-    id: 'project',
-    locale: 'en' as const,
-    type: 'project' as const,
-    title: 'Verified project',
-    href: '/projects/verified',
-    route: '/projects/verified',
-    roles: ['ai'],
-    content: 'A verified implementation.',
-    score: 0.9,
+const retrieval = {
+  evidence: [
+    {
+      id: 'project',
+      locale: 'en' as const,
+      type: 'project' as const,
+      title: 'Verified project',
+      href: '/projects/verified',
+      route: '/projects/verified',
+      roles: ['ai'],
+      content: 'A verified implementation.',
+      score: 0.9,
+    },
+  ],
+  coverage: {
+    complete: false,
+    scope: 'focused' as const,
+    intents: [],
+    requestedTypes: ['project' as const],
+    matchingProjectHrefs: ['/projects/verified'],
+    usedHistory: false,
   },
-];
+};
 
 describe('RouterAI provider', () => {
   it('uses the configured OpenAI-compatible streaming endpoint', async () => {
@@ -36,7 +46,7 @@ describe('RouterAI provider', () => {
       fetcher: fetchMock as unknown as typeof fetch,
     });
 
-    await provider.stream(request, evidence);
+    await provider.stream(request, retrieval);
 
     const [url, init] = fetchMock.mock.calls[0];
     expect(url).toBe('https://routerai.ru/api/v1/chat/completions');
@@ -57,7 +67,7 @@ describe('RouterAI provider', () => {
       ) as unknown as typeof fetch,
     });
 
-    await expect(provider.stream(request, evidence)).rejects.toEqual(
+    await expect(provider.stream(request, retrieval)).rejects.toEqual(
       expect.objectContaining<Partial<RouterAIError>>({ kind: 'auth' }),
     );
   });

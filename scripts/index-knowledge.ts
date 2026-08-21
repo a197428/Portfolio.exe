@@ -13,6 +13,7 @@ interface Chunk {
   route: string;
   sourceUrl?: string;
   roles: string[];
+  relatedProjects?: string[];
   content: string;
 }
 
@@ -87,6 +88,7 @@ for (let offset = 0; offset < chunks.length; offset += 16) {
         route: chunk.route,
         sourceUrl: chunk.sourceUrl,
         roles: chunk.roles,
+        relatedProjects: chunk.relatedProjects,
         content: chunk.content,
       },
     });
@@ -123,5 +125,14 @@ const current = new Set(chunks.map(({ id }) => id));
 const stale = existing.filter((id) => !current.has(id));
 for (let offset = 0; offset < stale.length; offset += 100) {
   run(['delete-vectors', indexName, '--ids', ...stale.slice(offset, offset + 100)]);
+}
+const indexed = new Set(
+  collectIds(JSON.parse(run(['list-vectors', indexName, '--json']))),
+);
+const missing = [...current].filter((id) => !indexed.has(id));
+if (missing.length > 0) {
+  throw new Error(
+    `Vectorize index is incomplete after upsert: ${missing.length} vectors missing.`,
+  );
 }
 console.log(`Indexed ${vectors.length} chunks; removed ${stale.length} stale vectors.`);

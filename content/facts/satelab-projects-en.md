@@ -5,6 +5,7 @@ title: SatelAB — verified context for three Bitrix24 projects
 href: /projects/bitrix24-integrations
 route: /projects/bitrix24-integrations
 roles: [ai, frontend]
+relatedProjects: [bitrix24-integrations]
 ---
 
 ## Commercial context

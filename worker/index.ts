@@ -222,12 +222,12 @@ app.post('/api/chat', async (context) => {
       : undefined;
 
   try {
-    const evidence = await retrieveEvidence(
+    const retrieval = await retrieveEvidence(
       parsed.data,
       embeddingProvider,
       context.env.KNOWLEDGE,
     );
-    if (evidence.length === 0) {
+    if (retrieval.evidence.length === 0) {
       return context.json(
         safeError(
           'no_evidence',
@@ -243,7 +243,7 @@ app.post('/api/chat', async (context) => {
     let lastProviderError: unknown;
     for (const candidate of providers) {
       try {
-        upstream = await candidate.stream(parsed.data, evidence, context.req.raw.signal);
+        upstream = await candidate.stream(parsed.data, retrieval, context.req.raw.signal);
         activeProvider = candidate;
         break;
       } catch (error) {
@@ -268,26 +268,31 @@ app.post('/api/chat', async (context) => {
         mode: parsed.data.mode,
         locale: parsed.data.locale,
         provider: activeProvider.id,
-        evidenceCount: evidence.length,
+        evidenceCount: retrieval.evidence.length,
         latencyMs: Date.now() - startedAt,
         status: 'streaming',
       }),
     );
     return new Response(
-      bobStream(upstream, citationsFromEvidence(evidence), requestId, (usage) => {
-        console.log(
-          JSON.stringify({
-            event: 'bob_chat_complete',
-            requestId,
-            mode: parsed.data.mode,
-            locale: parsed.data.locale,
-            evidenceCount: evidence.length,
-            latencyMs: Date.now() - startedAt,
-            status: 'complete',
-            usage,
-          }),
-        );
-      }),
+      bobStream(
+        upstream,
+        citationsFromEvidence(retrieval.evidence),
+        requestId,
+        (usage) => {
+          console.log(
+            JSON.stringify({
+              event: 'bob_chat_complete',
+              requestId,
+              mode: parsed.data.mode,
+              locale: parsed.data.locale,
+              evidenceCount: retrieval.evidence.length,
+              latencyMs: Date.now() - startedAt,
+              status: 'complete',
+              usage,
+            }),
+          );
+        },
+      ),
       {
         headers: {
           'Cache-Control': 'no-store',

@@ -11,6 +11,7 @@ export interface KnowledgeChunk {
   route: string;
   sourceUrl?: string;
   roles: string[];
+  relatedProjects?: string[];
   content: string;
 }
 
@@ -18,32 +19,37 @@ export interface RetrievedEvidence extends KnowledgeChunk {
   score: number;
 }
 
+export interface RetrievalCoverage {
+  complete: boolean;
+  scope: 'overview' | 'focused';
+  intents: QueryIntent[];
+  requestedTypes: KnowledgeChunk['type'][];
+  matchingProjectHrefs: string[];
+  roleFocus?: 'ai' | 'frontend';
+  usedHistory: boolean;
+}
+
+export interface RetrievalResult {
+  evidence: RetrievedEvidence[];
+  coverage: RetrievalCoverage;
+}
+
+type QueryIntent =
+  | 'skills'
+  | 'resume'
+  | 'experience'
+  | 'education'
+  | 'availability'
+  | 'candidate'
+  | 'projects'
+  | 'implementation'
+  | 'comparison'
+  | 'llm';
+
 const fallbackKnowledge = generatedKnowledge as KnowledgeChunk[];
+const knowledgeById = new Map(fallbackKnowledge.map((chunk) => [chunk.id, chunk]));
 
-type CandidateIntent =
-  'skills' | 'resume' | 'experience' | 'education' | 'availability' | 'candidate' | 'llm';
-
-type ProjectSubject = 'satelab' | 'acquiring' | 'apartsharing' | 'ttlock' | 'bitrix24';
-
-const subjectPrefixes: Record<ProjectSubject, string[]> = {
-  satelab: ['satelab', 'сателаб'],
-  acquiring: ['acquiring', 'эквайр'],
-  apartsharing: ['apartsharing', 'apart', 'апартшеринг'],
-  ttlock: [
-    'ttlock',
-    'smart lock',
-    'electronic lock',
-    'lock',
-    'умный замок',
-    'умные замки',
-    'электронный замок',
-    'электронные замки',
-    'замк',
-  ],
-  bitrix24: ['bitrix24', 'битрикс24', 'битрикс'],
-};
-
-const intentPrefixes: Record<CandidateIntent, string[]> = {
+const intentPrefixes: Record<QueryIntent, string[]> = {
   skills: [
     'skill',
     'stack',
@@ -60,10 +66,15 @@ const intentPrefixes: Record<CandidateIntent, string[]> = {
     'career',
     'responsibil',
     'duties',
+    'commercial',
+    'work',
     'опыт',
     'карьер',
     'обязанност',
-    'место',
+    'место работы',
+    'коммерческ',
+    'работал',
+    'делал',
   ],
   education: [
     'education',
@@ -88,7 +99,7 @@ const intentPrefixes: Record<CandidateIntent, string[]> = {
     'salary',
     'доступ',
     'удален',
-    'формат',
+    'формат работы',
     'занятост',
     'зарплат',
     'релокац',
@@ -100,10 +111,25 @@ const intentPrefixes: Record<CandidateIntent, string[]> = {
     'popoff',
     'кандидат',
     'александр',
-    'popoff',
     'попов',
     'о себе',
   ],
+  projects: ['project', 'case study', 'portfolio work', 'проект', 'кейс', 'портфолио'],
+  implementation: [
+    'architect',
+    'implement',
+    'inside',
+    'detail',
+    'testing',
+    'api',
+    'how',
+    'архитект',
+    'реализ',
+    'устроен',
+    'детал',
+    'тест',
+  ],
+  comparison: ['compare', 'difference', 'versus', ' vs ', 'сравн', 'отлич', 'разниц'],
   llm: [
     'llm',
     'language model',
@@ -116,114 +142,13 @@ const intentPrefixes: Record<CandidateIntent, string[]> = {
     'языковая модель',
     'языковые модели',
     'языков',
-    'модел',
     'нейросет',
     'генеративн',
     'суммариз',
   ],
 };
 
-const llmProjectHrefs = [
-  '/projects/local-ai-assistant',
-  '/projects/video-sut',
-  '/projects/neurosport-tma',
-  '/projects/read-close-bot',
-] as const;
-
-function isLlmDossier(chunk: KnowledgeChunk) {
-  return (
-    chunk.type === 'fact' &&
-    /four projects using llms|четыре проекта с llm/i.test(chunk.title)
-  );
-}
-
-function isExhaustiveLlmQuestion(value: string) {
-  const normalized = normalizedWords(value).join(' ');
-  return [
-    'which project',
-    'what project',
-    'all project',
-    'list project',
-    'какие проект',
-    'каких проект',
-    'все проект',
-    'назови проект',
-    'перечисли проект',
-  ].some((phrase) => normalized.includes(phrase));
-}
-
-function normalizedWords(value: string) {
-  return value
-    .toLocaleLowerCase()
-    .replace(/ё/g, 'е')
-    .replace(/[^\p{L}\p{N}+#.-]+/gu, ' ')
-    .split(/\s+/)
-    .filter(Boolean);
-}
-
-function canonicalTerm(term: string) {
-  for (const [subject, prefixes] of Object.entries(subjectPrefixes)) {
-    if (prefixes.some((prefix) => !prefix.includes(' ') && term.startsWith(prefix))) {
-      return `subject:${subject}`;
-    }
-  }
-  for (const [intent, prefixes] of Object.entries(intentPrefixes)) {
-    if (prefixes.some((prefix) => !prefix.includes(' ') && term.startsWith(prefix))) {
-      return `intent:${intent}`;
-    }
-  }
-  return term;
-}
-
-function detectSubjects(value: string): Set<ProjectSubject> {
-  const words = normalizedWords(value);
-  const normalized = words.join(' ');
-  const subjects = new Set<ProjectSubject>();
-  for (const [subject, prefixes] of Object.entries(subjectPrefixes) as Array<
-    [ProjectSubject, string[]]
-  >) {
-    if (
-      prefixes.some((prefix) =>
-        prefix.includes(' ')
-          ? normalized.includes(prefix)
-          : words.some((word) => word.startsWith(prefix)),
-      )
-    ) {
-      subjects.add(subject);
-    }
-  }
-  return subjects;
-}
-
-function terms(value: string) {
-  return new Set(
-    normalizedWords(value)
-      .filter((term) => term.length > 2)
-      .map(canonicalTerm),
-  );
-}
-
-function detectIntents(value: string): Set<CandidateIntent> {
-  const words = normalizedWords(value);
-  const normalized = words.join(' ');
-  const intents = new Set<CandidateIntent>();
-  for (const [intent, prefixes] of Object.entries(intentPrefixes) as Array<
-    [CandidateIntent, string[]]
-  >) {
-    if (
-      prefixes.some((prefix) =>
-        prefix.includes(' ')
-          ? normalized.includes(prefix)
-          : words.some((word) => word.startsWith(prefix)),
-      )
-    ) {
-      intents.add(intent);
-    }
-  }
-  return intents;
-}
-
-const genericQuestionWords = new Set([
+const genericWords = new Set([
   'what',
   'which',
   'does',
@@ -232,8 +157,7 @@ const genericQuestionWords = new Set([
   'tell',
   'show',
   'summarize',
-  'professional',
-  'commercial',
+  'about',
   'his',
   'какой',
   'какие',
@@ -249,173 +173,435 @@ const genericQuestionWords = new Set([
   'владеет',
   'него',
   'его',
-  'коммерческий',
-  'профессиональный',
+  'них',
+  'про',
+  'об',
+  'это',
+  'этот',
+  'эта',
+  'там',
 ]);
 
-function hasSpecificSubject(value: string) {
-  return normalizedWords(value).some((word) => {
-    if (word.length <= 2 || genericQuestionWords.has(word)) return false;
-    return !canonicalTerm(word).startsWith('intent:');
-  });
+const followUpWords = [
+  'it',
+  'its',
+  'that',
+  'there',
+  'this project',
+  'second',
+  'first',
+  'он',
+  'его',
+  'это',
+  'этот',
+  'эта',
+  'там',
+  'подробнее',
+  'второй',
+  'первый',
+  'последний',
+];
+
+function normalizedWords(value: string) {
+  const aliases: Record<string, string> = {
+    битрикс: 'bitrix24',
+    битрикс24: 'bitrix24',
+  };
+  return value
+    .toLocaleLowerCase()
+    .replace(/ё/g, 'е')
+    .replace(/[\u2010-\u2015-]+/g, ' ')
+    .replace(/[^\p{L}\p{N}+#.]+/gu, ' ')
+    .split(/\s+/)
+    .filter(Boolean)
+    .map((word) => aliases[word] ?? word);
 }
 
-function intentBoost(type: KnowledgeChunk['type'], intents: Set<CandidateIntent>) {
-  let boost = 0;
-  if (intents.has('skills')) {
-    if (type === 'resume') boost += 0.48;
-    if (type === 'profile') boost += 0.38;
-    if (type === 'project') boost += 0.08;
-  }
-  if (intents.has('resume')) {
-    if (type === 'resume') boost += 0.72;
-    if (type === 'profile') boost += 0.38;
-    if (type === 'fact') boost += 0.18;
-  }
-  if (intents.has('experience')) {
-    if (type === 'resume') boost += 0.58;
-    if (type === 'profile') boost += 0.36;
-    if (type === 'project') boost += 0.08;
-    if (type === 'fact') boost += 0.18;
-  }
-  if (intents.has('education')) {
-    if (type === 'fact') boost += 0.62;
-    if (type === 'resume') boost += 0.18;
-    if (type === 'profile') boost += 0.28;
-  }
-  if (intents.has('availability')) {
-    if (type === 'resume') boost += 0.68;
-    if (type === 'profile') boost += 0.32;
-  }
-  if (intents.has('candidate')) {
-    if (type === 'profile') boost += 0.62;
-    if (type === 'resume') boost += 0.24;
-    if (type === 'fact') boost += 0.08;
-  }
-  if (intents.has('llm')) {
-    if (type === 'project') boost += 0.34;
-    if (type === 'fact') boost += 0.46;
-    if (type === 'resume') boost += 0.12;
-  }
-  return boost;
+function normalizedText(value: string) {
+  return normalizedWords(value).join(' ');
 }
 
-export function lexicalRetrieve(request: ChatRequest): RetrievedEvidence[] {
-  const queryTerms = terms(request.message);
-  const intents = detectIntents(request.message);
-  const subjects = detectSubjects(request.message);
+function matchesPrefix(value: string, prefix: string) {
+  const normalizedPrefix = normalizedText(prefix);
+  if (normalizedPrefix.includes(' ')) return value.includes(normalizedPrefix);
+  return normalizedWords(value).some((word) => word.startsWith(normalizedPrefix));
+}
+
+function detectIntents(value: string) {
+  const normalized = normalizedText(value);
+  return new Set(
+    (Object.entries(intentPrefixes) as Array<[QueryIntent, string[]]>)
+      .filter(([, prefixes]) =>
+        prefixes.some((prefix) => matchesPrefix(normalized, prefix)),
+      )
+      .map(([intent]) => intent),
+  );
+}
+
+function detectRoleFocus(value: string): 'ai' | 'frontend' | undefined {
+  const words = normalizedWords(value);
+  if (
+    words.some((word) =>
+      ['frontend', 'фронтенд', 'фронт'].some((term) => word.startsWith(term)),
+    )
+  )
+    return 'frontend';
+  if (
+    words.some((word) =>
+      ['ai', 'ии', 'искусственн', 'agent', 'агент'].some((term) => word.startsWith(term)),
+    )
+  )
+    return 'ai';
+  return undefined;
+}
+
+function isFollowUp(value: string) {
+  const normalized = normalizedText(value);
+  return (
+    normalizedWords(value).length <= 10 &&
+    followUpWords.some((word) => normalized.includes(word))
+  );
+}
+
+function retrievalText(request: ChatRequest) {
+  if (!isFollowUp(request.message) || request.history.length === 0) {
+    return { value: request.message, usedHistory: false };
+  }
+  const context = request.history
+    .slice(-4)
+    .map(({ content }) => content)
+    .join(' ');
+  return { value: `${context} ${request.message}`, usedHistory: true };
+}
+
+function stem(term: string) {
+  const prefixes = [
+    'frontend',
+    'фронтенд',
+    'project',
+    'проект',
+    'technolog',
+    'технолог',
+    'education',
+    'образован',
+    'experience',
+    'опыт',
+    'architect',
+    'архитект',
+    'implement',
+    'реализ',
+  ];
+  return prefixes.find((prefix) => term.startsWith(prefix)) ?? term;
+}
+
+function terms(value: string) {
+  return new Set(
+    normalizedWords(value)
+      .filter((term) => term.length > 2 && !genericWords.has(term))
+      .map(stem),
+  );
+}
+
+function isIntentTerm(term: string) {
+  return Object.values(intentPrefixes)
+    .flat()
+    .some((prefix) => {
+      const normalizedPrefix = normalizedText(prefix);
+      return !normalizedPrefix.includes(' ') && term.startsWith(normalizedPrefix);
+    });
+}
+
+function matchingProjectHrefs(locale: ChatRequest['locale'], query: string) {
+  const queryTerms = normalizedWords(query).filter(
+    (term) =>
+      term.length >= 4 &&
+      !genericWords.has(term) &&
+      !isIntentTerm(term) &&
+      !['frontend', 'фронтенд', 'фронт', 'backend'].some((role) => term.startsWith(role)),
+  );
+  if (queryTerms.length === 0) return [];
+  return [
+    ...new Set(
+      fallbackKnowledge
+        .filter((chunk) => chunk.locale === locale && chunk.type === 'project')
+        .filter((chunk) => {
+          const chunkTerms = normalizedWords(
+            `${chunk.title} ${chunk.href} ${chunk.content}`,
+          );
+          return queryTerms.some((queryTerm) =>
+            chunkTerms.some(
+              (chunkTerm) =>
+                chunkTerm === queryTerm ||
+                (Math.min(chunkTerm.length, queryTerm.length) >= 5 &&
+                  (chunkTerm.startsWith(queryTerm) || queryTerm.startsWith(chunkTerm))),
+            ),
+          );
+        })
+        .map(({ href }) => href),
+    ),
+  ];
+}
+
+function namedProjectHrefs(locale: ChatRequest['locale'], query: string) {
+  const normalized = normalizedText(query);
+  return [
+    ...new Set(
+      fallbackKnowledge
+        .filter((chunk) => chunk.locale === locale && chunk.type === 'project')
+        .filter((chunk) => normalized.includes(normalizedText(chunk.title)))
+        .map(({ href }) => href),
+    ),
+  ];
+}
+
+function asksForCompleteList(value: string) {
+  const normalized = normalizedText(value);
+  return [
+    'which project',
+    'what project',
+    'all project',
+    'list project',
+    'every project',
+    'какие проект',
+    'каких проект',
+    'все проект',
+    'назови проект',
+    'перечисли проект',
+  ].some((phrase) => normalized.includes(phrase));
+}
+
+function scoreChunk(
+  chunk: KnowledgeChunk,
+  query: string,
+  intents: Set<QueryIntent>,
+  selectedRole: ChatRequest['role'],
+  explicitRole?: 'ai' | 'frontend',
+) {
+  const queryTerms = terms(query);
+  const chunkTerms = terms(`${chunk.title} ${chunk.content}`);
+  const matches = [...queryTerms].filter((term) =>
+    [...chunkTerms].some(
+      (candidate) =>
+        candidate === term ||
+        (Math.min(candidate.length, term.length) >= 5 &&
+          (candidate.startsWith(term) || term.startsWith(candidate))) ||
+        (/[а-я]/.test(term) && candidate.slice(0, 4) === term.slice(0, 4)),
+    ),
+  ).length;
+  let score = matches / Math.max(queryTerms.size, 1);
+  if (chunk.roles.includes(explicitRole ?? selectedRole))
+    score += explicitRole ? 0.22 : 0.08;
+  if (intents.has('projects') && chunk.type === 'project') score += 0.5;
+  if (intents.has('skills') && ['profile', 'resume'].includes(chunk.type)) score += 0.45;
+  if (intents.has('resume') && chunk.type === 'resume') score += 0.7;
+  if (intents.has('experience') && ['resume', 'fact'].includes(chunk.type)) score += 0.45;
+  if (intents.has('experience') && chunk.type === 'profile') score += 0.28;
+  if (intents.has('education') && ['fact', 'profile'].includes(chunk.type)) score += 0.55;
+  if (intents.has('availability') && ['resume', 'profile'].includes(chunk.type))
+    score += 0.55;
+  if (intents.has('candidate') && ['profile', 'resume'].includes(chunk.type))
+    score += 0.28;
+  if (intents.has('llm') && ['project', 'fact'].includes(chunk.type)) score += 0.35;
+  if (intents.has('implementation') && chunk.type === 'project') score += 0.18;
+  return score;
+}
+
+function analyze(request: ChatRequest) {
+  const context = retrievalText(request);
+  const intents = detectIntents(context.value);
+  const roleFocus = detectRoleFocus(context.value);
+  const namedProjects = matchingProjectHrefs(request.locale, context.value);
+  const titleProjects = namedProjectHrefs(request.locale, context.value);
+  const overview =
+    intents.has('projects') &&
+    titleProjects.length === 0 &&
+    (namedProjects.length === 0 ||
+      Boolean(roleFocus) ||
+      intents.has('llm') ||
+      asksForCompleteList(context.value)) &&
+    !intents.has('implementation');
+  const requestedTypes = new Set<KnowledgeChunk['type']>();
+  if (
+    intents.has('projects') ||
+    intents.has('implementation') ||
+    namedProjects.length > 0
+  )
+    requestedTypes.add('project');
+  const relatedFactExists = fallbackKnowledge.some(
+    (item) =>
+      item.locale === request.locale &&
+      item.type === 'fact' &&
+      item.relatedProjects?.some((slug) => namedProjects.includes(`/projects/${slug}`)),
+  );
+  if (
+    intents.has('skills') ||
+    intents.has('candidate') ||
+    intents.has('experience') ||
+    intents.has('education') ||
+    intents.has('availability')
+  )
+    requestedTypes.add('profile');
+  if (
+    intents.has('resume') ||
+    intents.has('experience') ||
+    intents.has('skills') ||
+    intents.has('availability')
+  )
+    requestedTypes.add('resume');
+  if (
+    intents.has('education') ||
+    intents.has('experience') ||
+    intents.has('llm') ||
+    relatedFactExists
+  )
+    requestedTypes.add('fact');
+  if (requestedTypes.size === 0) {
+    requestedTypes.add('profile');
+    requestedTypes.add('resume');
+    requestedTypes.add('project');
+    requestedTypes.add('fact');
+  }
+  return {
+    ...context,
+    intents,
+    roleFocus,
+    namedProjects,
+    overview,
+    requestedTypes: [...requestedTypes],
+  };
+}
+
+function lexicalResult(request: ChatRequest): RetrievalResult {
+  const analysis = analyze(request);
   const ranked = fallbackKnowledge
     .filter((chunk) => chunk.locale === request.locale)
-    .map((chunk) => {
-      const chunkTerms = terms(`${chunk.title} ${chunk.content}`);
-      const matches = [...queryTerms].filter((term) => chunkTerms.has(term)).length;
-      const roleBoost = chunk.roles.includes(request.role) ? 0.08 : 0;
-      return {
-        ...chunk,
-        score:
-          matches / Math.max(queryTerms.size, 1) +
-          roleBoost +
-          intentBoost(chunk.type, intents),
-      };
-    })
+    .map((chunk) => ({
+      ...chunk,
+      score: scoreChunk(
+        chunk,
+        analysis.value,
+        analysis.intents,
+        request.role,
+        analysis.roleFocus,
+      ),
+    }))
     .filter(({ score }) => score > 0.08)
     .sort((left, right) => right.score - left.score);
 
-  if (intents.has('llm') && isExhaustiveLlmQuestion(request.message)) {
-    const mandatory = [
-      ranked.find(isLlmDossier),
-      ...llmProjectHrefs.map((href) => ranked.find((item) => item.href === href)),
-    ].filter((item): item is RetrievedEvidence => Boolean(item));
-    return mandatory.slice(0, 8);
+  let evidence: RetrievedEvidence[];
+  let matchingHrefs = analysis.namedProjects;
+  if (analysis.overview) {
+    const dossier = analysis.intents.has('llm')
+      ? ranked.find(
+          (item) =>
+            item.type === 'fact' &&
+            /four projects using llms|четыре проекта с llm/i.test(item.title),
+        )
+      : undefined;
+    const dossierText = dossier ? normalizedText(dossier.content) : '';
+    const declaredProjectHrefs = new Set(
+      dossier?.relatedProjects?.map((slug) => `/projects/${slug}`) ?? [],
+    );
+    const projects = ranked
+      .filter((item) => {
+        if (item.type !== 'project') return false;
+        if (dossier) return declaredProjectHrefs.has(item.href);
+        return !analysis.roleFocus || item.roles.includes(analysis.roleFocus);
+      })
+      .sort((left, right) => {
+        if (!dossier) return right.score - left.score;
+        return (
+          dossierText.indexOf(normalizedText(left.title)) -
+          dossierText.indexOf(normalizedText(right.title))
+        );
+      });
+    matchingHrefs = [...new Set(projects.map(({ href }) => href))];
+    evidence = dossier ? [dossier, ...projects] : projects;
+  } else {
+    const required = analysis.requestedTypes.flatMap((type) => {
+      let candidates = ranked.filter((item) => item.type === type);
+      if (type === 'project' && analysis.namedProjects.length > 0) {
+        return candidates.filter((item) => analysis.namedProjects.includes(item.href));
+      }
+      if (type === 'fact' && analysis.namedProjects.length > 0) {
+        candidates = candidates.filter((item) =>
+          item.relatedProjects?.some((slug) =>
+            analysis.namedProjects.includes(`/projects/${slug}`),
+          ),
+        );
+      }
+      return candidates.slice(0, type === 'project' ? 5 : 2);
+    });
+    evidence = [...new Map(required.map((item) => [item.id, item])).values()].slice(
+      0,
+      12,
+    );
   }
 
-  if (intents.size === 0) return ranked.slice(0, 8);
+  return {
+    evidence,
+    coverage: {
+      complete: analysis.overview,
+      scope: analysis.overview ? 'overview' : 'focused',
+      intents: [...analysis.intents],
+      requestedTypes: analysis.requestedTypes,
+      matchingProjectHrefs: matchingHrefs,
+      roleFocus: analysis.roleFocus,
+      usedHistory: analysis.usedHistory,
+    },
+  };
+}
 
-  const requiredTypes: KnowledgeChunk['type'][] = ['profile'];
-  if ([...intents].some((intent) => intent !== 'education' && intent !== 'candidate')) {
-    requiredTypes.push('resume');
-  }
-  if (intents.has('education')) requiredTypes.push('fact');
-  if (intents.has('experience') || subjects.size > 0) requiredTypes.push('fact');
-  if (intents.has('llm')) requiredTypes.push('fact');
-
-  const selected = requiredTypes.flatMap((type) => {
-    const match = ranked.find((item) => item.type === type);
-    return match ? [match] : [];
-  });
-  const genericCandidateQuestion =
-    request.mode === 'qa' && !hasSpecificSubject(request.message);
-  for (const item of ranked) {
-    if (selected.length === 8) break;
-    if (genericCandidateQuestion && item.type === 'project') continue;
-    if (intents.has('llm') && item.href === '/projects/shortsport-ai-forge') continue;
-    if (
-      !intents.has('education') &&
-      !intents.has('experience') &&
-      subjects.size === 0 &&
-      item.type === 'fact'
-    )
-      continue;
-    if (!selected.some(({ id }) => id === item.id)) selected.push(item);
-  }
-  return selected;
+export function lexicalRetrieve(request: ChatRequest) {
+  return lexicalResult(request).evidence;
 }
 
 export async function retrieveEvidence(
   request: ChatRequest,
   provider?: EmbeddingProvider,
   vectorize?: VectorizeIndex,
-): Promise<RetrievedEvidence[]> {
-  if (!vectorize || !provider) return lexicalRetrieve(request);
+): Promise<RetrievalResult> {
+  const lexical = lexicalResult(request);
+  if (!vectorize || !provider || lexical.coverage.complete) return lexical;
 
   let results: VectorizeMatches;
   try {
-    const embedding = await provider.embed(request.message);
-    results = await vectorize.query(embedding, {
-      topK: 8,
+    const query = retrievalText(request).value;
+    results = await vectorize.query(await provider.embed(query), {
+      topK: 12,
       namespace: request.locale,
-      returnMetadata: 'all',
+      returnMetadata: 'none',
     });
   } catch {
-    return lexicalRetrieve(request);
+    return lexical;
   }
 
-  const semanticEvidence = results.matches
+  const semantic = results.matches
     .filter((match) => match.score >= 0.42)
-    .map((match) => {
-      const metadata = match.metadata ?? {};
-      return {
-        id: match.id,
-        locale: request.locale,
-        type: String(metadata.type) as KnowledgeChunk['type'],
-        title: String(metadata.title ?? 'Portfolio evidence'),
-        href: String(metadata.href ?? '/'),
-        route: String(metadata.route ?? metadata.href ?? '/'),
-        sourceUrl:
-          typeof metadata.sourceUrl === 'string' ? metadata.sourceUrl : undefined,
-        roles: Array.isArray(metadata.roles) ? metadata.roles.map(String) : [],
-        content: String(metadata.content ?? ''),
-        score: match.score,
-      };
-    })
-    .filter(({ content }) => content.length > 0);
-
-  const intents = detectIntents(request.message);
-  if (intents.size === 0) return semanticEvidence;
-
-  // Semantic retrieval can miss short, general questions such as "skills?". Merge
-  // verified profile/resume anchors so production Vectorize behaves like the local fallback.
-  const anchors = lexicalRetrieve(request).filter(
-    ({ type }) => intents.has('llm') || type !== 'project',
-  );
+    .flatMap((match) => {
+      const current = knowledgeById.get(match.id);
+      return current && current.locale === request.locale
+        ? [{ ...current, score: match.score }]
+        : [];
+    });
   const merged = new Map<string, RetrievedEvidence>();
-  for (const item of [...semanticEvidence, ...anchors]) {
+  for (const item of [...lexical.evidence, ...semantic]) {
     const current = merged.get(item.id);
     if (!current || item.score > current.score) merged.set(item.id, item);
   }
-  return [...merged.values()].sort((left, right) => right.score - left.score).slice(0, 8);
+  return {
+    evidence: [...merged.values()]
+      .sort((left, right) => right.score - left.score)
+      .slice(0, 12),
+    coverage: lexical.coverage,
+  };
 }
 
 export function citationsFromEvidence(evidence: RetrievedEvidence[]): Citation[] {
-  return evidence.map(({ id, title, type, href }) => ({ id, title, type, href }));
+  const unique = new Map<string, Citation>();
+  for (const { id, title, type, href } of evidence) {
+    const key = `${type}:${href}`;
+    if (!unique.has(key)) unique.set(key, { id, title, type, href });
+  }
+  return [...unique.values()];
 }

@@ -5,6 +5,7 @@ title: Four projects using LLMs
 href: /#projects
 route: /#projects
 roles: [ai, frontend]
+relatedProjects: [local-ai-assistant, video-sut, neurosport-tma, read-close-bot]
 ---
 
 ## Verified list

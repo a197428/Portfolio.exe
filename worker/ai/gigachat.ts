@@ -1,5 +1,5 @@
 import type { ChatRequest } from '../../src/features/bob/contracts';
-import type { RetrievedEvidence } from '../knowledge';
+import type { RetrievalResult } from '../knowledge';
 import { buildBobPrompt } from '../prompt';
 import type { EmbeddingProvider, GenerationProvider } from './provider';
 
@@ -125,11 +125,11 @@ export class GigaChatProvider implements GenerationProvider, EmbeddingProvider {
 
   async stream(
     request: ChatRequest,
-    evidence: RetrievedEvidence[],
+    retrieval: RetrievalResult,
     signal?: AbortSignal,
   ): Promise<ReadableStream<Uint8Array>> {
     const messages = [
-      { role: 'system', content: buildBobPrompt(request, evidence) },
+      { role: 'system', content: buildBobPrompt(request, retrieval) },
       ...request.history,
       { role: 'user', content: request.message },
     ];
