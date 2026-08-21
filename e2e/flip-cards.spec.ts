@@ -121,6 +121,33 @@ test('keeps RU/EN parity for all six flip cards', async ({ page }) => {
   );
 });
 
+test('shows neutral hints in both locales and drops the press instructions', async ({
+  page,
+}) => {
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await page.goto('/');
+
+  // English: every closed card hints "View details"; opening shows the back hint.
+  await expect(page.getByText('View details', { exact: true })).toHaveCount(6);
+  const context = page.getByRole('button', { name: /Understand context/i });
+  await context.click();
+  await expect(context.locator('.flip-card-back')).toContainText('Back to overview');
+  await context.click();
+
+  // Russian: every closed card hints "Подробнее"; opening shows "Краткий обзор".
+  await page.getByRole('button', { name: 'RU' }).click();
+  await expect(page.getByText('Подробнее', { exact: true })).toHaveCount(6);
+  const razobrat = page.getByRole('button', { name: /Разобрать контекст/i });
+  await razobrat.click();
+  await expect(razobrat.locator('.flip-card-back')).toContainText('Краткий обзор');
+
+  // The old action-based instructions are gone from the interface.
+  await expect(page.getByText('Press to reveal')).toHaveCount(0);
+  await expect(page.getByText('Press to collapse')).toHaveCount(0);
+  await expect(page.getByText('Нажмите, чтобы раскрыть')).toHaveCount(0);
+  await expect(page.getByText('Нажмите, чтобы свернуть')).toHaveCount(0);
+});
+
 test('keeps front and back the same size and never overflows', async ({ page }) => {
   await page.goto('/');
 

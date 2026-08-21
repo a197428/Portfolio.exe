@@ -531,6 +531,8 @@ export function HomePage() {
                 details={item.details}
                 frontLabel={t('flipCard.reveal')}
                 backLabel={t('flipCard.collapse')}
+                revealLabel={t('flipCard.revealLabel')}
+                collapseLabel={t('flipCard.collapseLabel')}
               />
             ))}
           </div>
@@ -555,6 +557,8 @@ export function HomePage() {
                 }
                 frontLabel={t('flipCard.reveal')}
                 backLabel={t('flipCard.collapse')}
+                revealLabel={t('flipCard.revealLabel')}
+                collapseLabel={t('flipCard.collapseLabel')}
               />
             ))}
           </div>

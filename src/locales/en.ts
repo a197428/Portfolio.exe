@@ -82,8 +82,10 @@ export const en = {
     ],
   },
   flipCard: {
-    reveal: 'Press to reveal',
-    collapse: 'Press to collapse',
+    reveal: 'View details',
+    collapse: 'Back to overview',
+    revealLabel: 'View details: {{title}}',
+    collapseLabel: 'Back to overview: {{title}}',
   },
   experience: {
     kicker: 'Professional foundation',

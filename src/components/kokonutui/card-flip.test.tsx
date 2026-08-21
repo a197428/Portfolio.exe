@@ -12,13 +12,17 @@ const props: FlipCardProps = {
     'Agree the definition of done',
     'Verify requirements and mockups before implementation',
   ],
-  frontLabel: 'Press to reveal',
-  backLabel: 'Press to collapse',
+  frontLabel: 'View details',
+  backLabel: 'Back to overview',
+  revealLabel: 'View details: {{title}}',
+  collapseLabel: 'Back to overview: {{title}}',
 };
 
 function card() {
+  // Matches whatever side is active: both the reveal and the collapse
+  // accessible names carry the card title.
   return screen.getByRole('button', {
-    name: /Understand context.*definition of done/i,
+    name: /Understand context/i,
   });
 }
 
@@ -39,10 +43,13 @@ describe('FlipCard', () => {
     expect(toggle).toHaveAttribute('data-pinned', 'false');
     expect(toggle).toHaveAttribute('tabindex', '0');
 
-    // Front face carries the quick overview and the flip hint.
+    // The accessible name explains the reveal action with the card title.
+    expect(toggle).toHaveAttribute('aria-label', 'View details: Understand context');
+
+    // Front face carries the quick overview and the neutral hint label.
     expect(front()).toHaveTextContent('01');
     expect(front()).toHaveTextContent('Understand context');
-    expect(front()).toHaveTextContent('Press to reveal');
+    expect(front()).toHaveTextContent('View details');
     expect(front()).toHaveAttribute('aria-hidden', 'false');
 
     // The back face is present but hidden from assistive technology.
@@ -58,11 +65,13 @@ describe('FlipCard', () => {
     fireEvent.click(toggle);
     expect(toggle).toHaveAttribute('aria-pressed', 'true');
     expect(toggle).toHaveAttribute('data-pinned', 'true');
+    expect(toggle).toHaveAttribute('aria-label', 'Back to overview: Understand context');
     expect(front()).toHaveAttribute('aria-hidden', 'true');
     expect(back()).toHaveAttribute('aria-hidden', 'false');
 
     fireEvent.click(toggle);
     expect(toggle).toHaveAttribute('aria-pressed', 'false');
+    expect(toggle).toHaveAttribute('aria-label', 'View details: Understand context');
     expect(front()).toHaveAttribute('aria-hidden', 'false');
     expect(back()).toHaveAttribute('aria-hidden', 'true');
   });
@@ -109,6 +118,21 @@ describe('FlipCard', () => {
     expect(list).not.toBeNull();
     const items = list!.querySelectorAll('li');
     expect(items).toHaveLength(props.details.length);
-    expect(back()).toHaveTextContent('Press to collapse');
+    expect(back()).toHaveTextContent('Back to overview');
+  });
+
+  it('keeps the visible hints neutral and free of press/click instructions', () => {
+    render(<FlipCard {...props} />);
+    const toggle = card();
+
+    expect(front()).toHaveTextContent('View details');
+    expect(back()).toHaveTextContent('Back to overview');
+
+    // The old action-based instructions are gone from the rendered UI.
+    expect(toggle).not.toHaveTextContent('Press to reveal');
+    expect(toggle).not.toHaveTextContent('Press to collapse');
+    expect(toggle).not.toHaveTextContent('Press');
+    expect(toggle).not.toHaveTextContent('Click');
+    expect(toggle).not.toHaveTextContent('Hover');
   });
 });

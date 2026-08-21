@@ -531,6 +531,61 @@ describe('HomePage flip cards', () => {
     );
   });
 
+  it('shows the neutral RU hints on the closed and opened card', async () => {
+    await renderHome('ru', 'ai');
+
+    const commercial = screen.getByRole('button', {
+      name: /Коммерческая практика/i,
+    });
+    // Closed card: neutral hint without any press instructions.
+    expect(commercial.querySelector('.flip-card-front')).toHaveTextContent('Подробнее');
+    expect(commercial).toHaveAttribute('aria-label', 'Подробнее: Коммерческая практика');
+
+    fireEvent.click(commercial);
+    expect(commercial.querySelector('.flip-card-back')).toHaveTextContent(
+      'Краткий обзор',
+    );
+    expect(commercial).toHaveAttribute(
+      'aria-label',
+      'Вернуться к краткому обзору: Коммерческая практика',
+    );
+  });
+
+  it('shows the neutral EN hints on the closed and opened card', async () => {
+    await renderHome('en', 'ai');
+
+    const commercial = screen.getByRole('button', {
+      name: /Commercial practice/i,
+    });
+    expect(commercial.querySelector('.flip-card-front')).toHaveTextContent(
+      'View details',
+    );
+    expect(commercial).toHaveAttribute('aria-label', 'View details: Commercial practice');
+
+    fireEvent.click(commercial);
+    expect(commercial.querySelector('.flip-card-back')).toHaveTextContent(
+      'Back to overview',
+    );
+    expect(commercial).toHaveAttribute(
+      'aria-label',
+      'Back to overview: Commercial practice',
+    );
+  });
+
+  it('no longer shows the old press-based instructions in Russian', async () => {
+    await renderHome('ru', 'ai');
+    expect(screen.queryByText('Нажмите, чтобы раскрыть')).not.toBeInTheDocument();
+    expect(screen.queryByText('Нажмите, чтобы свернуть')).not.toBeInTheDocument();
+    expect(screen.queryByText('Press to reveal')).not.toBeInTheDocument();
+    expect(screen.queryByText('Press to collapse')).not.toBeInTheDocument();
+  });
+
+  it('no longer shows the old press-based instructions in English', async () => {
+    await renderHome('en', 'ai');
+    expect(screen.queryByText('Press to reveal')).not.toBeInTheDocument();
+    expect(screen.queryByText('Press to collapse')).not.toBeInTheDocument();
+  });
+
   it('pins an experience card open with a click from the page', async () => {
     await renderHome('en', 'ai');
 

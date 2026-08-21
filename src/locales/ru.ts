@@ -82,8 +82,10 @@ export const ru = {
     ],
   },
   flipCard: {
-    reveal: 'Нажмите, чтобы раскрыть',
-    collapse: 'Нажмите, чтобы свернуть',
+    reveal: 'Подробнее',
+    collapse: 'Краткий обзор',
+    revealLabel: 'Подробнее: {{title}}',
+    collapseLabel: 'Вернуться к краткому обзору: {{title}}',
   },
   experience: {
     kicker: 'Профессиональная база',

@@ -16,10 +16,14 @@ export interface FlipCardProps {
   summary: string;
   /** 3–4 substantive points revealed on the back face. */
   details: string[];
-  /** Hint label on the front face that explains the flip action. */
+  /** Neutral hint label shown on the front face (no action verbs). */
   frontLabel: string;
-  /** Hint label on the back face that explains the collapse action. */
+  /** Neutral hint label shown on the back face (no action verbs). */
   backLabel: string;
+  /** Accessible-name template for the closed card, e.g. "View details: {{title}}". */
+  revealLabel: string;
+  /** Accessible-name template for the open card, e.g. "Back to overview: {{title}}". */
+  collapseLabel: string;
   className?: string;
 }
 
@@ -30,6 +34,8 @@ export function FlipCard({
   details,
   frontLabel,
   backLabel,
+  revealLabel,
+  collapseLabel,
   className,
 }: FlipCardProps) {
   const [pinned, setPinned] = useState(false);
@@ -39,6 +45,13 @@ export function FlipCard({
   // through CSS but stays the "front" for assistive technology until it is
   // pinned or focused (keyboard users see the back while focused).
   const flipped = pinned || focused;
+
+  // The visible hint stays neutral, while the accessible name explains the
+  // action to assistive technology. `{{title}}` is substituted per card.
+  const accessibleName = (flipped ? collapseLabel : revealLabel).replace(
+    '{{title}}',
+    title,
+  );
 
   const togglePin = () => setPinned((value) => !value);
 
@@ -65,6 +78,7 @@ export function FlipCard({
       role="button"
       tabIndex={0}
       aria-pressed={pinned}
+      aria-label={accessibleName}
       onClick={togglePin}
       onKeyDown={handleKeyDown}
       onMouseDown={handleMouseDown}
