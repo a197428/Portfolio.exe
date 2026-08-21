@@ -541,19 +541,23 @@ export function HomePage() {
         <section className="method-section" aria-labelledby="method-title">
           <SectionHeading
             index="03"
-            kicker={t('method.kicker')}
-            title={t('method.title')}
+            kicker={t(`method.${role}.kicker`)}
+            title={t(`method.${role}.title`)}
             id="method-title"
           />
           <div className="method-grid">
             {[0, 1, 2].map((index) => (
               <FlipCard
-                key={index}
+                // Role in the key resets a pinned flip when the lens changes,
+                // so no card keeps stale content from the previous role.
+                key={`${role}-${index}`}
                 index={`0${index + 1}`}
-                title={t(`method.items.${index}.title`)}
-                summary={t(`method.items.${index}.text`)}
+                title={t(`method.${role}.items.${index}.title`)}
+                summary={t(`method.${role}.items.${index}.text`)}
                 details={
-                  t(`method.items.${index}.details`, { returnObjects: true }) as string[]
+                  t(`method.${role}.items.${index}.details`, {
+                    returnObjects: true,
+                  }) as string[]
                 }
                 frontLabel={t('flipCard.reveal')}
                 backLabel={t('flipCard.collapse')}

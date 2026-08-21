@@ -497,23 +497,45 @@ describe('HomePage flip cards', () => {
     ).toBeInTheDocument();
   });
 
-  it('renders three method flip cards with detail points in English', async () => {
+  it('renders three method flip cards for the AI lens in English', async () => {
     await renderHome('en', 'ai');
 
     expect(
-      screen.getByRole('button', { name: /Understand context/i }),
+      screen.getByRole('button', { name: /Define the AI flow/i }),
     ).toBeInTheDocument();
-    const boundaries = screen.getByRole('button', { name: /Design boundaries/i });
-    expect(boundaries.querySelector('.flip-card-back')).toHaveTextContent(
-      'Use typed API contracts',
+    const pipeline = screen.getByRole('button', { name: /Build the AI pipeline/i });
+    expect(pipeline.querySelector('.flip-card-back')).toHaveTextContent(
+      'Keep provider keys and model calls on the backend or Worker',
     );
     expect(
-      screen.getByRole('button', { name: /Make it operational/i }),
+      screen.getByRole('button', { name: /Verify and protect/i }),
+    ).toBeInTheDocument();
+  });
+
+  it('renders three method flip cards for the Frontend lens in English', async () => {
+    await renderHome('en', 'frontend');
+
+    expect(
+      screen.getByRole('button', { name: /Understand the task/i }),
+    ).toBeInTheDocument();
+    const build = screen.getByRole('button', { name: /Build the interface/i });
+    expect(build.querySelector('.flip-card-back')).toHaveTextContent(
+      'Manage state with composables, hooks, or a store',
+    );
+    expect(
+      screen.getByRole('button', { name: /Verify the result/i }),
     ).toBeInTheDocument();
   });
 
   it('localizes the flip cards in Russian without losing the back content', async () => {
     await renderHome('ru', 'ai');
+
+    expect(
+      screen.getByRole('heading', {
+        level: 2,
+        name: 'От задачи — к управляемой AI-системе.',
+      }),
+    ).toBeInTheDocument();
 
     const commercial = screen.getByRole('button', {
       name: /Коммерческая практика/i,
@@ -525,10 +547,63 @@ describe('HomePage flip cards', () => {
       'Модернизация трёх legacy-приложений',
     );
 
-    const context = screen.getByRole('button', { name: /Разобрать контекст/i });
-    expect(context.querySelector('.flip-card-back')).toHaveTextContent(
-      'Согласую критерии готовности',
+    const defineFlow = screen.getByRole('button', {
+      name: /Определить AI-сценарий/i,
+    });
+    expect(defineFlow.querySelector('.flip-card-back')).toHaveTextContent(
+      'Определяю пользовательский сценарий и полезный результат',
     );
+  });
+
+  it('renders three method flip cards for the Frontend lens in Russian', async () => {
+    await renderHome('ru', 'frontend');
+
+    expect(
+      screen.getByRole('heading', {
+        level: 2,
+        name: 'От задачи — к работающему интерфейсу.',
+      }),
+    ).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /Понять задачу/i })).toBeInTheDocument();
+    const collect = screen.getByRole('button', { name: /Собрать интерфейс/i });
+    expect(collect.querySelector('.flip-card-back')).toHaveTextContent(
+      'Управляю состоянием через composables, hooks или store',
+    );
+    expect(
+      screen.getByRole('button', { name: /Проверить результат/i }),
+    ).toBeInTheDocument();
+  });
+
+  it('switches block-03 content with the role and resets a pinned card', async () => {
+    await renderHome('en', 'ai');
+
+    // The AI lens drives block 03 first.
+    expect(
+      screen.getByRole('heading', {
+        level: 2,
+        name: 'From task to controlled AI system.',
+      }),
+    ).toBeInTheDocument();
+    const aiFlow = screen.getByRole('button', { name: /Define the AI flow/i });
+    fireEvent.click(aiFlow);
+    expect(aiFlow).toHaveAttribute('aria-pressed', 'true');
+
+    // Switching to the Frontend lens swaps the heading and all cards at once.
+    fireEvent.click(screen.getByRole('button', { name: 'Frontend Developer' }));
+    expect(
+      screen.getByRole('heading', {
+        level: 2,
+        name: 'From task to working interface.',
+      }),
+    ).toBeInTheDocument();
+    const task = screen.getByRole('button', { name: /Understand the task/i });
+    expect(task).toBeInTheDocument();
+    // No leftover text from the AI lens.
+    expect(screen.queryByText('Define the AI flow')).not.toBeInTheDocument();
+
+    // The remounted card starts closed: the old pin does not carry over.
+    expect(task).toHaveAttribute('aria-pressed', 'false');
+    expect(task.querySelector('.flip-card-back')).toHaveAttribute('aria-hidden', 'true');
   });
 
   it('shows the neutral RU hints on the closed and opened card', async () => {

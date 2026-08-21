@@ -46,40 +46,78 @@ export const en = {
     liveDemo: 'Live demo',
   },
   method: {
-    kicker: 'Engineering approach',
-    title: 'System first. Effect second.',
-    items: [
-      {
-        title: 'Understand context',
-        text: 'Capture real constraints, integrations, and the definition of done.',
-        details: [
-          'Map the real constraints and the people who use the system',
-          'Record integrations and external dependencies',
-          'Agree the definition of done',
-          'Verify requirements and mockups before implementation',
-        ],
-      },
-      {
-        title: 'Design boundaries',
-        text: 'Separate UI, data, tools, and external APIs into verifiable contracts.',
-        details: [
-          'Separate UI, data, and external services',
-          'Use typed API contracts',
-          'Isolate SDKs and the integration context',
-          'Separate remote state from local UI settings',
-        ],
-      },
-      {
-        title: 'Make it operational',
-        text: 'Add failure states, mocks, tests, and production verification.',
-        details: [
-          'Loading, error, retry, and race protection',
-          'Development mocks and safe fallback scenarios',
-          'Vitest, MSW, and Playwright',
-          'Production checks and reduced-motion support',
-        ],
-      },
-    ],
+    frontend: {
+      kicker: 'FRONTEND DEVELOPMENT',
+      title: 'From task to working interface.',
+      items: [
+        {
+          title: 'Understand the task',
+          text: 'I review the requirements, user flow, and current implementation before starting development.',
+          details: [
+            'Review requirements and mockups',
+            'Study the existing code and project structure',
+            'Check API, SDK, and environment constraints',
+            'Clarify the expected result and key scenarios',
+          ],
+        },
+        {
+          title: 'Build the interface',
+          text: 'I split the interface into clear parts, connect the data, and implement user flows step by step.',
+          details: [
+            'Split the interface into pages and components',
+            'Describe data and API contracts with TypeScript',
+            'Connect REST APIs, SDKs, and external services',
+            'Manage state with composables, hooks, or a store',
+          ],
+        },
+        {
+          title: 'Verify the result',
+          text: 'I check the main flows, interface states, and whether the project is ready for a production build.',
+          details: [
+            'Add loading, error, empty, and retry states',
+            'Use mocks for development and testing',
+            'Verify flows with Vitest and Playwright',
+            'Run the production build and check responsive behavior',
+          ],
+        },
+      ],
+    },
+    ai: {
+      kicker: 'AI DEVELOPMENT',
+      title: 'From task to controlled AI system.',
+      items: [
+        {
+          title: 'Define the AI flow',
+          text: 'I examine the task, input data, and expected result before choosing a model or tools.',
+          details: [
+            'Define the user flow and useful outcome',
+            'Check the sources and input-data format',
+            'Record constraints and what the model must not do',
+            'Choose clear criteria for evaluating the response',
+          ],
+        },
+        {
+          title: 'Build the AI pipeline',
+          text: 'I connect the model, prompt, tools, and APIs into a controlled application flow.',
+          details: [
+            'Connect LLMs through a server-side provider API',
+            'Use LangGraph and tool calling when the flow requires them',
+            'Validate structured responses with types and Zod',
+            'Keep provider keys and model calls on the backend or Worker',
+          ],
+        },
+        {
+          title: 'Verify and protect',
+          text: 'I check model responses, failure scenarios, and the reliability of the AI feature in production.',
+          details: [
+            'Validate model inputs and outputs',
+            'Add retries, fallbacks, and error handling',
+            'Use rate limits, audit trails, and safe kill switches',
+            'Separate verified data from model interpretation',
+          ],
+        },
+      ],
+    },
   },
   flipCard: {
     reveal: 'View details',
