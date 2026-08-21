@@ -4,6 +4,7 @@ import { useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { RoleSwitch } from '@/components/controls/RoleSwitch';
+import { SectionHeading } from '@/components/SectionHeading';
 import { BobIntro } from '@/features/bob/BobIntro';
 import BentoGrid from '@/components/kokonutui/bento-grid';
 import { Shell } from '@/components/layout/Shell';
@@ -383,10 +384,12 @@ export function HomePage() {
           id="projects"
           aria-labelledby="projects-title"
         >
-          <div className="section-heading">
-            <span>01 / {t('projects.kicker')}</span>
-            <h2 id="projects-title">{t('projects.title')}</h2>
-          </div>
+          <SectionHeading
+            index="01"
+            kicker={t('projects.kicker')}
+            title={t('projects.title')}
+            id="projects-title"
+          />
           <Link className="featured-case glass-panel" to={`/projects/${featured.slug}`}>
             <div className="featured-case-copy">
               <span className="project-index">001 / {featured.status}</span>
@@ -511,10 +514,12 @@ export function HomePage() {
           id="about"
           aria-labelledby="experience-title"
         >
-          <div className="section-heading">
-            <span>02 / {t('experience.kicker')}</span>
-            <h2 id="experience-title">{t('experience.title')}</h2>
-          </div>
+          <SectionHeading
+            index="02"
+            kicker={t('experience.kicker')}
+            title={t('experience.title')}
+            id="experience-title"
+          />
           <div className="experience-grid">
             {profile.credentials.map((item, index) => (
               <article className="experience-card glass-panel" key={item.title}>
@@ -527,10 +532,12 @@ export function HomePage() {
         </section>
 
         <section className="method-section" aria-labelledby="method-title">
-          <div className="section-heading">
-            <span>03 / {t('method.kicker')}</span>
-            <h2 id="method-title">{t('method.title')}</h2>
-          </div>
+          <SectionHeading
+            index="03"
+            kicker={t('method.kicker')}
+            title={t('method.title')}
+            id="method-title"
+          />
           <div className="method-grid">
             {[0, 1, 2].map((index) => (
               <article className="glass-panel" key={index}>
@@ -543,19 +550,30 @@ export function HomePage() {
         </section>
 
         <section className="ai-preview" aria-labelledby="ai-preview-title">
-          <div>
-            <span className="card-eyebrow">04 / {t('aiPreview.kicker')}</span>
-            <h2 id="ai-preview-title">{t('aiPreview.title')}</h2>
+          <SectionHeading
+            index="04"
+            kicker={t('aiPreview.kicker')}
+            title={t('aiPreview.title')}
+            id="ai-preview-title"
+          />
+          <div className="ai-preview-grid">
             <p>{t('aiPreview.text')}</p>
+            <BobIntro />
           </div>
-          <BobIntro />
         </section>
 
-        <section className="contact-section glass-panel" id="contact">
-          <div>
-            <span className="card-eyebrow">05 / {t('contact.kicker')}</span>
-            <h2>{t('contact.title')}</h2>
-          </div>
+        <section
+          className="contact-section glass-panel"
+          id="contact"
+          aria-labelledby="contact-title"
+        >
+          <SectionHeading
+            index="05"
+            kicker={t('contact.kicker')}
+            title={t('contact.title')}
+            id="contact-title"
+            size="sub"
+          />
           <div className="contact-links">
             <a href={`mailto:${profile.contacts.email}`}>
               <Mail />

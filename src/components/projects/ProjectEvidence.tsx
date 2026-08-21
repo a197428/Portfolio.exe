@@ -65,7 +65,7 @@ export function ProjectEvidence({ project }: { project: PortfolioProject }) {
         <article className="glass-panel grid gap-8 p-7 md:grid-cols-[0.7fr_1.3fr] md:p-10">
           <div>
             <span className="card-eyebrow">{t('project.verification')}</span>
-            <h2 className="mt-3 text-3xl tracking-tight md:text-4xl">
+            <h2 className="mt-3 text-3xl tracking-tight md:text-4xl text-balance">
               {t('project.evidenceTitle')}
             </h2>
           </div>
