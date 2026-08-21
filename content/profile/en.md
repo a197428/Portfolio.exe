@@ -25,13 +25,13 @@ credentials:
       - Modernized three legacy applications onto a current stack
       - Embedded Bitrix24, ApartSharing, and TTLock interfaces
       - Freelance full-stack since March 2026, plus AI automation
-  - title: Programming diploma with honors
-    text: Programming, algorithms, and architecture, plus a final 1C configuration for trade accounting.
+  - title: Professional retraining
+    text: 'A professional retraining diploma with honors in “1C Programmer”: 256 hours focused on implementing and supporting 1C:Enterprise 8 solutions.'
     details:
-      - Programmer qualification with a diploma earned with honors
-      - Training 1C configuration for wholesale and retail auto-parts trade
-      - 11 catalogs, 7 documents, registers, and 4 subsystems
-      - A training project, not a commercial implementation
+      - Professional retraining program in 1C development
+      - 256 hours of training
+      - Qualification for implementing and supporting 1C:Enterprise 8
+      - 'Final project: an educational configuration for an auto-parts trading business'
   - title: Continuous learning
     text: Completed frontend, AI-agent, and 1C programs; currently studying AI engineering, RAG, and LangChain/LangGraph.
     details:

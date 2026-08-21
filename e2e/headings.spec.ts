@@ -155,6 +155,8 @@ test('section headings stack vertically on mobile without overflow', async ({
   page,
 }, testInfo) => {
   test.skip(testInfo.project.name !== 'mobile-chromium', 'desktop grid covered above');
+  // Measure the stable stacked layout, not the mid-flight entrance animation.
+  await page.emulateMedia({ reducedMotion: 'reduce' });
   await page.goto('/');
   const headings = page.locator('.section-heading');
   await expect(headings).toHaveCount(SECTIONS.length);

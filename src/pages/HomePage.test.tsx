@@ -489,9 +489,15 @@ describe('HomePage flip cards', () => {
       'Modernized three legacy applications',
     );
 
-    expect(
-      screen.getByRole('button', { name: /Programming diploma with honors/i }),
-    ).toBeInTheDocument();
+    const retraining = screen.getByRole('button', {
+      name: /Professional retraining/i,
+    });
+    expect(retraining.querySelector('.flip-card-front')).toHaveTextContent(
+      '256 hours focused on implementing and supporting 1C:Enterprise 8',
+    );
+    expect(retraining.querySelector('.flip-card-back')).toHaveTextContent(
+      'Qualification for implementing and supporting 1C:Enterprise 8',
+    );
     expect(
       screen.getByRole('button', { name: /Continuous learning/i }),
     ).toBeInTheDocument();
@@ -545,6 +551,17 @@ describe('HomePage flip cards', () => {
     );
     expect(commercial.querySelector('.flip-card-back')).toHaveTextContent(
       'Модернизация трёх legacy-приложений',
+    );
+
+    // Card 02 is the precise professional retraining, not a generic diploma.
+    const retraining = screen.getByRole('button', {
+      name: /Профессиональная переподготовка/i,
+    });
+    expect(retraining.querySelector('.flip-card-front')).toHaveTextContent(
+      '256 часов подготовки к внедрению и сопровождению решений на 1С:Предприятие 8',
+    );
+    expect(retraining.querySelector('.flip-card-back')).toHaveTextContent(
+      'Право на работу в области внедрения и сопровождения 1С:Предприятие 8',
     );
 
     const defineFlow = screen.getByRole('button', {

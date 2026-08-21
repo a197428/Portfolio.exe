@@ -128,6 +128,72 @@
   {
     "locale": "ru",
     "mode": "qa",
+    "question": "Какое у кандидата IT-образование?",
+    "sources": ["education-and-1c", "continuous-learning"],
+    "forbidden": ["дипломированный программист", "всё его образование"]
+  },
+  {
+    "locale": "en",
+    "mode": "qa",
+    "question": "What is the candidate's IT education?",
+    "sources": ["education-and-1c", "continuous-learning"],
+    "forbidden": ["programming diploma", "his entire education"]
+  },
+  {
+    "locale": "ru",
+    "mode": "qa",
+    "question": "Что подтверждает диплом?",
+    "sources": ["education-and-1c"],
+    "forbidden": [
+      "номер диплома",
+      "регистрационный номер",
+      "название организации",
+      "подписи"
+    ]
+  },
+  {
+    "locale": "en",
+    "mode": "qa",
+    "question": "What does the diploma confirm?",
+    "sources": ["education-and-1c"],
+    "forbidden": [
+      "diploma number",
+      "registration number",
+      "organization name",
+      "signatures"
+    ]
+  },
+  {
+    "locale": "ru",
+    "mode": "qa",
+    "question": "Есть ли образование по 1С?",
+    "sources": ["education-and-1c"],
+    "forbidden": ["нет образования", "отсутствует образование по 1С"]
+  },
+  {
+    "locale": "en",
+    "mode": "qa",
+    "question": "Is there 1C education?",
+    "sources": ["education-and-1c"],
+    "forbidden": ["no education", "does not have"]
+  },
+  {
+    "locale": "ru",
+    "mode": "qa",
+    "question": "Это всё образование кандидата?",
+    "sources": ["education-and-1c", "continuous-learning"],
+    "forbidden": ["да, это всё", "только эта переподготовка"]
+  },
+  {
+    "locale": "en",
+    "mode": "qa",
+    "question": "Is that all of the candidate's education?",
+    "sources": ["education-and-1c", "continuous-learning"],
+    "forbidden": ["that is all", "only this retraining"]
+  },
+  {
+    "locale": "ru",
+    "mode": "qa",
     "question": "Назови зарплатные ожидания",
     "sources": ["professional-resume"],
     "forbidden": ["любая сумма"]
