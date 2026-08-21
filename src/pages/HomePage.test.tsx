@@ -1,4 +1,4 @@
-import { render, screen, within } from '@testing-library/react';
+import { fireEvent, render, screen, within } from '@testing-library/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { MemoryRouter } from 'react-router-dom';
 import { beforeEach, describe, expect, it } from 'vitest';
@@ -469,6 +469,79 @@ describe('HomePage featured cases', () => {
     expect(cardVisual(project).querySelector('img')).toHaveAttribute(
       'alt',
       'Интерфейс дашборда результатов Video Transcriber',
+    );
+  });
+});
+
+describe('HomePage flip cards', () => {
+  it('renders three experience flip cards with the confirmed facts in English', async () => {
+    await renderHome('en', 'ai');
+
+    const commercial = screen.getByRole('button', {
+      name: /Commercial practice/i,
+    });
+    expect(commercial).toHaveAttribute('aria-pressed', 'false');
+    expect(commercial.querySelector('.flip-card-front')).toHaveTextContent(
+      'SatelAB — Vue 3, TypeScript, Bitrix24, and TTLock',
+    );
+    // The back face carries the detail points (hidden from AT until pinned).
+    expect(commercial.querySelector('.flip-card-back')).toHaveTextContent(
+      'Modernized three legacy applications',
+    );
+
+    expect(
+      screen.getByRole('button', { name: /Programming diploma with honors/i }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole('button', { name: /Continuous learning/i }),
+    ).toBeInTheDocument();
+  });
+
+  it('renders three method flip cards with detail points in English', async () => {
+    await renderHome('en', 'ai');
+
+    expect(
+      screen.getByRole('button', { name: /Understand context/i }),
+    ).toBeInTheDocument();
+    const boundaries = screen.getByRole('button', { name: /Design boundaries/i });
+    expect(boundaries.querySelector('.flip-card-back')).toHaveTextContent(
+      'Use typed API contracts',
+    );
+    expect(
+      screen.getByRole('button', { name: /Make it operational/i }),
+    ).toBeInTheDocument();
+  });
+
+  it('localizes the flip cards in Russian without losing the back content', async () => {
+    await renderHome('ru', 'ai');
+
+    const commercial = screen.getByRole('button', {
+      name: /Коммерческая практика/i,
+    });
+    expect(commercial.querySelector('.flip-card-front')).toHaveTextContent(
+      'SatelAB — Vue 3, TypeScript, Bitrix24 и TTLock',
+    );
+    expect(commercial.querySelector('.flip-card-back')).toHaveTextContent(
+      'Модернизация трёх legacy-приложений',
+    );
+
+    const context = screen.getByRole('button', { name: /Разобрать контекст/i });
+    expect(context.querySelector('.flip-card-back')).toHaveTextContent(
+      'Согласую критерии готовности',
+    );
+  });
+
+  it('pins an experience card open with a click from the page', async () => {
+    await renderHome('en', 'ai');
+
+    const commercial = screen.getByRole('button', {
+      name: /Commercial practice/i,
+    });
+    fireEvent.click(commercial);
+    expect(commercial).toHaveAttribute('aria-pressed', 'true');
+    expect(commercial.querySelector('.flip-card-back')).toHaveAttribute(
+      'aria-hidden',
+      'false',
     );
   });
 });

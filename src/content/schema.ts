@@ -84,7 +84,13 @@ export const profileSchema = z.object({
   }),
   experience: z.array(z.string().min(1)).min(1),
   credentials: z
-    .array(z.object({ title: z.string().min(1), text: z.string().min(1) }))
+    .array(
+      z.object({
+        title: z.string().min(1),
+        text: z.string().min(1),
+        details: z.array(z.string().min(1)).min(3).max(4),
+      }),
+    )
     .length(3),
   contacts: z.object({
     email: z.string().email(),

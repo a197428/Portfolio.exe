@@ -52,16 +52,38 @@ export const en = {
       {
         title: 'Understand context',
         text: 'Capture real constraints, integrations, and the definition of done.',
+        details: [
+          'Map the real constraints and the people who use the system',
+          'Record integrations and external dependencies',
+          'Agree the definition of done',
+          'Verify requirements and mockups before implementation',
+        ],
       },
       {
         title: 'Design boundaries',
         text: 'Separate UI, data, tools, and external APIs into verifiable contracts.',
+        details: [
+          'Separate UI, data, and external services',
+          'Use typed API contracts',
+          'Isolate SDKs and the integration context',
+          'Separate remote state from local UI settings',
+        ],
       },
       {
         title: 'Make it operational',
         text: 'Add failure states, mocks, tests, and production verification.',
+        details: [
+          'Loading, error, retry, and race protection',
+          'Development mocks and safe fallback scenarios',
+          'Vitest, MSW, and Playwright',
+          'Production checks and reduced-motion support',
+        ],
       },
     ],
+  },
+  flipCard: {
+    reveal: 'Press to reveal',
+    collapse: 'Press to collapse',
   },
   experience: {
     kicker: 'Professional foundation',

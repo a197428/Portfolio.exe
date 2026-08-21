@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { RoleSwitch } from '@/components/controls/RoleSwitch';
 import { SectionHeading } from '@/components/SectionHeading';
+import { FlipCard } from '@/components/kokonutui/card-flip';
 import { BobIntro } from '@/features/bob/BobIntro';
 import BentoGrid from '@/components/kokonutui/bento-grid';
 import { Shell } from '@/components/layout/Shell';
@@ -522,11 +523,15 @@ export function HomePage() {
           />
           <div className="experience-grid">
             {profile.credentials.map((item, index) => (
-              <article className="experience-card glass-panel" key={item.title}>
-                <span>0{index + 1}</span>
-                <h3>{item.title}</h3>
-                <p>{item.text}</p>
-              </article>
+              <FlipCard
+                key={item.title}
+                index={`0${index + 1}`}
+                title={item.title}
+                summary={item.text}
+                details={item.details}
+                frontLabel={t('flipCard.reveal')}
+                backLabel={t('flipCard.collapse')}
+              />
             ))}
           </div>
         </section>
@@ -540,11 +545,17 @@ export function HomePage() {
           />
           <div className="method-grid">
             {[0, 1, 2].map((index) => (
-              <article className="glass-panel" key={index}>
-                <span>0{index + 1}</span>
-                <h3>{t(`method.items.${index}.title`)}</h3>
-                <p>{t(`method.items.${index}.text`)}</p>
-              </article>
+              <FlipCard
+                key={index}
+                index={`0${index + 1}`}
+                title={t(`method.items.${index}.title`)}
+                summary={t(`method.items.${index}.text`)}
+                details={
+                  t(`method.items.${index}.details`, { returnObjects: true }) as string[]
+                }
+                frontLabel={t('flipCard.reveal')}
+                backLabel={t('flipCard.collapse')}
+              />
             ))}
           </div>
         </section>

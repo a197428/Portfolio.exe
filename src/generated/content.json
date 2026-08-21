@@ -25,15 +25,33 @@
       "credentials": [
         {
           "title": "Commercial practice",
-          "text": "SatelAB — Vue 3, TypeScript, Bitrix24, and TTLock; freelance — full-stack delivery and AI automation."
+          "text": "SatelAB — Vue 3, TypeScript, Bitrix24, and TTLock; freelance — full-stack delivery and AI automation.",
+          "details": [
+            "SatelAB — frontend developer since December 2025",
+            "Modernized three legacy applications onto a current stack",
+            "Embedded Bitrix24, ApartSharing, and TTLock interfaces",
+            "Freelance full-stack since March 2026, plus AI automation"
+          ]
         },
         {
           "title": "Programming diploma with honors",
-          "text": "Programming, algorithms, and architecture, plus a final 1C configuration for trade accounting."
+          "text": "Programming, algorithms, and architecture, plus a final 1C configuration for trade accounting.",
+          "details": [
+            "Programmer qualification with a diploma earned with honors",
+            "Training 1C configuration for wholesale and retail auto-parts trade",
+            "11 catalogs, 7 documents, registers, and 4 subsystems",
+            "A training project, not a commercial implementation"
+          ]
         },
         {
           "title": "Continuous learning",
-          "text": "Completed frontend, AI-agent, and 1C programs; currently studying AI engineering, RAG, and LangChain/LangGraph."
+          "text": "Completed frontend, AI-agent, and 1C programs; currently studying AI engineering, RAG, and LangChain/LangGraph.",
+          "details": [
+            "Completed frontend, JavaScript, AI development, and 1C programs",
+            "Completed production AI agents and RAG courses",
+            "In progress: AI engineering, applied AI, and LangChain",
+            "Completed courses and current studies are never conflated"
+          ]
         }
       ],
       "contacts": {
@@ -69,15 +87,33 @@
       "credentials": [
         {
           "title": "Коммерческая практика",
-          "text": "SatelAB — Vue 3, TypeScript, Bitrix24 и TTLock; фриланс — full-stack и AI-автоматизация."
+          "text": "SatelAB — Vue 3, TypeScript, Bitrix24 и TTLock; фриланс — full-stack и AI-автоматизация.",
+          "details": [
+            "SatelAB — frontend-разработчик с декабря 2025",
+            "Модернизация трёх legacy-приложений на современный стек",
+            "Встроенные интерфейсы Bitrix24, ApartSharing и TTLock",
+            "Фриланс fullstack с марта 2026 и AI-автоматизация"
+          ]
         },
         {
           "title": "Диплом с отличием",
-          "text": "Программирование, алгоритмы и архитектура; итоговая конфигурация для торгового учёта на 1С."
+          "text": "Программирование, алгоритмы и архитектура; итоговая конфигурация для торгового учёта на 1С.",
+          "details": [
+            "Квалификация программиста и диплом с отличием",
+            "Учебная конфигурация 1С для оптово-розничной торговли автозапчастями",
+            "11 справочников, 7 документов, регистры и 4 подсистемы",
+            "Учебная работа, а не коммерческое внедрение"
+          ]
         },
         {
           "title": "Непрерывное обучение",
-          "text": "Завершённые программы по frontend, AI-агентам и 1С; сейчас — AI engineering, RAG и LangChain/LangGraph."
+          "text": "Завершённые программы по frontend, AI-агентам и 1С; сейчас — AI engineering, RAG и LangChain/LangGraph.",
+          "details": [
+            "Завершённые программы по frontend, JavaScript, AI-разработке и 1С",
+            "Завершённые курсы: production AI agents и RAG",
+            "В процессе: AI-инженерия, прикладной AI и LangChain",
+            "Завершённые курсы и текущее обучение не смешиваются"
+          ]
         }
       ],
       "contacts": {
