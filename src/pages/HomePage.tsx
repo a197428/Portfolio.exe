@@ -1,5 +1,5 @@
 import { animate, onScroll, splitText, stagger } from 'animejs';
-import { ArrowDownRight, ArrowUpRight, GitFork, Mail, Send } from 'lucide-react';
+import { ArrowUpRight, GitFork, Mail, Send } from 'lucide-react';
 import { useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
@@ -336,18 +336,14 @@ export function HomePage() {
 
           <div className="hero-stage">
             <aside className="hero-rail hero-rail--left" data-hero-rail>
-              <div className="hero-status">
-                <span className="status-dot" />
-                {profile.location} · {t('hero.availability')}
-              </div>
-              <div className="hero-actions">
-                <a className="primary-action enabled" href="#projects">
-                  {t('hero.explore')}
-                  <ArrowDownRight size={18} />
-                </a>
-                <a className="text-action" href={`mailto:${profile.contacts.email}`}>
+              <div className="hero-contact">
+                <div className="hero-status">
+                  <span className="status-dot" />
+                  {profile.location} · {t('hero.availability')}
+                </div>
+                <a className="hero-cta" href={`mailto:${profile.contacts.email}`}>
                   {t('contact.write')}
-                  <ArrowUpRight size={17} />
+                  <ArrowUpRight size={18} aria-hidden="true" />
                 </a>
               </div>
             </aside>
@@ -361,7 +357,7 @@ export function HomePage() {
               </figcaption>
             </figure>
 
-            <aside className="hero-rail hero-rail--right" data-hero-rail>
+            <aside className="hero-rail hero-rail--right hero-card" data-hero-rail>
               <p className="hero-role-index">01 / {roleProfile.title}</p>
               <h2 data-hero-title key={headlineText}>
                 {headlineText}

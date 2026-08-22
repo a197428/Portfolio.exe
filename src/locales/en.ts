@@ -19,7 +19,6 @@ export const en = {
     portraitAlt: 'Portrait of Alexander Popoff',
     coreStack: 'Core stack',
     chatSoon: 'AI persona — coming next',
-    explore: 'Explore projects',
   },
   proof: {
     title: 'System signals',

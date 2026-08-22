@@ -78,3 +78,126 @@ test('hero portrait spans the decorative hero block with no darkening overlay', 
     ),
   ).toBe(false);
 });
+
+test('promotes the mailto CTA and removes the explore link in both locales', async ({
+  page,
+}) => {
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await page.goto('/');
+
+  await expect(page.getByRole('link', { name: 'Explore projects' })).toHaveCount(0);
+  const cta = page.getByRole('link', { name: 'Get in touch' });
+  await expect(cta).toBeVisible();
+  await expect(cta).toHaveAttribute('href', 'mailto:a197428@yandex.ru');
+
+  // The CTA is reachable with the keyboard and gets the focus ring.
+  for (let i = 0; i < 30; i += 1) {
+    await page.keyboard.press('Tab');
+    if (
+      await page.evaluate(() => document.activeElement?.classList.contains('hero-cta'))
+    ) {
+      break;
+    }
+  }
+  await expect
+    .poll(() =>
+      page.evaluate(() => document.activeElement?.classList.contains('hero-cta')),
+    )
+    .toBe(true);
+  const focusOutline = await page.evaluate(() => {
+    const el = document.activeElement;
+    return el ? getComputedStyle(el).outlineStyle : '';
+  });
+  expect(focusOutline).not.toBe('none');
+
+  // Reduced motion disables the CTA's hover transition.
+  const ctaTransition = await cta.evaluate(
+    (element) => getComputedStyle(element).transition,
+  );
+  expect(ctaTransition).toContain('none');
+
+  // The same contract holds in Russian.
+  await page.getByRole('button', { name: 'RU' }).click();
+  await expect(page.getByRole('link', { name: 'Смотреть проекты' })).toHaveCount(0);
+  await expect(page.getByRole('link', { name: 'Написать' })).toHaveAttribute(
+    'href',
+    'mailto:a197428@yandex.ru',
+  );
+});
+
+test('sits the contact module beside the portrait and keeps the editorial card off the face', async ({
+  page,
+}, testInfo) => {
+  const mobile = testInfo.project.name === 'mobile-chromium';
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await page.goto('/');
+
+  const portrait = page.locator('.hero-portrait');
+  await expect(portrait).toBeVisible();
+  const portraitBox = (await portrait.boundingBox())!;
+
+  const cta = page.getByRole('link', { name: 'Get in touch' });
+  await expect(cta).toBeVisible();
+
+  const card = page.locator('.hero-rail--right.hero-card');
+  await expect(card).toBeVisible();
+
+  if (mobile) {
+    // Mobile order: portrait → status + CTA → editorial card.
+    const ctaBox = (await cta.boundingBox())!;
+    const cardBox = (await card.boundingBox())!;
+    expect(portraitBox.y + portraitBox.height).toBeLessThanOrEqual(ctaBox.y + 2);
+    expect(ctaBox.y + ctaBox.height).toBeLessThanOrEqual(cardBox.y + 2);
+  } else {
+    const railBox = (await page.locator('.hero-rail--left').boundingBox())!;
+    // The compact contact module hugs the portrait's left edge (small gap).
+    const gap = portraitBox.x - (railBox.x + railBox.width);
+    expect(gap).toBeGreaterThanOrEqual(0);
+    expect(gap).toBeLessThan(56);
+
+    // The editorial card steps toward the portrait but never reaches the face:
+    // its left edge stays past the portrait's horizontal centre.
+    const cardBox = (await card.boundingBox())!;
+    expect(cardBox.x).toBeGreaterThan(portraitBox.x + portraitBox.width * 0.5);
+
+    // The card stays inside the decorative hero panel (inset 9% 7% 7%).
+    const panel = await page.locator('.hero').evaluate((element) => {
+      const rect = element.getBoundingClientRect();
+      return {
+        left: rect.left + rect.width * 0.07,
+        right: rect.right - rect.width * 0.07,
+      };
+    });
+    expect(cardBox.x).toBeGreaterThanOrEqual(panel.left - 1);
+    expect(cardBox.x + cardBox.width).toBeLessThanOrEqual(panel.right + 1);
+  }
+
+  expect(
+    await page.evaluate(
+      () => document.documentElement.scrollWidth > document.documentElement.clientWidth,
+    ),
+  ).toBe(false);
+});
+
+test('keeps the editorial card clear of the portrait on tablet', async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await page.setViewportSize({ width: 900, height: 900 });
+  await page.goto('/');
+
+  const portrait = page.locator('.hero-portrait');
+  const card = page.locator('.hero-rail--right.hero-card');
+  await expect(portrait).toBeVisible();
+  await expect(card).toBeVisible();
+
+  const portraitBox = (await portrait.boundingBox())!;
+  const cardBox = (await card.boundingBox())!;
+  // Two-column tablet layout: the card sits in the left column, fully to the
+  // left of the portrait — no overlap.
+  expect(cardBox.x + cardBox.width).toBeLessThanOrEqual(portraitBox.x + 1);
+
+  expect(
+    await page.evaluate(
+      () => document.documentElement.scrollWidth > document.documentElement.clientWidth,
+    ),
+  ).toBe(false);
+});

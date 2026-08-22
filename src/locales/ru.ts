@@ -19,7 +19,6 @@ export const ru = {
     portraitAlt: 'Портрет Александра Popoff',
     coreStack: 'Основной стек',
     chatSoon: 'AI-версия — следующий этап',
-    explore: 'Смотреть проекты',
   },
   proof: {
     title: 'Сигналы системы',

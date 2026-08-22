@@ -93,6 +93,13 @@ describe('HomePage featured cases', () => {
       'PORTFOLIO.EXE2026 / 001',
     );
     expect(portrait!.querySelector('img')).toHaveAttribute('src', '/image/Аватар_1.png');
+
+    // The only hero CTA is the mailto action; the projects section is reached
+    // through the featured cases below the hero, not a second button.
+    expect(screen.queryByRole('link', { name: 'Explore projects' })).toBeNull();
+    const cta = screen.getByRole('link', { name: 'Get in touch' });
+    expect(cta).toHaveAttribute('href', 'mailto:a197428@yandex.ru');
+    expect(cta.querySelector('svg[aria-hidden="true"]')).not.toBeNull();
   });
 
   it('keeps the Bitrix24 card as the untouched copy→visual featured case', async () => {
@@ -535,6 +542,11 @@ describe('HomePage flip cards', () => {
 
   it('localizes the flip cards in Russian without losing the back content', async () => {
     await renderHome('ru', 'ai');
+
+    // The Russian hero also drops the explore link in favour of one mailto CTA.
+    expect(screen.queryByRole('link', { name: 'Смотреть проекты' })).toBeNull();
+    const cta = screen.getByRole('link', { name: 'Написать' });
+    expect(cta).toHaveAttribute('href', 'mailto:a197428@yandex.ru');
 
     expect(
       screen.getByRole('heading', {
