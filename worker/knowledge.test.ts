@@ -66,6 +66,63 @@ describe('knowledge retrieval fallback', () => {
       expect(evidence.some((item) => item.type === type)).toBe(true);
   });
 
+  it.each([
+    ['ru', 'Какими навыками владеет Александр?', 'ai'],
+    ['en', 'What skills and capabilities does Alexander have?', 'frontend'],
+    ['ru', 'В чём сильные стороны кандидата и чем они подтверждены?', 'frontend'],
+    ['en', 'Why is Alexander qualified for an AI application developer role?', 'ai'],
+  ] as const)(
+    'grounds capabilities in the candidate dossier and project evidence: %s',
+    (locale, message, role) => {
+      const evidence = lexicalRetrieve({
+        mode: 'qa',
+        message,
+        history: [],
+        locale,
+        role,
+      });
+      expect(evidence.some(({ type }) => type === 'profile')).toBe(true);
+      expect(evidence.some(({ type }) => type === 'resume')).toBe(true);
+      expect(evidence.some(({ type }) => type === 'project')).toBe(true);
+    },
+  );
+
+  it.each([
+    ['ru', 'Как связаться с Александром?'],
+    ['en', 'How can I contact Alexander?'],
+  ] as const)('retrieves only verified public contact details: %s', (locale, message) => {
+    const evidence = lexicalRetrieve({
+      mode: 'qa',
+      message,
+      history: [],
+      locale,
+      role: 'ai',
+    });
+    expect(evidence.some(({ type }) => type === 'profile')).toBe(true);
+    expect(evidence.some(({ content }) => content.includes('a197428@yandex.ru'))).toBe(
+      true,
+    );
+  });
+
+  it.each([
+    ['ru', 'Нужны React, TypeScript, LLM, RAG и опыт production-разработки'],
+    ['en', 'We need React, TypeScript, LLM, RAG and production experience'],
+  ] as const)(
+    'assembles a complete evidence mix for vacancies: %s',
+    (locale, message) => {
+      const evidence = lexicalRetrieve({
+        mode: 'vacancy',
+        message,
+        history: [],
+        locale,
+        role: 'ai',
+      });
+      expect(new Set(evidence.map(({ type }) => type))).toEqual(
+        new Set(['profile', 'resume', 'fact', 'project']),
+      );
+    },
+  );
+
   it('retrieves verified education and work-format facts', () => {
     for (const message of [
       'Какое у него образование?',

@@ -36,10 +36,13 @@ export interface RetrievalResult {
 
 type QueryIntent =
   | 'skills'
+  | 'qualification'
+  | 'strengths'
   | 'resume'
   | 'experience'
   | 'education'
   | 'availability'
+  | 'contact'
   | 'candidate'
   | 'projects'
   | 'implementation'
@@ -59,6 +62,29 @@ const intentPrefixes: Record<QueryIntent, string[]> = {
     'компетенц',
     'стек',
     'технолог',
+  ],
+  qualification: [
+    'qualification',
+    'qualified',
+    'suitable',
+    'fit for',
+    'capabilit',
+    'can he',
+    'квалификац',
+    'подходит',
+    'соответству',
+    'способен',
+    'возможност',
+    'может ли',
+  ],
+  strengths: [
+    'strength',
+    'advantage',
+    'why hire',
+    'сильн',
+    'преимуществ',
+    'почему стоит нанять',
+    'чем полезен',
   ],
   resume: ['resume', 'curriculum', 'vitae', 'резюме', 'cv'],
   experience: [
@@ -104,6 +130,19 @@ const intentPrefixes: Record<QueryIntent, string[]> = {
     'зарплат',
     'релокац',
     'выход',
+  ],
+  contact: [
+    'contact',
+    'email',
+    'telegram',
+    'github',
+    'reach',
+    'связат',
+    'контакт',
+    'почт',
+    'телеграм',
+    'гитхаб',
+    'написать',
   ],
   candidate: [
     'candidate',
@@ -393,12 +432,18 @@ function scoreChunk(
     score += explicitRole ? 0.22 : 0.08;
   if (intents.has('projects') && chunk.type === 'project') score += 0.5;
   if (intents.has('skills') && ['profile', 'resume'].includes(chunk.type)) score += 0.45;
+  if (
+    (intents.has('qualification') || intents.has('strengths')) &&
+    ['profile', 'resume', 'project'].includes(chunk.type)
+  )
+    score += 0.42;
   if (intents.has('resume') && chunk.type === 'resume') score += 0.7;
   if (intents.has('experience') && ['resume', 'fact'].includes(chunk.type)) score += 0.45;
   if (intents.has('experience') && chunk.type === 'profile') score += 0.28;
   if (intents.has('education') && ['fact', 'profile'].includes(chunk.type)) score += 0.55;
   if (intents.has('availability') && ['resume', 'profile'].includes(chunk.type))
     score += 0.55;
+  if (intents.has('contact') && chunk.type === 'profile') score += 0.7;
   if (intents.has('candidate') && ['profile', 'resume'].includes(chunk.type))
     score += 0.28;
   if (intents.has('llm') && ['project', 'fact'].includes(chunk.type)) score += 0.35;
@@ -435,26 +480,43 @@ function analyze(request: ChatRequest) {
   );
   if (
     intents.has('skills') ||
+    intents.has('qualification') ||
+    intents.has('strengths') ||
     intents.has('candidate') ||
     intents.has('experience') ||
     intents.has('education') ||
-    intents.has('availability')
+    intents.has('availability') ||
+    intents.has('contact')
   )
     requestedTypes.add('profile');
   if (
     intents.has('resume') ||
     intents.has('experience') ||
     intents.has('skills') ||
+    intents.has('qualification') ||
+    intents.has('strengths') ||
+    intents.has('education') ||
     intents.has('availability')
   )
     requestedTypes.add('resume');
   if (
     intents.has('education') ||
     intents.has('experience') ||
+    intents.has('skills') ||
+    intents.has('qualification') ||
+    intents.has('strengths') ||
     intents.has('llm') ||
     relatedFactExists
   )
     requestedTypes.add('fact');
+  if (intents.has('skills') || intents.has('qualification') || intents.has('strengths'))
+    requestedTypes.add('project');
+  if (request.mode === 'vacancy') {
+    requestedTypes.add('profile');
+    requestedTypes.add('resume');
+    requestedTypes.add('fact');
+    requestedTypes.add('project');
+  }
   if (requestedTypes.size === 0) {
     requestedTypes.add('profile');
     requestedTypes.add('resume');
@@ -485,7 +547,7 @@ function lexicalResult(request: ChatRequest): RetrievalResult {
         analysis.roleFocus,
       ),
     }))
-    .filter(({ score }) => score > 0.08)
+    .filter(({ score, type }) => score > 0.08 || analysis.requestedTypes.includes(type))
     .sort((left, right) => right.score - left.score);
 
   let evidence: RetrievedEvidence[];
@@ -521,7 +583,9 @@ function lexicalResult(request: ChatRequest): RetrievalResult {
     const required = analysis.requestedTypes.flatMap((type) => {
       let candidates = ranked.filter((item) => item.type === type);
       if (type === 'project' && analysis.namedProjects.length > 0) {
-        return candidates.filter((item) => analysis.namedProjects.includes(item.href));
+        return candidates
+          .filter((item) => analysis.namedProjects.includes(item.href))
+          .slice(0, 5);
       }
       if (type === 'fact' && analysis.namedProjects.length > 0) {
         candidates = candidates.filter((item) =>

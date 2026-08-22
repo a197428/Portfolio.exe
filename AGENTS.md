@@ -9,10 +9,11 @@ owner's verified experience and matches vacancy descriptions to relevant evidenc
 
 ## Current phase
 
-The repository currently contains the foundation and design system only. Do not imply that chat,
-RAG, code generation, vacancy matching, or embedded project demos are implemented. Decisions
-marked `Deferred` in `docs/decisions.md` must remain open until the owner supplies the required
-inputs.
+The repository contains the portfolio experience and Bob MVP: grounded RU/EN chat, vacancy
+matching, streamed answers with visible sources, lexical retrieval with optional Vectorize, and
+embedded project presentations. Do not imply that code generation, voice, long-term memory,
+conversation analytics, or an editorial admin UI are implemented. Claims about Bob and projects
+must remain within the verified boundaries documented in `content/` and `docs/decisions.md`.
 
 ## Stack and boundaries
 

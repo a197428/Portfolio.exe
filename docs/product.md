@@ -34,13 +34,17 @@ and receive an evidence-backed answer linked to relevant experience and projects
 - RU/EN RAG chat grounded exclusively in verified portfolio content, with visible citations.
 - Vacancy description analysis with relevant evidence and case selection.
 - Transparent distinction between retrieved facts and model inference.
+- Bob is a separate AI representative who speaks about Alexander in the third person, connects
+  capabilities to evidence, and names missing facts instead of filling gaps.
+- Vacancy answers cover match, verified evidence, gaps, and interview questions without invented
+  percentage scores.
 - OpenRouter Nemotron generation with RouterAI DeepSeek V4 Flash failover, plus GigaChat Embeddings and Cloudflare Vectorize retrieval where available.
 - Public abuse protection with rate limiting and Turnstile escalation; no conversation retention.
 
 ## Explicitly deferred
 
 - Executable or generated code experiences.
-- Voice, long-term memory, conversation analytics, provider failover, and an editorial admin UI.
+- Voice, long-term memory, conversation analytics, and an editorial admin UI.
 
 ## Success principles
 

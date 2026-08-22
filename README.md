@@ -1,8 +1,8 @@
 # Portfolio.exe
 
-A bilingual, interactive portfolio foundation for AI Developer and Frontend Developer roles.
-The first milestone delivers the React/Cloudflare application shell, role-aware content,
-localization, liquid-glass design tokens, and accessible animation primitives.
+A bilingual, interactive portfolio for AI Developer and Frontend Developer roles. It combines a
+React/Cloudflare experience with role-aware verified content and Bob, an evidence-grounded AI
+representative for candidate questions and vacancy analysis.
 
 ## Local development
 
@@ -15,7 +15,8 @@ npm run dev
 
 Open the URL printed by Vite. The health endpoint is available at `/api/health`.
 
-Portfolio content lives in `content/profile` and `content/projects`. Run
+Verified portfolio knowledge lives in `content/profile`, `content/resume`, `content/facts`, and
+`content/projects`. Run
 `npm run content:build` after editing Markdown; normal development and build commands run this
 validation automatically.
 
