@@ -534,7 +534,10 @@ export function HomePage() {
           </div>
         </section>
 
-        <section className="method-section" aria-labelledby="method-title">
+        <section
+          className={`method-section method-section--${locale}`}
+          aria-labelledby="method-title"
+        >
           <SectionHeading
             index="03"
             kicker={t(`method.${role}.kicker`)}

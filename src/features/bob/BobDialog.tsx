@@ -144,7 +144,7 @@ export function BobDialog() {
             <article className={`bob-message ${message.role}`} key={message.id}>
               <span className="bob-message-author">
                 {message.role === 'assistant' && <BobMark size={18} />}
-                {message.role === 'assistant' ? 'Боб' : t('bob.you')}
+                {message.role === 'assistant' ? t('bob.name') : t('bob.you')}
               </span>
               <p>
                 {message.content

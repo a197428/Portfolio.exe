@@ -1879,6 +1879,23 @@ a:focus-visible {
 .section-heading--sub .section-heading-title {
   font-size: var(--type-section-sub);
 }
+/* Russian titles read wider per character, so the method heading gets a
+   slightly tighter desktop ceiling. The 4.375rem cap keeps both «От задачи —
+   к управляемой AI-системе.» and «От задачи — к работающему интерфейсу.» on
+   two lines at wide desktop (the natural two-line split would otherwise
+   overflow and fall into a third, heavy line); below the cap the scale is
+   untouched, and mobile falls back to the shared stack. */
+.method-section--ru .section-heading-title {
+  font-size: clamp(2.5rem, 5.5vw, 4.375rem);
+  /* A smaller title cap pins the first-line baseline higher relative to the
+     title box (baseline sits at the font ascent; line-height can't move it),
+     so the baseline-aligned kicker rides ~6-9px high at wide desktop. Padding
+     on the title pushes that baseline back down. The amount is the capped
+     reference scale (5.25rem) minus the RU cap (4.375rem) times the measured
+     ascent ratio (~0.8), clamped to 0 wherever the cap doesn't bind. At 1440
+     this zeroes the kicker gap against sections 01/02/04 to sub-pixel. */
+  padding-top: max(0px, calc((min(5.5vw, 5.25rem) - 4.375rem) * 0.8));
+}
 
 @media (max-width: 720px) {
   .section-heading {

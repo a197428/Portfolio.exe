@@ -17,7 +17,7 @@ export function BobLauncher() {
       aria-label={t('bob.open')}
     >
       <BobMark size={25} className="bob-launcher-mark" />
-      <span>Боб</span>
+      <span>{t('bob.name')}</span>
     </button>
   );
 }

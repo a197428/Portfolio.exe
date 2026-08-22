@@ -19,7 +19,7 @@ export function BobIntro() {
           <BobMark size={34} />
         </span>
         <div>
-          <strong>Боб</strong>
+          <strong>{t('bob.name')}</strong>
           <span>{t('bob.status')}</span>
         </div>
       </div>

@@ -151,6 +151,78 @@ test('experience title stays within two lines on a standard desktop', async ({
   expect(await countLines(title)).toBeLessThanOrEqual(2);
 });
 
+test('Russian method title stays on two lines and keeps the editorial grid at a standard desktop', async ({
+  page,
+}, testInfo) => {
+  test.skip(testInfo.project.name !== 'chromium', 'mobile stacking covered below');
+  // Wide desktop is where the RU cap binds: at the default 1280 viewport the
+  // title already wraps on two lines, so 1440 is the meaningful measurement.
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto('/');
+  await page.getByRole('button', { name: 'RU' }).click();
+
+  const title = page.locator('#method-title');
+  await expect(title).toBeVisible();
+  expect(await countLines(title)).toBeLessThanOrEqual(2);
+
+  // The RU method heading stays in the same column and baseline grid as
+  // sections 01, 02 and 04 (the RU-only cap + baseline padding must not shift
+  // columns or the kicker alignment).
+  const rows: Array<{ kickerLeft: number; titleLeft: number; kickerOffset: number }> = [];
+  for (const id of [
+    'projects-title',
+    'experience-title',
+    'method-title',
+    'ai-preview-title',
+  ]) {
+    rows.push(
+      await page.locator(`#${id}`).evaluate((titleEl) => {
+        const heading = titleEl.closest('.section-heading') as HTMLElement;
+        const kicker = heading.querySelector('.section-heading-kicker')!;
+        const tb = titleEl.getBoundingClientRect();
+        const kb = kicker.getBoundingClientRect();
+        return {
+          kickerLeft: kb.x,
+          titleLeft: tb.x,
+          kickerOffset: kb.y + kb.height - tb.y,
+        };
+      }),
+    );
+  }
+  const reference = rows[0];
+  for (const row of rows.slice(1)) {
+    expect(Math.abs(row.kickerLeft - reference.kickerLeft)).toBeLessThanOrEqual(1);
+    expect(Math.abs(row.titleLeft - reference.titleLeft)).toBeLessThanOrEqual(1);
+    expect(Math.abs(row.kickerOffset - reference.kickerOffset)).toBeLessThanOrEqual(2);
+  }
+});
+
+test('method titles stay on two lines across locales and roles on a wide desktop', async ({
+  page,
+}) => {
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto('/');
+
+  const cases: Array<{ locale: string; role: string }> = [
+    { locale: 'EN', role: 'AI Developer' },
+    { locale: 'EN', role: 'Frontend Developer' },
+    { locale: 'RU', role: 'AI-разработчик' },
+    { locale: 'RU', role: 'Frontend-разработчик' },
+  ];
+  for (const testCase of cases) {
+    await page.getByRole('button', { name: testCase.locale, exact: true }).click();
+    await page.getByRole('button', { name: testCase.role }).click();
+    const title = page.locator('#method-title');
+    await expect(title).toBeVisible();
+    expect(
+      await countLines(title),
+      `${testCase.locale} / ${testCase.role} method title should stay on two lines`,
+    ).toBeLessThanOrEqual(2);
+  }
+});
+
 test('section headings stack vertically on mobile without overflow', async ({
   page,
 }, testInfo) => {

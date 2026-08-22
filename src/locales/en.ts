@@ -136,6 +136,7 @@ export const en = {
     placeholder: 'Which projects match my vacancy?',
   },
   bob: {
+    name: 'Bob',
     title: 'Bob — portfolio assistant',
     status: 'online · answers with sources',
     start: 'Open full chat',
