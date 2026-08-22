@@ -63,13 +63,6 @@ test('hero portrait spans the decorative hero block with no darkening overlay', 
     });
     expect(Math.abs(box!.y - panel.top)).toBeLessThanOrEqual(2);
     expect(Math.abs(box!.y + box!.height - panel.bottom)).toBeLessThanOrEqual(2);
-
-    // The portrait also stays level with the end-aligned side rails.
-    const railBox = await page.locator('.hero-rail--right').boundingBox();
-    expect(railBox).not.toBeNull();
-    expect(Math.abs(box!.y + box!.height - (railBox!.y + railBox!.height))).toBeLessThan(
-      2,
-    );
   }
 
   expect(
@@ -125,7 +118,7 @@ test('promotes the mailto CTA and removes the explore link in both locales', asy
   );
 });
 
-test('sits the contact module beside the portrait and keeps the editorial card off the face', async ({
+test('sits the contact module beside the portrait and keeps the role panel off the face', async ({
   page,
 }, testInfo) => {
   const mobile = testInfo.project.name === 'mobile-chromium';
@@ -143,7 +136,7 @@ test('sits the contact module beside the portrait and keeps the editorial card o
   await expect(card).toBeVisible();
 
   if (mobile) {
-    // Mobile order: portrait → status + CTA → editorial card.
+    // Mobile order: portrait → status + CTA → role panel.
     const ctaBox = (await cta.boundingBox())!;
     const cardBox = (await card.boundingBox())!;
     expect(portraitBox.y + portraitBox.height).toBeLessThanOrEqual(ctaBox.y + 2);
@@ -155,21 +148,29 @@ test('sits the contact module beside the portrait and keeps the editorial card o
     expect(gap).toBeGreaterThanOrEqual(0);
     expect(gap).toBeLessThan(56);
 
-    // The editorial card steps toward the portrait but never reaches the face:
-    // its left edge stays past the portrait's horizontal centre.
+    // The role panel is a compact display, narrower and shorter than the
+    // portrait (it no longer stretches the right column or hugs its bottom).
     const cardBox = (await card.boundingBox())!;
+    expect(cardBox.width).toBeLessThan(portraitBox.width);
+    expect(cardBox.height).toBeLessThan(portraitBox.height * 0.7);
+    expect(cardBox.height).toBeGreaterThan(100);
+
+    // It never reaches the face: its left edge stays past the portrait's
+    // horizontal centre.
     expect(cardBox.x).toBeGreaterThan(portraitBox.x + portraitBox.width * 0.5);
 
-    // The card stays inside the decorative hero panel (inset 9% 7% 7%).
+    // The panel slightly overhangs the inner decorative hero frame (inset
+    // 9% 7% 7%) — stepping past its right edge by ~1.5–2.5rem — while staying
+    // fully inside the viewport.
+    const viewport = page.viewportSize()!;
     const panel = await page.locator('.hero').evaluate((element) => {
       const rect = element.getBoundingClientRect();
-      return {
-        left: rect.left + rect.width * 0.07,
-        right: rect.right - rect.width * 0.07,
-      };
+      return { right: rect.right - rect.width * 0.07 };
     });
-    expect(cardBox.x).toBeGreaterThanOrEqual(panel.left - 1);
-    expect(cardBox.x + cardBox.width).toBeLessThanOrEqual(panel.right + 1);
+    const overhang = cardBox.x + cardBox.width - panel.right;
+    expect(overhang).toBeGreaterThanOrEqual(20);
+    expect(overhang).toBeLessThan(46);
+    expect(cardBox.x + cardBox.width).toBeLessThanOrEqual(viewport.width);
   }
 
   expect(
@@ -179,7 +180,55 @@ test('sits the contact module beside the portrait and keeps the editorial card o
   ).toBe(false);
 });
 
-test('keeps the editorial card clear of the portrait on tablet', async ({ page }) => {
+test('keeps the role panel compact and unclipped in RU + Frontend', async ({
+  page,
+}, testInfo) => {
+  const mobile = testInfo.project.name === 'mobile-chromium';
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await page.goto('/');
+
+  const portrait = page.locator('.hero-portrait');
+  const card = page.locator('.hero-rail--right.hero-card');
+  await expect(portrait).toBeVisible();
+  await expect(card).toBeVisible();
+
+  // The longer Russian copy with the Frontend lens — the panel must stay
+  // compact, fit the viewport, and keep its stack tags fully inside.
+  await page.getByRole('button', { name: 'RU' }).click();
+  await page.getByRole('button', { name: 'Frontend-разработчик' }).click();
+  await expect(card.locator('h2')).toContainText('Проектирую');
+
+  const viewport = page.viewportSize()!;
+  const portraitBox = (await portrait.boundingBox())!;
+  const cardBox = (await card.boundingBox())!;
+  // On desktop the panel stays narrower and shorter than the portrait; on
+  // mobile it is a full-width block, so the width ratio does not apply.
+  if (!mobile) {
+    expect(cardBox.width).toBeLessThan(portraitBox.width);
+    expect(cardBox.height).toBeLessThan(portraitBox.height * 0.7);
+  }
+  expect(cardBox.x + cardBox.width).toBeLessThanOrEqual(viewport.width);
+
+  const tags = card.locator('.hero-stack span');
+  const tagCount = await tags.count();
+  expect(tagCount).toBeGreaterThan(0);
+  for (let i = 0; i < tagCount; i += 1) {
+    const tag = await tags.nth(i).boundingBox();
+    expect(tag).not.toBeNull();
+    expect(tag!.x).toBeGreaterThanOrEqual(cardBox.x);
+    expect(tag!.y).toBeGreaterThanOrEqual(cardBox.y);
+    expect(tag!.x + tag!.width).toBeLessThanOrEqual(cardBox.x + cardBox.width + 1);
+    expect(tag!.y + tag!.height).toBeLessThanOrEqual(cardBox.y + cardBox.height + 1);
+  }
+
+  expect(
+    await page.evaluate(
+      () => document.documentElement.scrollWidth > document.documentElement.clientWidth,
+    ),
+  ).toBe(false);
+});
+
+test('keeps the role panel clear of the portrait on tablet', async ({ page }) => {
   await page.emulateMedia({ reducedMotion: 'reduce' });
   await page.setViewportSize({ width: 900, height: 900 });
   await page.goto('/');
