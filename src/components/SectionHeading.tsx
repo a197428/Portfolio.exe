@@ -24,7 +24,7 @@ export function SectionHeading({
 }: SectionHeadingProps) {
   return (
     <div className={`section-heading${size === 'sub' ? ' section-heading--sub' : ''}`}>
-      <span className="section-heading-kicker">
+      <span className="section-heading-kicker" data-signal-anchor>
         {index} / {kicker}
       </span>
       <h2 className="section-heading-title" id={id}>

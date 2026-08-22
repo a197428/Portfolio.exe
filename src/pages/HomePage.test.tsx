@@ -1,4 +1,4 @@
-import { fireEvent, render, screen, within } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor, within } from '@testing-library/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { MemoryRouter } from 'react-router-dom';
 import { beforeEach, describe, expect, it } from 'vitest';
@@ -82,6 +82,10 @@ describe('HomePage featured cases', () => {
       '/image/Аватар_1.png',
     );
     expect(container.querySelector('.signal-card')).toBeNull();
+    expect(container.querySelectorAll('[data-signal-spine]')).toHaveLength(1);
+    await waitFor(() =>
+      expect(container.querySelectorAll('[data-signal-node]')).toHaveLength(5),
+    );
 
     // The editorial portrait figure keeps its tall frame (not the small avatar)
     // and the caption overlay, straightening only the top corners in CSS.

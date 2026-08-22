@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { RoleSwitch } from '@/components/controls/RoleSwitch';
 import { SectionHeading } from '@/components/SectionHeading';
+import { SignalSpine } from '@/components/motion/SignalSpine';
 import { FlipCard } from '@/components/kokonutui/card-flip';
 import { BobIntro } from '@/features/bob/BobIntro';
 import BentoGrid from '@/components/kokonutui/bento-grid';
@@ -120,21 +121,6 @@ export function HomePage() {
         leave: 'top bottom',
         sync: 0.24,
       } as const;
-
-      animate(card, {
-        filter: [
-          'brightness(.92) saturate(.92)',
-          'brightness(1.055) saturate(1.08)',
-          'brightness(.97) saturate(.97)',
-        ],
-        boxShadow: [
-          '0 20px 60px rgb(0 0 0 / 18%)',
-          '0 34px 90px rgb(128 255 176 / 16%)',
-          '0 20px 60px rgb(0 0 0 / 18%)',
-        ],
-        ease: 'linear',
-        autoplay: onScroll(scrollSettings),
-      });
 
       const poster = card.querySelector<HTMLImageElement>('img');
       if (!poster) return;
@@ -317,8 +303,13 @@ export function HomePage() {
 
   return (
     <Shell>
-      <div ref={root}>
-        <section className={`hero hero--${locale}`} aria-labelledby="hero-name">
+      <div className="home-flow" ref={root}>
+        <SignalSpine root={root} refreshKey={`${locale}:${role}`} />
+        <section
+          className={`hero hero--${locale}`}
+          aria-labelledby="hero-name"
+          data-signal-origin
+        >
           <div className="hero-coordinate hero-coordinate--top" aria-hidden="true">
             48°42′ N / 44°30′ E
           </div>
