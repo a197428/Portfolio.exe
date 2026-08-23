@@ -117,7 +117,7 @@ describe('HomePage featured cases', () => {
     expect(
       screen.getByRole('heading', {
         level: 2,
-        name: 'Каждый проект ниже — с задачей, решением и результатом.',
+        name: 'Задачи. Решения. Результаты.',
       }),
     ).toBeInTheDocument();
     russianAi.unmount();
@@ -141,7 +141,7 @@ describe('HomePage featured cases', () => {
     expect(
       screen.getByRole('heading', {
         level: 2,
-        name: 'Every project below shows the challenge, solution, and result.',
+        name: 'Challenges. Solutions. Results.',
       }),
     ).toBeInTheDocument();
     englishAi.unmount();

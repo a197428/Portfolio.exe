@@ -34,7 +34,7 @@ export const en = {
   },
   projects: {
     kicker: 'Selected systems',
-    title: 'Every project below shows the challenge, solution, and result.',
+    title: 'Challenges. Solutions. Results.',
     watch: 'Watch presentation',
     posterAlt: 'TTLock Connector interface from the Bitrix24 application suite',
     localPosterAlt: 'Local AI Assistant extension interface',

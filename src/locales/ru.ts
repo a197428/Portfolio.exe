@@ -33,7 +33,7 @@ export const ru = {
   },
   projects: {
     kicker: 'Избранные системы',
-    title: 'Каждый проект ниже — с задачей, решением и результатом.',
+    title: 'Задачи. Решения. Результаты.',
     watch: 'Смотреть презентацию',
     posterAlt: 'Интерфейс TTLock Connector из набора приложений Bitrix24',
     localPosterAlt: 'Интерфейс расширения Local AI Assistant',
