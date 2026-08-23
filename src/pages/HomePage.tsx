@@ -140,7 +140,7 @@ export function HomePage() {
   const shortSportCard = shortSport && (
     <Link
       className="featured-case glass-panel"
-      to={`/projects/${shortSport.slug}`}
+      to={`/projects/${shortSport.slug}#case-summary`}
       key={shortSport.slug}
     >
       <div className="featured-case-copy">
@@ -167,7 +167,7 @@ export function HomePage() {
   const videoTranscriberCard = videoTranscriber && (
     <Link
       className="featured-case featured-case--reverse glass-panel"
-      to={`/projects/${videoTranscriber.slug}`}
+      to={`/projects/${videoTranscriber.slug}#case-summary`}
       key={videoTranscriber.slug}
     >
       <div className="featured-visual">
@@ -196,7 +196,7 @@ export function HomePage() {
   const todoAppCard = todoApp && (
     <Link
       className="featured-case featured-case--reverse glass-panel"
-      to={`/projects/${todoApp.slug}`}
+      to={`/projects/${todoApp.slug}#case-summary`}
       key={todoApp.slug}
     >
       <div className="featured-visual">
@@ -223,7 +223,7 @@ export function HomePage() {
   const neurosportCard = neurosport && (
     <Link
       className="featured-case featured-case--reverse glass-panel"
-      to={`/projects/${neurosport.slug}`}
+      to={`/projects/${neurosport.slug}#case-summary`}
       key={neurosport.slug}
     >
       <div className="featured-visual">
@@ -250,7 +250,7 @@ export function HomePage() {
   const neuralGridCard = neuralGrid && (
     <Link
       className="featured-case glass-panel"
-      to={`/projects/${neuralGrid.slug}`}
+      to={`/projects/${neuralGrid.slug}#case-summary`}
       key={neuralGrid.slug}
     >
       <div className="featured-case-copy">
@@ -277,7 +277,7 @@ export function HomePage() {
   const energoAiCard = energoAi && (
     <Link
       className="featured-case featured-case--reverse glass-panel"
-      to={`/projects/${energoAi.slug}`}
+      to={`/projects/${energoAi.slug}#case-summary`}
       key={energoAi.slug}
     >
       <div className="featured-visual">
@@ -378,7 +378,10 @@ export function HomePage() {
             title={t('projects.title')}
             id="projects-title"
           />
-          <Link className="featured-case glass-panel" to={`/projects/${featured.slug}`}>
+          <Link
+            className="featured-case glass-panel"
+            to={`/projects/${featured.slug}#case-summary`}
+          >
             <div className="featured-case-copy">
               <span className="project-index">001 / {featured.status}</span>
               <p className="card-eyebrow">{featured.eyebrow}</p>
@@ -401,7 +404,7 @@ export function HomePage() {
           {localAi && (
             <Link
               className="featured-case featured-case--reverse glass-panel"
-              to={`/projects/${localAi.slug}`}
+              to={`/projects/${localAi.slug}#case-summary`}
             >
               <div className="featured-visual">
                 <img
@@ -438,7 +441,7 @@ export function HomePage() {
           {neurosportTma && (
             <Link
               className="featured-case glass-panel"
-              to={`/projects/${neurosportTma.slug}`}
+              to={`/projects/${neurosportTma.slug}#case-summary`}
             >
               <div className="featured-case-copy">
                 <span className="project-index">005 / {neurosportTma.status}</span>
@@ -470,7 +473,7 @@ export function HomePage() {
           {readCloseBot && (
             <Link
               className="featured-case featured-case--reverse glass-panel"
-              to={`/projects/${readCloseBot.slug}`}
+              to={`/projects/${readCloseBot.slug}#case-summary`}
             >
               <div className="featured-visual">
                 <img

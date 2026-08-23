@@ -195,6 +195,7 @@ export const en = {
       'A bilingual React and Cloudflare foundation designed to grow into a grounded AI portfolio without sacrificing clarity or craft.',
     task: 'Task',
     outcome: 'Outcome',
+    taskOutcome: 'Task / Result',
     contribution: 'Contribution',
     decisions: 'Decisions',
     capabilities: 'Product scope',

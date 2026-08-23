@@ -1,6 +1,10 @@
 import { expect, test } from '@playwright/test';
 
 test('loads, switches role, and opens a project', async ({ page }) => {
+  // Cards target the final Task / Result anchor, so opening a case smooth-
+  // scrolls to the bottom of a long study; reduced motion makes that landing
+  // and the subsequent tab interactions deterministic under parallel workers.
+  await page.emulateMedia({ reducedMotion: 'reduce' });
   await page.goto('/');
   await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
   const avatar = page.locator('img[src="/image/Аватар_1.png"]');
@@ -26,8 +30,11 @@ test('loads, switches role, and opens a project', async ({ page }) => {
   await page.getByRole('button', { name: 'Frontend Developer' }).click();
   await expect(page.getByText('Engineering the moment a product clicks.')).toBeVisible();
 
-  await page.locator('a[href="/projects/bitrix24-integrations"]').first().click();
-  await expect(page).toHaveURL(/\/projects\/bitrix24-integrations$/);
+  await page
+    .locator('a[href="/projects/bitrix24-integrations#case-summary"]')
+    .first()
+    .click();
+  await expect(page).toHaveURL(/\/projects\/bitrix24-integrations#case-summary$/);
   await expect(
     page.getByRole('heading', { name: 'Industrial Bitrix24 integrations' }),
   ).toBeVisible();
@@ -61,7 +68,10 @@ test('loads, switches role, and opens a project', async ({ page }) => {
 
   await page.getByRole('link', { name: /Вернуться к обзору/ }).click();
   await page.getByRole('button', { name: 'AI-разработчик' }).click();
-  await page.locator('a[href="/projects/bitrix24-integrations"]').first().click();
+  await page
+    .locator('a[href="/projects/bitrix24-integrations#case-summary"]')
+    .first()
+    .click();
   await page.getByRole('tab', { name: /TTLock Connector/ }).click();
   await expect(page.getByRole('tabpanel')).toContainText(
     'Спроектировал Production UI как проверяемую границу будущей интеграции',
@@ -80,11 +90,11 @@ test('presents Local AI Assistant as a bilingual AI-only evidence case', async (
   page,
 }) => {
   await page.goto('/');
-  const caseLink = page.locator('a[href="/projects/local-ai-assistant"]');
+  const caseLink = page.locator('a[href="/projects/local-ai-assistant#case-summary"]');
   await expect(caseLink).toBeVisible();
 
   await caseLink.click();
-  await expect(page).toHaveURL(/\/projects\/local-ai-assistant$/);
+  await expect(page).toHaveURL(/\/projects\/local-ai-assistant#case-summary$/);
   await expect(page.getByRole('heading', { name: 'Local AI Assistant' })).toBeVisible();
   await expect(
     page.getByText('Contextual answers grounded in the active browser tab'),
@@ -117,7 +127,9 @@ test('presents Local AI Assistant as a bilingual AI-only evidence case', async (
 
   await page.getByRole('link', { name: /Вернуться к обзору/ }).click();
   await page.getByRole('button', { name: 'Frontend-разработчик' }).click();
-  await expect(page.locator('a[href="/projects/local-ai-assistant"]')).toHaveCount(0);
+  await expect(
+    page.locator('a[href="/projects/local-ai-assistant#case-summary"]'),
+  ).toHaveCount(0);
 });
 
 test('presents the ordered bilingual Frontend evidence with safe live demos', async ({
@@ -131,14 +143,14 @@ test('presents the ordered bilingual Frontend evidence with safe live demos', as
     .locator('#projects a[href^="/projects/"]')
     .evaluateAll((links) => links.map((link) => link.getAttribute('href')));
   expect([...new Set(projectHrefs)]).toEqual([
-    '/projects/bitrix24-integrations',
-    '/projects/video-sut',
-    '/projects/shortsport-ai-forge',
-    '/projects/todo-app',
-    '/projects/neurosport-tma',
-    '/projects/neurosport',
-    '/projects/neuralgrid-international',
-    '/projects/energo-ai',
+    '/projects/bitrix24-integrations#case-summary',
+    '/projects/video-sut#case-summary',
+    '/projects/shortsport-ai-forge#case-summary',
+    '/projects/todo-app#case-summary',
+    '/projects/neurosport-tma#case-summary',
+    '/projects/neurosport#case-summary',
+    '/projects/neuralgrid-international#case-summary',
+    '/projects/energo-ai#case-summary',
   ]);
 
   await page.goto('/projects/neurosport-tma');
@@ -178,12 +190,12 @@ test('presents Video Transcriber as a bilingual private-source evidence case', a
   page,
 }) => {
   await page.goto('/');
-  const card = page.locator('a[href="/projects/video-sut"]');
+  const card = page.locator('a[href="/projects/video-sut#case-summary"]');
   await expect(card).toContainText('004 / mvp');
   await expect(card).toContainText('Watch presentation · 1 demo');
   await card.click();
 
-  await expect(page).toHaveURL(/\/projects\/video-sut$/);
+  await expect(page).toHaveURL(/\/projects\/video-sut#case-summary$/);
   await expect(page.getByRole('heading', { name: 'Video Transcriber' })).toBeVisible();
   await expect(
     page.locator('a[href*="github.com/a197428/Video_Transcriber"]'),

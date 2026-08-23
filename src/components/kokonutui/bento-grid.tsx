@@ -55,7 +55,10 @@ export default function BentoGrid({
                 {project.links.find((link) => link.kind === 'demo')!.label}
               </a>
             )}
-            <Link to={`/projects/${project.slug}`} aria-label={project.title}>
+            <Link
+              to={`/projects/${project.slug}#case-summary`}
+              aria-label={project.title}
+            >
               <ArrowUpRight />
             </Link>
           </div>

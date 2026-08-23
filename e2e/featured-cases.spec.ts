@@ -1,15 +1,15 @@
 import { expect, test, type Page } from '@playwright/test';
 
-const BITRIX_HREF = '/projects/bitrix24-integrations';
-const LOCAL_HREF = '/projects/local-ai-assistant';
-const SHORTSPORT_HREF = '/projects/shortsport-ai-forge';
-const VIDEO_TRANSCRIBER_HREF = '/projects/video-sut';
-const NEUROSPORT_TMA_HREF = '/projects/neurosport-tma';
-const READ_CLOSE_BOT_HREF = '/projects/read-close-bot';
-const TODO_HREF = '/projects/todo-app';
-const NEUROSPORT_HREF = '/projects/neurosport';
-const NEURALGRID_HREF = '/projects/neuralgrid-international';
-const ENERGO_HREF = '/projects/energo-ai';
+const BITRIX_HREF = '/projects/bitrix24-integrations#case-summary';
+const LOCAL_HREF = '/projects/local-ai-assistant#case-summary';
+const SHORTSPORT_HREF = '/projects/shortsport-ai-forge#case-summary';
+const VIDEO_TRANSCRIBER_HREF = '/projects/video-sut#case-summary';
+const NEUROSPORT_TMA_HREF = '/projects/neurosport-tma#case-summary';
+const READ_CLOSE_BOT_HREF = '/projects/read-close-bot#case-summary';
+const TODO_HREF = '/projects/todo-app#case-summary';
+const NEUROSPORT_HREF = '/projects/neurosport#case-summary';
+const NEURALGRID_HREF = '/projects/neuralgrid-international#case-summary';
+const ENERGO_HREF = '/projects/energo-ai#case-summary';
 
 async function featuredCards(page: Page) {
   const projects = page.locator('#projects');

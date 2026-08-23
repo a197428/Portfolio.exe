@@ -1135,6 +1135,9 @@ a:focus-visible {
   grid-template-columns: 1fr 1fr;
   gap: 4rem;
   padding: 7rem 0 2rem;
+  /* The card anchor: a scroll here lands with breathing room, not flush
+     against the top edge of the viewport. */
+  scroll-margin-top: 2rem;
 }
 .case-summary-grid h2 {
   max-width: 640px;

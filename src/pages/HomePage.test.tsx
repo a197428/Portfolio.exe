@@ -110,7 +110,10 @@ describe('HomePage featured cases', () => {
     const { container } = await renderHome('en', 'ai');
 
     const bitrix = screen.getByRole('link', { name: bitrixLinkName });
-    expect(bitrix).toHaveAttribute('href', '/projects/bitrix24-integrations');
+    expect(bitrix).toHaveAttribute(
+      'href',
+      '/projects/bitrix24-integrations#case-summary',
+    );
     expect(bitrix).toHaveClass('featured-case', 'glass-panel');
     expect(bitrix).not.toHaveClass('featured-case--reverse');
 
@@ -138,7 +141,7 @@ describe('HomePage featured cases', () => {
     const { container } = await renderHome('en', 'ai');
 
     const local = screen.getByRole('link', { name: localLinkName });
-    expect(local).toHaveAttribute('href', '/projects/local-ai-assistant');
+    expect(local).toHaveAttribute('href', '/projects/local-ai-assistant#case-summary');
     expect(local).toHaveClass('featured-case', 'featured-case--reverse', 'glass-panel');
 
     // Mirrored DOM order: visual before copy.
@@ -174,7 +177,10 @@ describe('HomePage featured cases', () => {
     const { container } = await renderHome('en', 'ai');
 
     const shortSport = screen.getByRole('link', { name: shortSportLinkName });
-    expect(shortSport).toHaveAttribute('href', '/projects/shortsport-ai-forge');
+    expect(shortSport).toHaveAttribute(
+      'href',
+      '/projects/shortsport-ai-forge#case-summary',
+    );
     expect(shortSport).toHaveClass('featured-case', 'glass-panel');
     expect(shortSport).not.toHaveClass('featured-case--reverse');
 
@@ -212,7 +218,7 @@ describe('HomePage featured cases', () => {
     const { container } = await renderHome('en', 'ai');
     const project = screen.getByRole('link', { name: videoTranscriberLinkName });
 
-    expect(project).toHaveAttribute('href', '/projects/video-sut');
+    expect(project).toHaveAttribute('href', '/projects/video-sut#case-summary');
     expect(project).toHaveClass('featured-case', 'featured-case--reverse', 'glass-panel');
     expect(isBefore(cardVisual(project), cardCopy(project))).toBe(true);
 
@@ -237,7 +243,7 @@ describe('HomePage featured cases', () => {
     const { container, unmount } = await renderHome('en', 'ai');
     const project = screen.getByRole('link', { name: neurosportTmaLinkName });
 
-    expect(project).toHaveAttribute('href', '/projects/neurosport-tma');
+    expect(project).toHaveAttribute('href', '/projects/neurosport-tma#case-summary');
     expect(project).toHaveClass('featured-case', 'glass-panel');
     expect(project).not.toHaveClass('featured-case--reverse');
     expect(isBefore(cardCopy(project), cardVisual(project))).toBe(true);
@@ -261,7 +267,7 @@ describe('HomePage featured cases', () => {
     const { container, unmount } = await renderHome('en', 'ai');
     const project = screen.getByRole('link', { name: readCloseBotLinkName });
 
-    expect(project).toHaveAttribute('href', '/projects/read-close-bot');
+    expect(project).toHaveAttribute('href', '/projects/read-close-bot#case-summary');
     expect(project).toHaveClass('featured-case', 'featured-case--reverse', 'glass-panel');
     expect(isBefore(cardVisual(project), cardCopy(project))).toBe(true);
     expect(within(cardCopy(project)).getByText('006 / active')).toBeInTheDocument();
@@ -371,7 +377,7 @@ describe('HomePage featured cases', () => {
     const { container } = await renderHome('en', 'frontend');
 
     const todo = screen.getByRole('link', { name: todoLinkName });
-    expect(todo).toHaveAttribute('href', '/projects/todo-app');
+    expect(todo).toHaveAttribute('href', '/projects/todo-app#case-summary');
     expect(todo).toHaveClass('featured-case', 'featured-case--reverse', 'glass-panel');
     expect(isBefore(cardVisual(todo), cardCopy(todo))).toBe(true);
 

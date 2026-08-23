@@ -94,13 +94,19 @@ test('ignores an invalid role value and falls back to the saved or default role'
 });
 
 test('keeps the chosen lens through project navigation and back', async ({ page }) => {
+  // The card opens the case on its final Task / Result anchor; reduced motion
+  // makes that landing and the back-navigation instant and deterministic.
+  await page.emulateMedia({ reducedMotion: 'reduce' });
   await page.goto('/', { waitUntil: 'domcontentloaded' });
   await page.getByRole('button', { name: 'Frontend Developer' }).click();
   await expect(page).toHaveURL(/\/\?role=frontend$/);
 
   // Project links drop the query; the store keeps the lens.
-  await page.locator('a[href="/projects/bitrix24-integrations"]').first().click();
-  await expect(page).toHaveURL(/\/projects\/bitrix24-integrations$/);
+  await page
+    .locator('a[href="/projects/bitrix24-integrations#case-summary"]')
+    .first()
+    .click();
+  await expect(page).toHaveURL(/\/projects\/bitrix24-integrations#case-summary$/);
   await expect(page.getByRole('tabpanel')).toContainText(
     'Built handler and robot tables',
   );
