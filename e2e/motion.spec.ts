@@ -15,7 +15,7 @@ test('reveals the accessible hero and refreshes it across role and locale change
   await expect(
     page.getByRole('heading', {
       level: 2,
-      name: 'Interfaces that make intelligence tangible.',
+      name: 'I connect the model, interface, and infrastructure into one coherent product.',
     }),
   ).toBeVisible();
 
@@ -23,7 +23,7 @@ test('reveals the accessible hero and refreshes it across role and locale change
   await expect(
     page.getByRole('heading', {
       level: 2,
-      name: 'Engineering the moment a product clicks.',
+      name: 'I turn complex product logic into a simple, intuitive interface.',
     }),
   ).toBeVisible();
   await expect(page.getByRole('heading', { level: 1 })).toHaveAccessibleName(

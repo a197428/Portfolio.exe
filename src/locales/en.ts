@@ -7,13 +7,14 @@ export const en = {
   roles: {
     ai: {
       label: 'AI Developer',
-      headline: 'Interfaces that make intelligence tangible.',
+      headline:
+        'I connect the model, interface, and infrastructure into one coherent product.',
       description:
         'I connect dependable AI systems with product experiences people can understand, question, and trust.',
     },
     frontend: {
       label: 'Frontend Developer',
-      headline: 'Engineering the moment a product clicks.',
+      headline: 'I turn complex product logic into a simple, intuitive interface.',
       description:
         'I build expressive, resilient interfaces where visual detail and maintainable architecture reinforce each other.',
     },
@@ -33,7 +34,7 @@ export const en = {
   },
   projects: {
     kicker: 'Selected systems',
-    title: 'Proof, not promises.',
+    title: 'Every project below shows the challenge, solution, and result.',
     watch: 'Watch presentation',
     posterAlt: 'TTLock Connector interface from the Bitrix24 application suite',
     localPosterAlt: 'Local AI Assistant extension interface',

@@ -6,13 +6,17 @@ test('hero portrait spans the decorative hero block with no darkening overlay', 
   const mobile = testInfo.project.name === 'mobile-chromium';
   // Freeze the entrance animations so geometry is measured at rest.
   await page.emulateMedia({ reducedMotion: 'reduce' });
-  await page.goto('/');
+  // domcontentloaded keeps the load event from stalling under parallel workers;
+  // the naturalWidth poll below waits out the image load.
+  await page.goto('/', { waitUntil: 'domcontentloaded' });
 
   const portrait = page.locator('.hero-portrait');
   await expect(portrait).toBeVisible();
 
   const img = portrait.locator('img');
-  await expect.poll(() => img.evaluate((image) => image.naturalWidth)).toBeGreaterThan(0);
+  await expect
+    .poll(() => img.evaluate((image) => image.naturalWidth), { timeout: 15_000 })
+    .toBeGreaterThan(0);
 
   const style = await portrait.evaluate((element) => getComputedStyle(element));
   expect(style.borderTopLeftRadius).toBe('0px');
@@ -192,11 +196,25 @@ test('keeps the role panel compact and unclipped in RU + Frontend', async ({
   await expect(portrait).toBeVisible();
   await expect(card).toBeVisible();
 
-  // The longer Russian copy with the Frontend lens — the panel must stay
-  // compact, fit the viewport, and keep its stack tags fully inside.
+  // Both longer Russian headlines must stay inside the same compact panel.
   await page.getByRole('button', { name: 'RU' }).click();
+  await expect(card.locator('h2')).toHaveText(
+    'Соединяю модель, интерфейс и инфраструктуру в единый продукт.',
+  );
+  expect(
+    await card
+      .locator('h2')
+      .evaluate(
+        (heading) =>
+          heading.scrollWidth <= heading.clientWidth &&
+          heading.scrollHeight <= heading.parentElement!.clientHeight,
+      ),
+  ).toBe(true);
+
   await page.getByRole('button', { name: 'Frontend-разработчик' }).click();
-  await expect(card.locator('h2')).toContainText('Проектирую');
+  await expect(card.locator('h2')).toHaveText(
+    'Превращаю сложную логику продукта в простой и понятный интерфейс.',
+  );
 
   const viewport = page.viewportSize()!;
   const portraitBox = (await portrait.boundingBox())!;

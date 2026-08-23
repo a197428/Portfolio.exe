@@ -74,7 +74,7 @@ describe('HomePage featured cases', () => {
     expect(
       screen.getByRole('heading', {
         level: 2,
-        name: 'Interfaces that make intelligence tangible.',
+        name: 'I connect the model, interface, and infrastructure into one coherent product.',
       }),
     ).toBeInTheDocument();
     expect(screen.getByAltText('Portrait of Alexander Popoff')).toHaveAttribute(
@@ -104,6 +104,56 @@ describe('HomePage featured cases', () => {
     const cta = screen.getByRole('link', { name: 'Get in touch' });
     expect(cta).toHaveAttribute('href', 'mailto:a197428@yandex.ru');
     expect(cta.querySelector('svg[aria-hidden="true"]')).not.toBeNull();
+  });
+
+  it('keeps the revised Hero and Projects claims equivalent in RU and EN', async () => {
+    const russianAi = await renderHome('ru', 'ai');
+    expect(
+      screen.getByRole('heading', {
+        level: 2,
+        name: 'Соединяю модель, интерфейс и инфраструктуру в единый продукт.',
+      }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole('heading', {
+        level: 2,
+        name: 'Каждый проект ниже — с задачей, решением и результатом.',
+      }),
+    ).toBeInTheDocument();
+    russianAi.unmount();
+
+    const russianFrontend = await renderHome('ru', 'frontend');
+    expect(
+      screen.getByRole('heading', {
+        level: 2,
+        name: 'Превращаю сложную логику продукта в простой и понятный интерфейс.',
+      }),
+    ).toBeInTheDocument();
+    russianFrontend.unmount();
+
+    const englishAi = await renderHome('en', 'ai');
+    expect(
+      screen.getByRole('heading', {
+        level: 2,
+        name: 'I connect the model, interface, and infrastructure into one coherent product.',
+      }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole('heading', {
+        level: 2,
+        name: 'Every project below shows the challenge, solution, and result.',
+      }),
+    ).toBeInTheDocument();
+    englishAi.unmount();
+
+    const englishFrontend = await renderHome('en', 'frontend');
+    expect(
+      screen.getByRole('heading', {
+        level: 2,
+        name: 'I turn complex product logic into a simple, intuitive interface.',
+      }),
+    ).toBeInTheDocument();
+    englishFrontend.unmount();
   });
 
   it('keeps the Bitrix24 card as the untouched copy→visual featured case', async () => {

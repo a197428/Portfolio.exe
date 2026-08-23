@@ -17,6 +17,12 @@ const CARD_HREF = {
   energoAi: '/projects/energo-ai#case-summary',
 } as const;
 
+// The lens hero headlines that identify the active role after returning home.
+const AI_HEADLINE_EN =
+  'I connect the model, interface, and infrastructure into one coherent product.';
+const FRONTEND_HEADLINE_EN =
+  'I turn complex product logic into a simple, intuitive interface.';
+
 async function openCard(page: Page, href: string) {
   const card = page.locator(`#projects a[href="${href}"]`);
   await expect(card).toBeVisible();
@@ -32,6 +38,18 @@ async function openCard(page: Page, href: string) {
 async function openFromCard(page: Page, href: string) {
   await page.goto('/', { waitUntil: 'domcontentloaded' });
   await openCard(page, href);
+}
+
+// Return home the way a user does — through the case's own overview link — so
+// the lens survives (the store keeps it) without a full reload or a goBack's
+// scroll-restoration race, which can leave a card unstable to click under load.
+async function returnHomeViaOverview(page: Page, heroHeadline: string) {
+  await page.getByRole('link', { name: 'Back to overview' }).click();
+  // The case study also has its own h1, so pin the wait to the home route
+  // itself: under load a slow SPA render lets an h1 check pass against the
+  // project page while the home headline is still absent.
+  await expect(page).toHaveURL('/');
+  await expect(page.getByText(heroHeadline)).toBeVisible({ timeout: 10_000 });
 }
 
 // Click a top-bar locale segment the way a mouse user would: the DOM click
@@ -83,9 +101,17 @@ test.describe('unified card opening to Task / Result', () => {
     page,
   }, testInfo) => {
     test.skip(testInfo.project.name === 'mobile-chromium', 'desktop-only');
+    // One cold load, then the app's own overview link between cases: opening
+    // three cards from fresh full reloads exhausts memory under the parallel
+    // suite, while in-app navigation still exercises each card click.
+    await page.goto('/', { waitUntil: 'domcontentloaded' });
+    await expect(page.getByText(AI_HEADLINE_EN)).toBeVisible();
     for (const href of [CARD_HREF.shortSport, CARD_HREF.readCloseBot, CARD_HREF.bitrix]) {
-      await openFromCard(page, href);
+      await openCard(page, href);
       await expectSummaryStructure(page, ['Task', 'Outcome']);
+      if (href !== CARD_HREF.bitrix) {
+        await returnHomeViaOverview(page, AI_HEADLINE_EN);
+      }
     }
   });
 
@@ -97,24 +123,18 @@ test.describe('unified card opening to Task / Result', () => {
   test('Frontend lens cards land on the summary too', async ({ page }) => {
     await page.goto('/', { waitUntil: 'domcontentloaded' });
     await page.getByRole('button', { name: 'Frontend Developer' }).click();
-    await expect(
-      page.getByText('Engineering the moment a product clicks.'),
-    ).toBeVisible();
+    await expect(page.getByText(FRONTEND_HEADLINE_EN)).toBeVisible();
 
-    // Load the Frontend home once and use Back between cards instead of three
-    // full reloads, so the suite stays stable under parallel workers.
-    for (const [index, href] of [
-      CARD_HREF.todo,
-      CARD_HREF.neuralGrid,
-      CARD_HREF.energoAi,
-    ].entries()) {
-      if (index > 0) {
-        await page.goBack({ waitUntil: 'domcontentloaded' });
-        await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
-        await expect(page.locator(`#projects a[href="${href}"]`)).toBeVisible();
-      }
+    // Load the Frontend home once; return between cards through the app's own
+    // overview link. Unlike a goBack, that push navigation carries no native
+    // scroll restoration, so the next card is instantly stable to click under
+    // parallel workers.
+    for (const href of [CARD_HREF.todo, CARD_HREF.neuralGrid, CARD_HREF.energoAi]) {
       await openCard(page, href);
       await expectSummaryStructure(page, ['Task', 'Outcome']);
+      if (href !== CARD_HREF.energoAi) {
+        await returnHomeViaOverview(page, FRONTEND_HEADLINE_EN);
+      }
     }
   });
 
@@ -165,12 +185,17 @@ test.describe('unified card opening to Task / Result', () => {
   }, testInfo) => {
     test.skip(testInfo.project.name === 'mobile-chromium', 'desktop-only');
     await page.goto('/', { waitUntil: 'domcontentloaded' });
-    await page.evaluate(() => window.scrollTo({ top: 800, behavior: 'instant' }));
-    await expect.poll(() => page.evaluate(() => window.scrollY)).toBe(800);
+    // Bring the card into view — unlike a fixed scrollTo(800), this waits for
+    // the layout to be tall enough under load, so the deep position is real.
+    const card = page.locator(`#projects a[href="${CARD_HREF.bitrix}"]`);
+    await expect(card).toBeVisible();
+    await card.scrollIntoViewIfNeeded();
+    await expect.poll(() => page.evaluate(() => window.scrollY)).toBeGreaterThan(400);
 
-    await page.locator(`#projects a[href="${CARD_HREF.bitrix}"]`).click();
+    await card.click();
     await expect(page.locator('#case-summary')).toBeInViewport();
 
+    // The home entry was scrolled deep, so native restoration brings it back.
     await page.goBack({ waitUntil: 'domcontentloaded' });
     await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
     await expect

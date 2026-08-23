@@ -23,12 +23,14 @@ test('loads, switches role, and opens a project', async ({ page }) => {
   await expect(
     page.getByRole('heading', {
       level: 2,
-      name: 'Interfaces that make intelligence tangible.',
+      name: 'I connect the model, interface, and infrastructure into one coherent product.',
     }),
   ).toBeVisible();
 
   await page.getByRole('button', { name: 'Frontend Developer' }).click();
-  await expect(page.getByText('Engineering the moment a product clicks.')).toBeVisible();
+  await expect(
+    page.getByText('I turn complex product logic into a simple, intuitive interface.'),
+  ).toBeVisible();
 
   await page
     .locator('a[href="/projects/bitrix24-integrations#case-summary"]')

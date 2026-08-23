@@ -21,14 +21,20 @@ test('opens a shared link on the right lens and lets the URL beat the saved role
   // Content assertions follow each navigation, so DOM-ready is the right wait;
   // the full `load` event (fonts, posters) stalls under parallel test workers.
   await page.goto('/?role=frontend', { waitUntil: 'domcontentloaded' });
-  await expect(page.getByText('Engineering the moment a product clicks.')).toBeVisible();
-  await expect(page.getByText('Interfaces that make intelligence tangible.')).toHaveCount(
-    0,
-  );
+  await expect(
+    page.getByText('I turn complex product logic into a simple, intuitive interface.'),
+  ).toBeVisible();
+  await expect(
+    page.getByText(
+      'I connect the model, interface, and infrastructure into one coherent product.',
+    ),
+  ).toHaveCount(0);
 
   await page.goto('/?role=ai', { waitUntil: 'domcontentloaded' });
   await expect(
-    page.getByText('Interfaces that make intelligence tangible.'),
+    page.getByText(
+      'I connect the model, interface, and infrastructure into one coherent product.',
+    ),
   ).toBeVisible();
 
   // A saved preference must not override an explicit URL role.
@@ -36,7 +42,9 @@ test('opens a shared link on the right lens and lets the URL beat the saved role
   await expect(page).toHaveURL(/\/\?role=frontend$/);
   await page.goto('/?role=ai', { waitUntil: 'domcontentloaded' });
   await expect(
-    page.getByText('Interfaces that make intelligence tangible.'),
+    page.getByText(
+      'I connect the model, interface, and infrastructure into one coherent product.',
+    ),
   ).toBeVisible();
 });
 
@@ -45,7 +53,9 @@ test('manual toggle updates content, URL, and store without reload or a new hist
 }) => {
   await page.goto('/', { waitUntil: 'domcontentloaded' });
   await expect(
-    page.getByText('Interfaces that make intelligence tangible.'),
+    page.getByText(
+      'I connect the model, interface, and infrastructure into one coherent product.',
+    ),
   ).toBeVisible();
 
   const historyBefore = await page.evaluate(() => history.length);
@@ -54,7 +64,9 @@ test('manual toggle updates content, URL, and store without reload or a new hist
   );
 
   await page.getByRole('button', { name: 'Frontend Developer' }).click();
-  await expect(page.getByText('Engineering the moment a product clicks.')).toBeVisible();
+  await expect(
+    page.getByText('I turn complex product logic into a simple, intuitive interface.'),
+  ).toBeVisible();
   await expect(page).toHaveURL(/\/\?role=frontend$/);
   await expect(
     page.locator('[data-role-switch] button', { hasText: 'Frontend Developer' }),
@@ -76,14 +88,20 @@ test('ignores an invalid role value and falls back to the saved or default role'
 }) => {
   await page.goto('/?role=designer', { waitUntil: 'domcontentloaded' });
   await expect(
-    page.getByText('Interfaces that make intelligence tangible.'),
+    page.getByText(
+      'I connect the model, interface, and infrastructure into one coherent product.',
+    ),
   ).toBeVisible();
-  await expect(page.getByText('Engineering the moment a product clicks.')).toHaveCount(0);
+  await expect(
+    page.getByText('I turn complex product logic into a simple, intuitive interface.'),
+  ).toHaveCount(0);
 
   // Case-sensitive match, so a wrongly-cased value is ignored too.
   await page.goto('/?role=Frontend', { waitUntil: 'domcontentloaded' });
   await expect(
-    page.getByText('Interfaces that make intelligence tangible.'),
+    page.getByText(
+      'I connect the model, interface, and infrastructure into one coherent product.',
+    ),
   ).toBeVisible();
 
   expect(
@@ -112,7 +130,12 @@ test('keeps the chosen lens through project navigation and back', async ({ page 
   );
 
   await page.getByRole('link', { name: 'Back to overview' }).click();
-  await expect(page.getByText('Engineering the moment a product clicks.')).toBeVisible();
+  // The case study has its own h1 too, so confirm the home route before the
+  // headline assertion — otherwise a slow SPA render under load fails the wait.
+  await expect(page).toHaveURL('/');
+  await expect(
+    page.getByText('I turn complex product logic into a simple, intuitive interface.'),
+  ).toBeVisible();
   expect(
     await page.evaluate(
       () => document.documentElement.scrollWidth > document.documentElement.clientWidth,
