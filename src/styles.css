@@ -1811,6 +1811,17 @@ a:focus-visible {
   }
 }
 
+/* Editorial overhang (wide desktop only): pull the lens dock to the left of
+   the decorative hero frame (inset 9% 7% 7%). Positioned with `left`, never
+   `transform`, because Anime.js owns the entrance transform on
+   [data-hero-dock]. The clamp holds the overhang at ~30–40px. Tablet keeps the
+   base in-frame placement; mobile restores flow layout. */
+@media (min-width: 1051px) {
+  .hero-role-dock {
+    left: calc(7% - clamp(1.875rem, 2.5vw, 2.5rem));
+  }
+}
+
 @media (max-width: 1050px) {
   .hero {
     min-height: auto;
