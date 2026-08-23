@@ -1,5 +1,9 @@
 export const ru = {
-  controls: { language: 'Язык', role: 'Роль в портфолио' },
+  controls: {
+    language: 'Язык',
+    roleLabel: 'Фокус портфолио',
+    roleCaption: 'Проекты, опыт и подход ниже адаптируются под выбранную роль.',
+  },
   roles: {
     ai: {
       label: 'AI-разработчик',

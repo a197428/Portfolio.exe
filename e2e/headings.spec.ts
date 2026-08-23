@@ -13,6 +13,12 @@ async function countLines(locator: Locator): Promise<number> {
   });
 }
 
+/** Wait until webfonts are applied so line-count measurements use final
+ *  metrics — otherwise a late font swap under parallel workers flips the count. */
+async function awaitFonts(page: import('@playwright/test').Page): Promise<void> {
+  await page.evaluate(() => document.fonts.ready);
+}
+
 async function noHorizontalOverflow(page: import('@playwright/test').Page) {
   return page.evaluate(
     () => document.documentElement.scrollWidth > document.documentElement.clientWidth,
@@ -145,6 +151,7 @@ test('experience title stays within two lines on a standard desktop', async ({
   await page.emulateMedia({ reducedMotion: 'reduce' });
   await page.goto('/');
   await page.getByRole('button', { name: 'RU' }).click();
+  await awaitFonts(page);
 
   const title = page.locator('#experience-title');
   await expect(title).toBeVisible();
@@ -161,6 +168,7 @@ test('Russian method title stays on two lines and keeps the editorial grid at a 
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.goto('/');
   await page.getByRole('button', { name: 'RU' }).click();
+  await awaitFonts(page);
 
   const title = page.locator('#method-title');
   await expect(title).toBeVisible();
@@ -214,6 +222,7 @@ test('method titles stay on two lines across locales and roles on a wide desktop
   for (const testCase of cases) {
     await page.getByRole('button', { name: testCase.locale, exact: true }).click();
     await page.getByRole('button', { name: testCase.role }).click();
+    await awaitFonts(page);
     const title = page.locator('#method-title');
     await expect(title).toBeVisible();
     expect(

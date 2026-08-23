@@ -1,5 +1,9 @@
 export const en = {
-  controls: { language: 'Language', role: 'Portfolio role' },
+  controls: {
+    language: 'Language',
+    roleLabel: 'Portfolio focus',
+    roleCaption: 'Projects, experience, and approach below adapt to the selected role.',
+  },
   roles: {
     ai: {
       label: 'AI Developer',

@@ -27,6 +27,22 @@ Anime.js owns custom timelines and scroll observers. Every animation is scoped t
 cleaned up on unmount, and bypassed when `prefers-reduced-motion` is active. Motion remains only as
 an internal dependency of selected Kokonut components.
 
+## Role focus and shared links
+
+The portfolio lens is part of the URL. A link with `?role=frontend` or `?role=ai` opens directly on
+that role, so recruiters and outreach messages can point straight at the matching narrative:
+
+- Frontend-vacancy outreach → `https://<site>/?role=frontend`
+- AI-vacancy outreach → `https://<site>/?role=ai`
+
+Resolution order is: a valid `role` query parameter wins, then the saved preference, then the `ai`
+default. Invalid or missing values are ignored silently — a wrong case or an unknown value never
+breaks the page. `src/features/preferences/roleUrl.ts` owns the contract: `applyRoleFromUrl` seeds
+the store from `window.location.search` in `main.tsx` before the first render (no wrong-lens flash),
+and `useRoleUrl` writes a manual toggle into the URL with `replace`, so switching never reloads the
+page or accumulates history entries. Project-detail links carry no query; the lens survives through
+the Zustand store.
+
 ## Content and grounded retrieval
 
 Verified knowledge is authored as Markdown in `content/profile`, `content/projects`,

@@ -4,6 +4,10 @@ A bilingual, interactive portfolio for AI Developer and Frontend Developer roles
 React/Cloudflare experience with role-aware verified content and Bob, an evidence-grounded AI
 representative for candidate questions and vacancy analysis.
 
+Share a specific lens with `/?role=frontend` (Frontend-vacancy outreach) or `/?role=ai`
+(AI-vacancy outreach). A valid `role` query always wins over the saved preference; the page falls
+back to the saved role (or `ai`) when the value is missing or invalid.
+
 ## Local development
 
 Requirements: Node.js 20+ and npm.

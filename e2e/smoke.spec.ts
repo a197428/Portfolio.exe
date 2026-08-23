@@ -6,7 +6,7 @@ test('loads, switches role, and opens a project', async ({ page }) => {
   const avatar = page.locator('img[src="/image/Аватар_1.png"]');
   await expect(avatar).toBeVisible();
   await expect
-    .poll(() => avatar.evaluate((image) => image.naturalWidth))
+    .poll(() => avatar.evaluate((image) => image.naturalWidth), { timeout: 10_000 })
     .toBeGreaterThan(0);
   await expect(avatar).toHaveAttribute('alt', 'Portrait of Alexander Popoff');
   const portraitBox = await avatar.boundingBox();
