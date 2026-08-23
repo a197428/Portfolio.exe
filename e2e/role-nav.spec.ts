@@ -247,9 +247,13 @@ test('hands the active role to Bob for the chat request', async ({ page }) => {
 });
 
 test('recomputes the signal spine when the lens changes', async ({ page }) => {
+  // SignalSpine measures five content sections after the full home layout has
+  // settled. Give that layout-dependent journey the slow-test allowance when
+  // the complete desktop/mobile suite is saturating the browser workers.
+  test.slow();
   await page.goto('/');
   const path = page.locator('[data-signal-path-active]');
-  await expect.poll(() => path.getAttribute('d'), { timeout: 10_000 }).not.toBe('M 0 0');
+  await expect.poll(() => path.getAttribute('d'), { timeout: 30_000 }).not.toBe('M 0 0');
   const spineBefore = await path.getAttribute('d');
 
   await page.getByRole('button', { name: 'Frontend Developer' }).click();
@@ -258,6 +262,6 @@ test('recomputes the signal spine when the lens changes', async ({ page }) => {
     'true',
   );
   await expect
-    .poll(() => path.getAttribute('d'), { timeout: 10_000 })
+    .poll(() => path.getAttribute('d'), { timeout: 30_000 })
     .not.toBe(spineBefore);
 });

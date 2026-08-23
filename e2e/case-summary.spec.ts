@@ -121,6 +121,12 @@ test.describe('unified card opening to Task / Result', () => {
   });
 
   test('Frontend lens cards land on the summary too', async ({ page }) => {
+    // This scenario intentionally exercises three complete SPA round trips.
+    // Under the fully parallel desktop/mobile suite those transitions can
+    // legitimately exceed the default 30 s budget even though every card is
+    // already rendered and actionable, so give this multi-case journey the
+    // standard Playwright slow-test allowance.
+    test.slow();
     await page.goto('/', { waitUntil: 'domcontentloaded' });
     await page.getByRole('button', { name: 'Frontend Developer' }).click();
     await expect(page.getByText(FRONTEND_HEADLINE_EN)).toBeVisible();

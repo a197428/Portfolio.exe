@@ -5,6 +5,7 @@ import { Link, useLocation, useParams } from 'react-router-dom';
 import { Shell } from '@/components/layout/Shell';
 import { ProjectVideo } from '@/components/projects/ProjectVideo';
 import { ProjectEvidence } from '@/components/projects/ProjectEvidence';
+import { ViewProjectButton } from '@/components/projects/ViewProjectButton';
 import { getProject } from '@/content';
 import { usePreferences } from '@/features/preferences/store';
 
@@ -68,7 +69,9 @@ export function ProjectPage() {
         <header className="case-hero">
           <div>
             <p className="eyebrow">{project.eyebrow}</p>
-            <h1>{project.title}</h1>
+            {/* Focusable so the "View project" button can hand keyboard focus
+                to the title after it has scrolled the page back to the top. */}
+            <h1 tabIndex={-1}>{project.title}</h1>
           </div>
           <div>
             <p className="hero-lead">{project.roleFocus[role]}</p>
@@ -101,6 +104,9 @@ export function ProjectPage() {
           <div>
             <span className="card-eyebrow">{t('project.outcome')}</span>
             <p>{project.outcome}</p>
+            {/* Keyed on the slug so a new project remounts the button as
+                unviewed while a locale switch keeps the current state. */}
+            <ViewProjectButton key={slug} />
           </div>
         </section>
       </article>

@@ -1155,6 +1155,72 @@ a:focus-visible {
   font-size: 1.1rem;
   line-height: 1.7;
 }
+/* "View project" CTA at the end of the outcome column. The `.view-project-glow`
+   layer sits behind the pill and is pulsed by Anime.js before the first use;
+   its base opacity is the calm static glow kept for reduced motion and after
+   the button has been used. */
+.view-project-btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.55rem;
+  margin-top: 1.75rem;
+  padding: 0.9rem 1.45rem;
+  border: 1px solid rgb(184 255 99 / 45%);
+  border-radius: 999px;
+  color: var(--accent-ink);
+  background:
+    linear-gradient(150deg, rgb(255 255 255 / 22%), transparent 42%),
+    linear-gradient(115deg, #dfff9b, var(--accent) 58%, #8edc4d);
+  box-shadow:
+    0 14px 36px rgb(0 0 0 / 32%),
+    inset 0 1px 0 rgb(255 255 255 / 32%),
+    0 0 24px rgb(184 255 99 / 20%);
+  font-weight: 750;
+  letter-spacing: 0.01em;
+  cursor: pointer;
+  overflow: hidden;
+  transition:
+    transform 240ms ease,
+    box-shadow 240ms ease,
+    background 240ms ease;
+}
+.view-project-btn .view-project-glow {
+  position: absolute;
+  inset: -45%;
+  z-index: 0;
+  background: radial-gradient(closest-side, rgb(184 255 99 / 42%), transparent 72%);
+  opacity: 0.45;
+  pointer-events: none;
+}
+.view-project-btn > svg,
+.view-project-btn > span:not(.view-project-glow) {
+  position: relative;
+  z-index: 1;
+}
+.view-project-btn svg {
+  transition: transform 240ms ease;
+}
+.view-project-btn:hover,
+.view-project-btn:focus-visible {
+  background:
+    linear-gradient(150deg, rgb(255 255 255 / 30%), transparent 42%),
+    linear-gradient(115deg, #e6ffab, var(--accent) 58%, #a0e75f);
+  box-shadow:
+    0 18px 44px rgb(0 0 0 / 38%),
+    inset 0 1px 0 rgb(255 255 255 / 38%),
+    0 0 32px rgb(184 255 99 / 32%);
+  transform: translateY(-2px);
+}
+.view-project-btn:hover svg,
+.view-project-btn:focus-visible svg {
+  transform: translateY(-2px);
+}
+.view-project-btn:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 3px;
+}
 .generic-case {
   padding: 3rem;
   border-radius: var(--radius-lg);
@@ -1167,6 +1233,9 @@ a:focus-visible {
   .chapter-detail,
   .case-summary-grid {
     grid-template-columns: 1fr;
+  }
+  .view-project-btn {
+    width: min(100%, 26rem);
   }
   .featured-visual {
     min-height: 20rem;
@@ -1806,7 +1875,9 @@ a:focus-visible {
 @media (prefers-reduced-motion: reduce) {
   .hero-cta,
   .hero-cta svg,
-  .hero-card .hero-stack span {
+  .hero-card .hero-stack span,
+  .view-project-btn,
+  .view-project-btn svg {
     transition: none;
   }
 }
