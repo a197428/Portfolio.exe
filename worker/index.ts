@@ -4,6 +4,7 @@ import { GigaChatError, GigaChatProvider } from './ai/gigachat';
 import { OpenRouterError, OpenRouterProvider } from './ai/openrouter';
 import type { GenerationProvider } from './ai/provider';
 import { RouterAIError, RouterAIProvider } from './ai/routerai';
+import { openReadyGenerationStream } from './ai/stream';
 import { citationsFromEvidence, retrieveEvidence } from './knowledge';
 
 interface Env {
@@ -243,7 +244,10 @@ app.post('/api/chat', async (context) => {
     let lastProviderError: unknown;
     for (const candidate of providers) {
       try {
-        upstream = await candidate.stream(parsed.data, retrieval, context.req.raw.signal);
+        upstream = await openReadyGenerationStream(
+          (signal) => candidate.stream(parsed.data, retrieval, signal),
+          context.req.raw.signal,
+        );
         activeProvider = candidate;
         break;
       } catch (error) {
@@ -255,7 +259,8 @@ app.post('/api/chat', async (context) => {
             requestId,
             provider: candidate.id,
             nextProvider: providers[providers.indexOf(candidate) + 1]?.id ?? null,
-            status: 'failed_to_start',
+            status: 'failed_before_first_token',
+            failure: error instanceof Error ? error.message : 'UnknownError',
           }),
         );
       }

@@ -109,7 +109,9 @@ Vite variables or generated content. The build removes Cloudflare's local `.dev.
 ## AI boundary
 
 The OpenRouter and RouterAI generation adapters and GigaChat embedding adapter are isolated from
-the Hono route. UI components consume portfolio-specific
-SSE events, never provider objects. The contract distinguishes validation, missing evidence, rate
-limits, Turnstile challenge, provider authentication, provider availability, and interrupted
-streams. Generation-provider failover remains deferred.
+the Hono route. UI components consume portfolio-specific SSE events, never provider objects. The
+contract distinguishes validation, missing evidence, rate limits, Turnstile challenge, provider
+authentication, provider availability, and interrupted streams. A provider becomes active only
+after it emits its first answer token. HTTP failures, empty or errored SSE streams, and a 20-second
+first-token timeout fall through to the next configured provider. Once answer text reaches the
+client, providers are never mixed; a later interruption is reported as a stream error.
