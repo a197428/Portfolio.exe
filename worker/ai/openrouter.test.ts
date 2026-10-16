@@ -1,5 +1,9 @@
 import { describe, expect, it, vi } from 'vitest';
-import { OpenRouterError, OpenRouterProvider } from './openrouter';
+import {
+  DEFAULT_OPENROUTER_MODEL,
+  OpenRouterError,
+  OpenRouterProvider,
+} from './openrouter';
 
 const request = {
   mode: 'qa' as const,
@@ -33,7 +37,7 @@ const retrieval = {
 };
 
 describe('OpenRouter provider', () => {
-  it('uses Nemotron free as the primary streaming model', async () => {
+  it('uses the free router without reasoning as the primary streaming model', async () => {
     const fetchMock = vi.fn(async (input: string | URL | Request, init?: RequestInit) => {
       void input;
       void init;
@@ -54,8 +58,9 @@ describe('OpenRouter provider', () => {
       'HTTP-Referer': 'https://portfolio.example',
     });
     expect(JSON.parse(String(init?.body))).toMatchObject({
-      model: 'nvidia/nemotron-3-ultra-550b-a55b:free',
+      model: DEFAULT_OPENROUTER_MODEL,
       stream: true,
+      reasoning: { effort: 'none', exclude: true },
     });
   });
 

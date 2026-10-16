@@ -55,6 +55,7 @@ export class RouterAIProvider implements GenerationProvider {
           stream: true,
           temperature: 0.2,
           max_tokens: 1_200,
+          reasoning: { effort: 'none', exclude: true },
         }),
         signal,
       });

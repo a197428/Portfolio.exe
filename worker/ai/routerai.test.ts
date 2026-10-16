@@ -56,6 +56,7 @@ describe('RouterAI provider', () => {
     expect(JSON.parse(String(init?.body))).toMatchObject({
       model: DEFAULT_ROUTERAI_MODEL,
       stream: true,
+      reasoning: { effort: 'none', exclude: true },
     });
   });
 

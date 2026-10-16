@@ -4,7 +4,7 @@ import { buildBobPrompt } from '../prompt';
 import type { GenerationProvider } from './provider';
 
 const API_URL = 'https://openrouter.ai/api/v1';
-export const DEFAULT_OPENROUTER_MODEL = 'nvidia/nemotron-3-ultra-550b-a55b:free';
+export const DEFAULT_OPENROUTER_MODEL = 'openrouter/free';
 
 interface OpenRouterOptions {
   apiKey: string;
@@ -56,6 +56,7 @@ export class OpenRouterProvider implements GenerationProvider {
         stream: true,
         temperature: 0.2,
         max_tokens: 1_200,
+        reasoning: { effort: 'none', exclude: true },
       }),
       signal,
     });

@@ -115,3 +115,6 @@ authentication, provider availability, and interrupted streams. A provider becom
 after it emits its first answer token. HTTP failures, empty or errored SSE streams, and a 20-second
 first-token timeout fall through to the next configured provider. Once answer text reaches the
 client, providers are never mixed; a later interruption is reported as a stream error.
+Generation requests disable provider reasoning output so the completion budget is reserved for the
+grounded answer rather than hidden chain-of-thought tokens. OpenRouter's free router is the default
+primary target, avoiding a hard dependency on one free model endpoint; RouterAI remains the fallback.
